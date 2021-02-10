@@ -1,0 +1,32 @@
+<div class="form-group text-input">
+  <label [for]="id" class="form-label">{{ label }}</label>
+  <editor
+    apiKey="sdhob4cqmmfseq9hpamllcvw29nrrx9qu90ulxgtx0xmitg4"
+    [init]="config"
+    [id]="id"
+    [inline]="inline"
+    (onChange)="change()"
+    [(ngModel)]="value"
+    [required]="required"
+    [minlength]="minLength"
+    [maxlength]="maxLength"
+    [disabled]="disabled"
+    #input="ngModel"
+  ></editor>
+  {{ input.valid | json }}
+  <div class="form-control-helpers">
+    <div class="helper-text-container">
+      <span class="helper-text" *ngIf="helperText">{{ helperText }}</span>
+    </div>
+  </div>
+  <div *ngIf="input.errors" class="form-errors-container">
+    <span *ngIf="input.errors.required" class="form-error"
+      >{{ name }} is required</span
+    ><span *ngIf="input.errors.minlength" class="form-error">
+      {{ name }} must be at least {{ minLength }} characters long.
+    </span>
+    <span *ngIf="input.errors.maxlength" class="form-error">
+      {{ name }} must be at most {{ maxLength }} characters long.
+    </span>
+  </div>
+</div>

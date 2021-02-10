@@ -1,0 +1,16 @@
+version: "3"
+services:
+  mongo:
+    image: mongo
+    container_name: api-dev-mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - ../../init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js:ro
+      - data-volume:/data/db
+    env_file:
+      - ../../mongo.env
+    command: mongod --bind_ip_all
+    
+volumes:
+  data-volume:

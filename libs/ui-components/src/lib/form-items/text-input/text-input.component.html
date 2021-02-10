@@ -1,0 +1,39 @@
+<div class="form-group text-input">
+  <label [for]="id" class="form-label">{{ label }}</label>
+  <input
+    [type]="type"
+    [name]="name"
+    [id]="id"
+    class="form-control"
+    [minlength]="minLength ? minLength : null"
+    [maxlength]="maxLength ? maxLength : null"
+    [pattern]="pattern"
+    [placeholder]="placeholder"
+    [(ngModel)]="value"
+    [disabled]="disabled"
+    [required]="required"
+    (keyup)="change()"
+    [email]="type === 'email'"
+    #input="ngModel"
+  />
+  <div class="form-control-helpers">
+    <div class="helper-text-container">
+      <span class="helper-text" *ngIf="helperText">{{ helperText }}</span>
+    </div>
+  </div>
+  <div *ngIf="input.errors" class="form-errors-container">
+    <span *ngIf="input.errors.required" class="form-error"
+      >{{ name }} is required</span
+    >
+    <span *ngIf="input.errors.minlength" class="form-error">
+      {{ name }} must be at least {{ minLength }} characters long.
+    </span>
+    <span *ngIf="input.errors.maxlength" class="form-error">
+      {{ name }} must be at most {{ maxLength }} characters long.
+    </span>
+    <span *ngIf="input.errors.email" class="form-error">
+      {{ name }} should be a correctly formatted email (e.g.
+      bob.jones@fakemail.com).
+    </span>
+  </div>
+</div>

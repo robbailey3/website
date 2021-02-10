@@ -1,0 +1,16 @@
+.carousel {
+  @apply relative p-16;
+  .carousel-control {
+    @apply absolute;
+    top: 50%;
+    &.carousel-prev {
+      left: 0;
+    }
+    &.carousel-next {
+      right: 0;
+    }
+  }
+  .carousel-buttons {
+    @apply flex bottom-0 absolute w-full flex-wrap justify-center left-0 text-xs;
+  }
+}

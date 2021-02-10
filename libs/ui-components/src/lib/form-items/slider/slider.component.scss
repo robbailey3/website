@@ -1,0 +1,13 @@
+.slider-input {
+  /* The slider itself */
+  .slider {
+    @apply p-0 w-full my-4 bg-gray-200 opacity-75 duration-300 appearance-none h-2 border-none rounded-2xl;
+    &:hover {
+      opacity: 1;
+    }
+    &::-webkit-slider-thumb,
+    &::-moz-range-thumb {
+      @apply appearance-none w-6 h-6 rounded-full cursor-pointer bg-tall-poppy-500 shadow-2xl;
+    }
+  }
+}

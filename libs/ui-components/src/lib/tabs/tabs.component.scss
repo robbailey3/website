@@ -1,0 +1,13 @@
+.tabs-container {
+  .tabs-header {
+    .tab-title {
+      @apply py-2 px-4 border border-gray-100 rounded-t-sm;
+      &.active {
+        @apply border-b-2 border-portafino-500;
+      }
+    }
+  }
+  .tab-content {
+    @apply py-2 px-4;
+  }
+}

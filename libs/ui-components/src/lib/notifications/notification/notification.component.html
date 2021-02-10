@@ -1,0 +1,19 @@
+<ng-container *ngIf="notification">
+  <div
+    class="notification"
+    *ngIf="notification.isActive"
+    [ngClass]="{
+      'notification-success': notification.type === 'success',
+      'notification-error': notification.type === 'error',
+      'notification-info': notification.type === 'info',
+      'notification-warning': notification.type === 'warning'
+    }"
+  >
+    {{ notification.content }}
+    <rob-button
+      variant="ghost"
+      [icon]="faTimes"
+      (buttonClick)="handleClose()"
+    ></rob-button>
+  </div>
+</ng-container>

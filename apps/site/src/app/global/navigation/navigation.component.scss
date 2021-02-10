@@ -1,0 +1,11 @@
+.navigation {
+  .nav-list {
+    @apply p-0 m-0 block list-none;
+    .nav-list-item {
+      @apply block p-0 m-0 md:inline-block;
+    }
+    .nav-list-item-link {
+      @apply py-2 px-4 cursor-pointer block;
+    }
+  }
+}

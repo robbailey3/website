@@ -1,0 +1,73 @@
+.btn {
+  @apply text-center rounded-sm shadow inline-block duration-500;
+  &:hover,
+  &:focus {
+    @apply shadow-lg;
+  }
+  &:active {
+    @apply shadow-none;
+  }
+
+  &.btn-xs {
+    @apply py-0 px-1;
+  }
+  &.btn-sm {
+    @apply py-1 px-3;
+  }
+  &.btn-md {
+    @apply py-2 px-4;
+  }
+  &.btn-lg {
+    @apply py-3 px-5;
+  }
+  &.btn-xl {
+    @apply py-4 px-7;
+  }
+  &.btn-xxl {
+    @apply py-6 px-10;
+  }
+
+  &.btn-primary {
+    @apply bg-portafino-500 text-gray-900;
+    &:hover,
+    &:focus {
+      @apply bg-portafino-600;
+    }
+  }
+
+  &.btn-secondary {
+    @apply bg-glade-green-700 text-gray-50;
+    &:hover,
+    &:focus {
+      @apply bg-glade-green-800;
+    }
+  }
+
+  &.btn-tertiary {
+    @apply bg-fire-700 text-gray-50;
+    &:hover,
+    &:focus {
+      @apply bg-fire-800;
+    }
+  }
+
+  &.btn-ghost {
+    @apply text-gray-900 dark:text-gray-50 shadow-none rounded-full p-2 leading-none;
+    &:hover,
+    &:focus {
+      @apply bg-gray-300 bg-opacity-25;
+    }
+  }
+
+  &.btn-danger {
+    @apply bg-tall-poppy-500 text-gray-50;
+  }
+
+  &:disabled {
+    @apply bg-gray-400 cursor-not-allowed text-gray-600;
+    &:hover,
+    &:focus {
+      @apply bg-gray-500 text-gray-700;
+    }
+  }
+}

@@ -1,0 +1,8 @@
+<span
+  #tooltipElement
+  class="tooltip"
+  [@fadeInOnEnter]
+  [@fadeOutOnLeave]
+  [ngClass]="{ 'tooltip-top': config.position === 'top' }"
+  >{{ config.content }}</span
+>

@@ -1,0 +1,20 @@
+<div
+  *ngIf="state === 'active'"
+  class="alert"
+  [ngClass]="{
+    'alert-info': variant === 'info',
+    'alert-warning': variant === 'warning',
+    'alert-error': variant === 'error',
+    'alert-success': variant === 'success'
+  }"
+>
+  <span class="alert-content">{{ content }}</span>
+  <div class="alert-dismiss" *ngIf="dismissable">
+    <rob-button
+      variant="ghost"
+      [icon]="faTimes"
+      (buttonClick)="handleDismissClick()"
+      ><span class="sr-only">Dismiss alert</span></rob-button
+    >
+  </div>
+</div>

@@ -1,0 +1,80 @@
+version: '2'
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile.API
+    ports:
+      - '3000:3000'
+    depends_on:
+      - mongo
+    volumes:
+      - node-modules:/usr/src/app/node_modules
+    networks:
+      - whisky-network
+
+  ui:
+    build:
+      context: .
+      dockerfile: Dockerfile.site
+    depends_on:
+      - api
+    ports:
+      - '4000:4000'
+    volumes:
+      - node-modules:/usr/src/app/node_modules
+    networks:
+      - whisky-network
+
+  mongo:
+    image: mongo
+    ports:
+      - '27017:27017'
+    volumes:
+      - ./init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js:ro
+      - data-volume:/data/db
+    networks:
+      - whisky-network
+    env_file:
+      - ./mongo.env
+
+  redis:
+    image: redis
+    ports:
+      - '6379:6379'
+    networks:
+      - whisky-network
+    volumes:
+      - redis-volume:/data
+
+  nginx:
+    image: nginx:1.15-alpine
+    ports:
+      - '80:80'
+      - '443:443'
+    restart: 'unless-stopped'
+    networks:
+      - whisky-network
+    volumes:
+      - ./.nginx.conf:/etc/nginx/conf.d
+      - ./data/certbot/conf:/etc/letsencrypt
+      - ./data/certbot/www:/var/www/certbot
+    command: '/bin/sh -c ''while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g "daemon off;"'''
+    depends_on:
+      - ui
+      - api
+
+  certbot:
+    image: certbot/certbot
+    volumes:
+      - ./data/certbot/conf:/etc/letsencrypt
+      - ./data/certbot/www:/var/www/certbot
+    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
+
+networks:
+  whisky-network:
+
+volumes:
+  data-volume:
+  redis-volume:
+  node-modules:

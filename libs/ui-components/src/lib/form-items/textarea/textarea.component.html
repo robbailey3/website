@@ -1,0 +1,44 @@
+<div class="form-group">
+  <label [for]="id">{{ label }}</label>
+  <textarea
+    [name]="name"
+    [id]="id"
+    [cols]="cols"
+    [rows]="rows"
+    class="form-control"
+    [minlength]="minLength ? minLength : null"
+    [maxlength]="maxLength ? maxLength : null"
+    [placeholder]="placeholder"
+    [(ngModel)]="value"
+    [disabled]="disabled"
+    [required]="required"
+    (input)="change()"
+    #input="ngModel"
+    [robWordCount]="maxWordCount"
+  ></textarea>
+  <div class="form-control-helpers">
+    <div class="helper-text-container">
+      <span class="helper-text" *ngIf="helperText">{{ helperText }}</span>
+    </div>
+    <div class="word-counter">
+      <span class="word-count-current">{{ wordCount }}&nbsp;</span>
+      <span class="word-count-max" *ngIf="maxWordCount"
+        >/&nbsp;{{ maxWordCount }}</span
+      >
+    </div>
+  </div>
+  <div *ngIf="input.errors" class="form-errors-container">
+    <span *ngIf="input.errors.required" class="form-error"
+      >{{ name }} is required</span
+    >
+    <span *ngIf="input.errors.minlength" class="form-error">
+      {{ name }} must be at least {{ minLength }} characters long.
+    </span>
+    <span *ngIf="input.errors.maxlength" class="form-error">
+      {{ name }} must be at most {{ maxLength }} characters long.
+    </span>
+    <span *ngIf="input.errors.maxWordCount" class="form-error">
+      {{ name }} should not exceed {{ maxWordCount }} words.
+    </span>
+  </div>
+</div>

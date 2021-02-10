@@ -1,0 +1,28 @@
+.form-group {
+  .slide-toggle-wrapper {
+    position: relative;
+    .slide-toggle-input {
+      @apply sr-only;
+
+      & + .slider {
+        @apply bg-gray-200 dark:bg-gray-100 my-2 rounded-xl w-12 h-6 relative duration-500;
+        box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.5);
+        cursor: pointer;
+        &::after {
+          content: '';
+          @apply w-6 h-6 absolute left-0 top-0 bg-sahara-sand-800 rounded-full duration-500;
+          transform: translate(0, 0);
+        }
+      }
+      &:checked {
+        & + .slider {
+          @apply bg-sahara-sand-400;
+          &::after {
+            @apply bg-sahara-sand-900;
+            transform: translate(100%, 0);
+          }
+        }
+      }
+    }
+  }
+}

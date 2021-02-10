@@ -1,0 +1,17 @@
+<div class="modal-overlay" *ngIf="state === 'open'"></div>
+<dialog
+  class="modal"
+  [open]="state === 'open'"
+  robFocusTrap
+  [focusFirstElement]="true"
+>
+  <div class="modal-controls">
+    <rob-button
+      #closeButton
+      variant="ghost"
+      (buttonClick)="close()"
+      [icon]="faTimes"
+    ></rob-button>
+  </div>
+  <ng-content></ng-content>
+</dialog>

@@ -1,0 +1,21 @@
+<div class="tabs-container">
+  <div class="tabs-header" role="tablist">
+    <ng-container *ngFor="let tab of tabs; let i = index">
+      <button
+        (click)="setActiveTab(i)"
+        class="tab-title"
+        role="tab"
+        [ngClass]="{ active: tab.isActive }"
+        [attr.aria-selected]="tab.isActive"
+        [attr.aria-controls]="tab.id"
+        [tabIndex]="tab.isActive ? 0 : -1"
+        #tabButton
+      >
+        {{ tab.title }}
+      </button></ng-container
+    >
+  </div>
+  <div class="tab-panel">
+    <ng-content></ng-content>
+  </div>
+</div>

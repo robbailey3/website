@@ -1,0 +1,56 @@
+<ng-template #transclude><ng-content></ng-content></ng-template>
+<ng-container *ngIf="!href; else noHref">
+  <button
+    [ngClass]="{
+      'btn-primary': variant === 'primary',
+      'btn-secondary': variant === 'secondary',
+      'btn-tertiary': variant === 'tertiary',
+      'btn-danger': variant === 'danger',
+      'btn-ghost': variant === 'ghost',
+      'btn-xs': size === 'xs',
+      'btn-sm': size === 'sm',
+      'btn-md': size === 'md',
+      'btn-lg': size === 'lg',
+      'btn-xl': size === 'xl',
+      'btn-xxl': size === 'xxl'
+    }"
+    [disabled]="disabled"
+    class="btn"
+    (click)="handleButtonClick($event)"
+  >
+    <span class="icon" *ngIf="icon" [ngClass]="{ 'mr-2': label !== '' }"
+      ><fa-icon [icon]="icon"></fa-icon
+    ></span>
+    <span class="button-label">{{ label }}</span>
+    <ng-container *ngTemplateOutlet="transclude"></ng-container>
+  </button>
+</ng-container>
+<ng-template #noHref>
+  <a
+    [href]="href"
+    [ngClass]="{
+      'btn-primary': variant === 'primary',
+      'btn-secondary': variant === 'secondary',
+      'btn-tertiary': variant === 'tertiary',
+      'btn-danger': variant === 'danger',
+      'btn-ghost': variant === 'ghost',
+      'btn-xs': size === 'xs',
+      'btn-sm': size === 'sm',
+      'btn-md': size === 'md',
+      'btn-lg': size === 'lg',
+      'btn-xl': size === 'xl',
+      'btn-xxl': size === 'xxl'
+    }"
+    class="btn"
+    (click)="handleButtonClick($event)"
+  >
+    <span
+      class="icon leading-none text-xs"
+      [ngClass]="{ 'mr-2': label !== '' }"
+      *ngIf="icon"
+      ><fa-icon [icon]="icon"></fa-icon
+    ></span>
+    <span class="button-label">{{ label }}</span>
+    <ng-container *ngTemplateOutlet="transclude"></ng-container>
+  </a>
+</ng-template>

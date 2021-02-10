@@ -1,0 +1,42 @@
+<div class="carousel">
+  <div class="live-region sr-only" aria-live="polite" aria-atomic="true">
+    Showing slide {{ activeIndex + 1 }} of {{ carouselItems.length }}
+  </div>
+  <ng-content></ng-content>
+  <div class="carousel-control carousel-prev">
+    <rob-button
+      variant="ghost"
+      [icon]="faChevronLeft"
+      (buttonClick)="handlePrevClick()"
+      ><span class="sr-only">Go to previous slide</span></rob-button
+    >
+  </div>
+  <div class="carousel-control carousel-next">
+    <rob-button
+      variant="ghost"
+      [icon]="faChevronRight"
+      (buttonClick)="handleNextClick()"
+      ><span class="sr-only">Go to next slide</span></rob-button
+    >
+  </div>
+  <div class="carousel-buttons">
+    <rob-button
+      [icon]="currentState === 'playing' ? faPause : faPlay"
+      variant="ghost"
+      (buttonClick)="toggleState()"
+      ><div class="sr-only">
+        <span *ngIf="currentState === 'paused'">Play</span
+        ><span *ngIf="currentState === 'playing'">Pause</span>
+      </div></rob-button
+    >
+    <ng-container *ngFor="let item of carouselItems; let i = index">
+      <rob-button
+        [icon]="i === activeIndex ? faCircle : faDotCircle"
+        variant="ghost"
+        (buttonClick)="setActiveCarouselItem(i)"
+        ><span class="sr-only">Go to slide {{ i + 1 }}</span></rob-button
+      >
+    </ng-container>
+    <div></div>
+  </div>
+</div>

@@ -1,0 +1,39 @@
+.notification {
+  @apply m-4 relative z-50 shadow-lg rounded-sm py-2 px-4;
+  &.notification-success {
+    @apply bg-glade-green-700 text-gray-50;
+  }
+  &.notification-error {
+    @apply bg-tall-poppy-700 text-gray-50;
+  }
+  &.notification-info {
+    @apply bg-portafino-200 text-gray-900;
+  }
+  &.notification-warning {
+    @apply bg-sahara-sand-500 text-gray-900;
+  }
+}
+::ng-deep {
+  .notification {
+    &.notification-success {
+      .btn.btn-ghost {
+        @apply text-gray-50;
+      }
+    }
+    &.notification-error {
+      .btn.btn-ghost {
+        @apply text-gray-50;
+      }
+    }
+    &.notification-info {
+      .btn.btn-ghost {
+        @apply text-gray-900;
+      }
+    }
+    &.notification-warning {
+      .btn.btn-ghost {
+        @apply text-gray-900;
+      }
+    }
+  }
+}

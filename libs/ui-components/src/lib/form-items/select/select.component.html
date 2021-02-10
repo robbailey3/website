@@ -1,0 +1,34 @@
+<!-- TODO: Make this a bit more snazzy, it currently just uses the standard HTML select -->
+<div class="form-group text-input">
+  <label [for]="id" class="form-label">{{ label }}</label>
+  <select
+    [name]="name"
+    [id]="id"
+    class="form-control"
+    [(ngModel)]="value"
+    [disabled]="disabled"
+    [required]="required"
+    [multiple]="multiple"
+    (keyup)="change()"
+    #input="ngModel"
+  >
+    <option value=""></option>
+    <option
+      *ngFor="let option of options"
+      [value]="option.value"
+      [selected]="value === option.value"
+    >
+      {{ option.key }}
+    </option>
+  </select>
+  <div class="form-control-helpers">
+    <div class="helper-text-container">
+      <span class="helper-text" *ngIf="helperText">{{ helperText }}</span>
+    </div>
+  </div>
+  <div *ngIf="input.errors" class="form-errors-container">
+    <span *ngIf="input.errors.required" class="form-error"
+      >{{ name }} is required</span
+    >
+  </div>
+</div>

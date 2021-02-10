@@ -1,0 +1,17 @@
+.modal-overlay {
+  @apply fixed top-0 left-0 w-screen h-screen bg-gray-900 opacity-50;
+  z-index: 999;
+}
+
+.modal {
+  @apply fixed shadow-2xl rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-50 p-0;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 999;
+  margin: 0;
+  min-width: 50%;
+  .modal-controls {
+    @apply flex justify-end p-2;
+  }
+}

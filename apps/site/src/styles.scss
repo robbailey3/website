@@ -1,0 +1,11 @@
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+@import './partials/typography';
+@import './partials/form-items';
+/* You can add global styles to this file, and also import other style files */
+
+body {
+  @apply bg-portafino-50 dark:bg-black-pearl-900;
+}

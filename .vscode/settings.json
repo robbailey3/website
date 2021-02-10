@@ -1,0 +1,5 @@
+{
+  "scss.validate": false,
+  "vsicons.presets.angular": true,
+  "editor.fontFamily": "'Fira Code', 'Courier New', monospace"
+}

@@ -1,0 +1,33 @@
+.chip {
+  @apply rounded-full px-2 inline-block text-sm shadow-sm;
+  &.portafino {
+    @apply bg-portafino-100 text-gray-900;
+    .btn.btn-ghost {
+      @apply text-gray-900;
+    }
+  }
+  &.fire {
+    @apply bg-fire-700 text-fire-200;
+    .btn.btn-ghost {
+      @apply text-fire-200;
+    }
+  }
+  &.sahara-sand {
+    @apply bg-sahara-sand-200 text-sahara-sand-900;
+    .btn.btn-ghost {
+      @apply text-sahara-sand-900;
+    }
+  }
+  &.glade-green {
+    @apply bg-glade-green-700 text-glade-green-200;
+    .btn.btn-ghost {
+      @apply text-glade-green-200;
+    }
+  }
+  &.black-pearl {
+    @apply bg-black-pearl-700 text-black-pearl-200;
+    .btn.btn-ghost {
+      @apply text-black-pearl-200;
+    }
+  }
+}
