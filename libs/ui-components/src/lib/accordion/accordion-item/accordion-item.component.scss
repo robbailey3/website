@@ -6,7 +6,7 @@
 .accordion-item {
   @apply shadow w-full border-2 border-gray-600 border-opacity-50 overflow-hidden;
   .accordion-item-header {
-    @apply block bg-gray-800;
+    @apply block;
   }
   .accordion-item-button {
     @apply py-2 px-4 flex w-full;

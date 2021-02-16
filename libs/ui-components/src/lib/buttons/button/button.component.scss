@@ -28,26 +28,23 @@
   }
 
   &.btn-primary {
-    @apply bg-portafino-500 text-gray-900;
+    @apply text-gray-900;
     &:hover,
     &:focus {
-      @apply bg-portafino-600;
     }
   }
 
   &.btn-secondary {
-    @apply bg-glade-green-700 text-gray-50;
+    @apply text-gray-50;
     &:hover,
     &:focus {
-      @apply bg-glade-green-800;
     }
   }
 
   &.btn-tertiary {
-    @apply bg-fire-700 text-gray-50;
+    @apply text-gray-50;
     &:hover,
     &:focus {
-      @apply bg-fire-800;
     }
   }
 
@@ -55,19 +52,18 @@
     @apply text-gray-900 dark:text-gray-50 shadow-none rounded-full p-2 leading-none;
     &:hover,
     &:focus {
-      @apply bg-gray-300 bg-opacity-25;
     }
   }
 
   &.btn-danger {
-    @apply bg-tall-poppy-500 text-gray-50;
+    @apply text-gray-50;
   }
 
   &:disabled {
-    @apply bg-gray-400 cursor-not-allowed text-gray-600;
+    @apply text-gray-600;
     &:hover,
     &:focus {
-      @apply bg-gray-500 text-gray-700;
+      @apply text-gray-700;
     }
   }
 }
