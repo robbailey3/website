@@ -28,42 +28,36 @@
   }
 
   &.btn-primary {
-    @apply text-gray-900;
     &:hover,
     &:focus {
     }
   }
 
   &.btn-secondary {
-    @apply text-gray-50;
     &:hover,
     &:focus {
     }
   }
 
   &.btn-tertiary {
-    @apply text-gray-50;
     &:hover,
     &:focus {
     }
   }
 
   &.btn-ghost {
-    @apply text-gray-900 dark:text-gray-50 shadow-none rounded-full p-2 leading-none;
+    @apply shadow-none rounded-full p-2 leading-none;
     &:hover,
     &:focus {
     }
   }
 
   &.btn-danger {
-    @apply text-gray-50;
   }
 
   &:disabled {
-    @apply text-gray-600;
     &:hover,
     &:focus {
-      @apply text-gray-700;
     }
   }
 }

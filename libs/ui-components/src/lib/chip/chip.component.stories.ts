@@ -22,7 +22,7 @@ export const Chip = (args: ChipComponent) => ({
 
 Chip.args = {
   title: '',
-  type: 'sahara-sand',
+  type: 'primary',
   dismissable: false
 } as ChipComponent;
 
@@ -30,13 +30,7 @@ Chip.argTypes = {
   type: {
     control: {
       type: 'select',
-      options: [
-        'portafino',
-        'fire',
-        'sahara-sand',
-        'glade-green',
-        'black-pearl'
-      ]
+      options: ['primary']
     }
   }
 };

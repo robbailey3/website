@@ -36,6 +36,8 @@ RichText.args = {
   required: true,
   value: '',
   config: {
+    skin: 'oxide-dark',
+    content_css: 'dark',
     height: 400,
     plugins: `print preview searchreplace autolink directionality emoticons
       visualblocks visualchars fullscreen image link template table codesample

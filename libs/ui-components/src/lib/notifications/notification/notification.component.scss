@@ -1,38 +1,30 @@
 .notification {
   @apply m-4 relative z-50 shadow-lg rounded-sm py-2 px-4;
   &.notification-success {
-    @apply text-gray-50;
   }
   &.notification-error {
-    @apply text-gray-50;
   }
   &.notification-info {
-    @apply text-gray-900;
   }
   &.notification-warning {
-    @apply text-gray-900;
   }
 }
 ::ng-deep {
   .notification {
     &.notification-success {
       .btn.btn-ghost {
-        @apply text-gray-50;
       }
     }
     &.notification-error {
       .btn.btn-ghost {
-        @apply text-gray-50;
       }
     }
     &.notification-info {
       .btn.btn-ghost {
-        @apply text-gray-900;
       }
     }
     &.notification-warning {
       .btn.btn-ghost {
-        @apply text-gray-900;
       }
     }
   }

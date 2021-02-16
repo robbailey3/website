@@ -21,11 +21,12 @@ export class ChipComponent {
   @Input() dismissable = false;
 
   @Input() type:
-    | 'portafino'
-    | 'fire'
-    | 'sahara-sand'
-    | 'glade-green'
-    | 'black-pearl';
+    | 'primary'
+    | 'secondary'
+    | 'tertiary'
+    | 'error'
+    | 'dark'
+    | 'light' = 'primary';
 
   @Output() handleDismiss: EventEmitter<void> = new EventEmitter();
 

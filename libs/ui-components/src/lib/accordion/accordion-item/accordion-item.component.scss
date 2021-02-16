@@ -4,7 +4,7 @@
 }
 
 .accordion-item {
-  @apply shadow w-full border-2 border-gray-600 border-opacity-50 overflow-hidden;
+  @apply shadow w-full border-2 border-opacity-50 overflow-hidden;
   .accordion-item-header {
     @apply block;
   }

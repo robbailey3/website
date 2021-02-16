@@ -3,7 +3,8 @@
     @apply my-1 block text-sm;
   }
   .form-control {
-    @apply block text-black py-1 px-3 rounded-sm;
+    @apply block py-1 px-3;
+    background: rgba(255, 255, 255, 0.1);
   }
   .form-error {
     @apply text-xs block my-1;
@@ -14,10 +15,10 @@
       @apply w-3/4;
     }
     .word-counter {
-      @apply w-1/4 ml-auto text-right text-gray-400 text-xs my-1;
+      @apply w-1/4 ml-auto text-right text-xs my-1;
     }
   }
   .helper-text {
-    @apply block text-gray-700 dark:text-gray-300 text-xs my-1;
+    @apply block text-xs my-1;
   }
 }
