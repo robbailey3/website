@@ -22,7 +22,10 @@ const Template: Story<ModalComponent> = (args: ModalArgs) => {
   return {
     component: ModalComponent,
     props: { state: args.state, modalContent: args.modalContent },
-    template: `<rob-modal [state]="state"><div [innerHTML]="modalContent" style="padding: 2rem"></div></rob-modal>`
+    template: `
+    <div style="height: 100vh; width: 100vw; background-image: url('https://www.japan-guide.com/g20/2097_01.jpg');background-size: cover;">
+      <rob-modal [state]="state"><div [innerHTML]="modalContent" style="padding: 2rem"></div></rob-modal>
+    </div>`
   };
 };
 
