@@ -30,7 +30,15 @@ Chip.argTypes = {
   type: {
     control: {
       type: 'select',
-      options: ['primary']
+      options: [
+        'primary',
+        'secondary',
+        'tertiary',
+        'accent',
+        'error',
+        'dark',
+        'light'
+      ]
     }
   }
 };

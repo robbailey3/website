@@ -28,36 +28,50 @@
   }
 
   &.btn-primary {
+    @apply bg-primary-500 text-light-50;
     &:hover,
     &:focus {
+      @apply bg-primary-700 text-light-50;
     }
   }
 
   &.btn-secondary {
+    @apply bg-secondary-500 text-dark-900;
     &:hover,
     &:focus {
+      @apply bg-secondary-700 text-dark-900;
     }
   }
 
   &.btn-tertiary {
+    @apply bg-dark-300 text-light-50;
     &:hover,
     &:focus {
+      @apply bg-dark-500 text-light-50;
     }
   }
 
   &.btn-ghost {
-    @apply shadow-none rounded-full p-2 leading-none;
+    @apply shadow-none rounded-full bg-transparent p-4 leading-none;
     &:hover,
     &:focus {
+      @apply bg-light-100 bg-opacity-25;
     }
   }
 
   &.btn-danger {
+    @apply bg-accent-700 text-light-50;
+    &:hover,
+    &:focus {
+      @apply bg-accent-500 text-light-50;
+    }
   }
 
   &:disabled {
+    @apply bg-light-500 text-light-900;
     &:hover,
     &:focus {
+      @apply bg-light-600 text-light-900;
     }
   }
 }

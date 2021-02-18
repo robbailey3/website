@@ -1,14 +1,4 @@
-<span
-  class="chip"
-  [title]="title"
-  [ngClass]="{
-    portafino: type === 'portafino',
-    fire: type === 'fire',
-    'sahara-sand': type === 'sahara-sand',
-    'glade-green': type === 'glade-green',
-    'black-pearl': type === 'black-pearl'
-  }"
->
+<span class="chip" [title]="title" [ngClass]="chipClass">
   <span
     class="chip-content"
     [ngClass]="{

@@ -24,6 +24,7 @@ export class ChipComponent {
     | 'primary'
     | 'secondary'
     | 'tertiary'
+    | 'accent'
     | 'error'
     | 'dark'
     | 'light' = 'primary';
@@ -32,5 +33,9 @@ export class ChipComponent {
 
   public onDismissClick() {
     this.handleDismiss.emit();
+  }
+
+  public get chipClass() {
+    return `chip-${this.type}`;
   }
 }
