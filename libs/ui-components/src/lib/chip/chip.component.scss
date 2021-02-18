@@ -1,3 +1,21 @@
 .chip {
   @apply rounded-full px-2 inline-block text-sm shadow-sm;
+  &.chip-primary {
+    @apply bg-primary;
+  }
+  &.chip-secondary {
+    @apply bg-secondary;
+  }
+  &.chip-accent {
+    @apply bg-accent;
+  }
+  &.chip-error {
+    @apply bg-accent-800;
+  }
+  &.chip-dark {
+    @apply bg-dark;
+  }
+  &.chip-light {
+    @apply bg-light;
+  }
 }

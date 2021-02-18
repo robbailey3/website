@@ -23,7 +23,6 @@ export class ChipComponent {
   @Input() type:
     | 'primary'
     | 'secondary'
-    | 'tertiary'
     | 'accent'
     | 'error'
     | 'dark'
