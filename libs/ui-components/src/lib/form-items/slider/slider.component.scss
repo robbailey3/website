@@ -1,13 +1,13 @@
 .slider-input {
   /* The slider itself */
   .slider {
-    @apply p-0 w-full my-4 rounded-2xl;
+    @apply p-0 w-full my-4 rounded-2xl bg-light-200;
     &:hover {
       opacity: 1;
     }
     &::-webkit-slider-thumb,
     &::-moz-range-thumb {
-      @apply appearance-none w-6 h-6 rounded-full cursor-pointer shadow-2xl;
+      @apply appearance-none w-6 h-6 rounded-full cursor-pointer bg-primary shadow-2xl;
     }
   }
 }

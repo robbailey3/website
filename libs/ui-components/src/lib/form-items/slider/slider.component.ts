@@ -39,7 +39,7 @@ export class SliderComponent implements ControlValueAccessor {
 
   public onTouched: () => any;
 
-  public handleChange($event: MouseEvent) {
+  public handleChange($event: Event) {
     const target = $event.target as HTMLInputElement;
     this.onChange(parseInt(target.value, 10));
   }
