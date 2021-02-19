@@ -32,7 +32,8 @@
     "serve:ssr": "node dist/site/server/main.js",
     "build:ssr": "ng build --prod && ng run site:server:production",
     "prerender": "ng run site:prerender",
-    "build-storybook": "nx run ui-components:build-storybook"
+    "build-storybook": "nx run ui-components:build-storybook",
+    "storybook": "nx run ui-components:storybook"
   },
   "private": true,
   "dependencies": {

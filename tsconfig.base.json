@@ -18,5 +18,8 @@
       "@whisky-tracker/ui-components": ["libs/ui-components/src/index.ts"]
     }
   },
+  "angularCompilerOptions": {
+    "strictTemplates": true
+  },
   "exclude": ["node_modules", "tmp"]
 }
