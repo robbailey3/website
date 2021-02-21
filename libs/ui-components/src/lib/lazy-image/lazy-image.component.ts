@@ -1,5 +1,6 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { Subject } from 'rxjs';
+import { filter } from 'rxjs/operators';
 import { IntersectionObserverDirective } from '../intersection-observer/intersection-observer.directive';
 
 @Component({
@@ -36,16 +37,26 @@ export class LazyImageComponent implements OnInit {
 
   private handleImageLoad() {
     if (this.loadOn === 'scroll') {
-      this.switchImageSource();
+      this.isInViewport.pipe(filter((val) => !!val)).subscribe({
+        next: () => {
+          this.switchImageSource();
+        }
+      });
     } else {
+      this.switchImageSource();
     }
   }
 
   private switchImageSource() {
+    console.log('SWITCHING SOURCE', this.imageSource);
     this.imageSource = this.src;
+    console.log('SWITCHED SOURCE', this.imageSource);
   }
 
   public handleViewportEntry() {
-    this.isInViewport.next(true);
+    console.log('IS IN VIEWPORT');
+    setTimeout(() => {
+      this.isInViewport.next(true);
+    }, 2000);
   }
 }

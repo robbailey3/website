@@ -18,15 +18,15 @@ const Template: Story<LazyImageComponent> = (args: LazyImageComponent) => {
   return {
     component: LazyImageComponent,
     props: { ...args },
-    template: `<rob-lazy-image [src]="src" [thumbnailSrc]="thumbnailSrc" [alt]="alt"></rob-lazy-image>`
+    template: `<rob-lazy-image [src]="src" [thumbnailSrc]="thumbnailSrc" [alt]="alt" [loadOn]="loadOn"></rob-lazy-image>`
   };
 };
 
 export const LazyImage: Story<LazyImageComponent> = Template.bind({});
 
 LazyImage.args = {
-  src: '',
-  thumbnailSrc: '',
+  src: 'https://www.cats.org.uk/media/3236/choosing-a-cat.jpg',
+  thumbnailSrc: 'https://cdn.mos.cms.futurecdn.net/VSy6kJDNq2pSXsCzb6cvYF.jpg',
   alt: 'Image alt',
   loadOn: 'scroll'
 };
