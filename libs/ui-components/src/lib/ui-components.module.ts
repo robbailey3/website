@@ -14,6 +14,8 @@ import { CardComponent } from './card/card.component';
 import { TooltipDirective } from './tooltip/tooltip.directive';
 import { FocusTrapDirective } from './focus-trap/focus-trap.directive';
 import { AlertComponent } from './alert/alert.component';
+import { LazyImageComponent } from './lazy-image/lazy-image.component';
+import { IntersectionObserverDirective } from './intersection-observer/intersection-observer.directive';
 
 @NgModule({
   imports: [
@@ -36,7 +38,8 @@ import { AlertComponent } from './alert/alert.component';
     CardComponent,
     TooltipDirective,
     FocusTrapDirective,
-    AlertComponent
+    AlertComponent,
+    IntersectionObserverDirective
   ],
   providers: [NotificationsService],
   declarations: [
@@ -46,7 +49,9 @@ import { AlertComponent } from './alert/alert.component';
     CardComponent,
     TooltipDirective,
     FocusTrapDirective,
-    AlertComponent
+    AlertComponent,
+    LazyImageComponent,
+    IntersectionObserverDirective
   ]
 })
 export class UiComponentsModule {}
