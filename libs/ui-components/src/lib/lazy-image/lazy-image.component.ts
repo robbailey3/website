@@ -22,6 +22,8 @@ export class LazyImageComponent implements OnInit {
 
   public imageSource: string;
 
+  public isLoaded = false;
+
   private isInViewport: Subject<boolean> = new Subject();
 
   public ngOnInit(): void {
@@ -48,13 +50,11 @@ export class LazyImageComponent implements OnInit {
   }
 
   private switchImageSource() {
-    console.log('SWITCHING SOURCE', this.imageSource);
     this.imageSource = this.src;
-    console.log('SWITCHED SOURCE', this.imageSource);
+    this.isLoaded = true;
   }
 
   public handleViewportEntry() {
-    console.log('IS IN VIEWPORT');
     setTimeout(() => {
       this.isInViewport.next(true);
     }, 2000);

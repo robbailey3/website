@@ -14,15 +14,15 @@ export class NavigationComponent implements OnInit {
 
   public $windowSize: Subject<number> = new Subject();
 
-  public state: 'open' | 'closed' = 'open';
+  public state: 'open' | 'closed' = 'closed';
 
   public faBars = faBars;
 
   constructor(@Inject(WINDOW) public window: Window) {}
 
   public ngOnInit() {
-    this.handleWindowResize();
     this.subscribeToWindowSize();
+    this.handleWindowResize();
   }
 
   @HostListener('window:resize')
@@ -36,5 +36,9 @@ export class NavigationComponent implements OnInit {
         this.isMobile = size < 768;
       }
     });
+  }
+
+  public handleNavButtonClick() {
+    this.state = this.state === 'open' ? 'closed' : 'open';
   }
 }
