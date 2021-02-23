@@ -1,5 +1,5 @@
 .navigation {
-  @apply shadow-lg fixed top-0 w-1/2 md:w-screen md:relative h-screen md:h-auto -left-1/2 md:left-0 z-50 duration-300 bg-light-50;
+  @apply shadow-lg fixed top-0 w-1/2 md:w-screen md:relative h-screen md:h-auto -left-1/2 md:left-0 z-40 duration-300 bg-light-50;
   &.expanded {
     @apply left-0;
   }

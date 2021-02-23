@@ -1,15 +1,22 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { HomepageComponent } from './homepage/homepage.component';
+import { HomepageRootComponent } from './homepage/homepage-root/homepage-root.component';
 
 const routes: Routes = [
-  { path: '', pathMatch: 'full', component: HomepageComponent }
+  { path: '', pathMatch: 'full', component: HomepageRootComponent },
+  {
+    path: 'photos',
+    loadChildren: () =>
+      import('./photos/photos.module').then((res) => res.PhotosModule)
+  }
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes, {
-    initialNavigation: 'enabled'
-})],
+  imports: [
+    RouterModule.forRoot(routes, {
+      initialNavigation: 'enabled'
+    })
+  ],
   exports: [RouterModule]
 })
 export class AppRoutingModule {}

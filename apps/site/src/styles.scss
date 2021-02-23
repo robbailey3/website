@@ -2,9 +2,11 @@
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
 
+@import './partials/accessibility';
 @import './partials/typography';
 @import './partials/form-items';
 /* You can add global styles to this file, and also import other style files */
 
 body {
+  padding-top: 2rem;
 }

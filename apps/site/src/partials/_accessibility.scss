@@ -1,0 +1,6 @@
+.skip-to-content {
+  @apply sr-only;
+  &:focus {
+    @apply not-sr-only m-2 py-1 px-3 absolute bg-light-50 rounded z-50;
+  }
+}
