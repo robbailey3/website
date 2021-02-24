@@ -1,0 +1,9 @@
+.header {
+  @apply border-b border-light-400 z-50 bg-light-50 relative top-0 left-0 w-screen;
+  .header-wrapper {
+    @apply flex flex-wrap p-4 items-center;
+  }
+  rob-navigation {
+    @apply ml-auto;
+  }
+}

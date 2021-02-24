@@ -1,18 +1,28 @@
+::host {
+  position: relative;
+}
 .navigation {
-  @apply shadow-lg fixed top-0 w-1/2 md:w-screen md:relative h-screen md:h-auto -left-1/2 md:left-0 z-40 duration-300 bg-light-50;
+  @apply bg-primary-900 text-light-50 md:text-dark-900 fixed w-3/4 h-screen z-50 -left-3/4 top-0 duration-500 shadow-lg md:relative md:w-auto md:left-auto md:h-auto md:shadow-none;
   &.expanded {
     @apply left-0;
   }
   .nav-list {
-    @apply p-0 m-0 block list-none;
-    .nav-list-item {
-      @apply block p-0 m-0 md:inline-block;
-    }
-    .nav-list-item-link {
-      @apply py-2 px-4 cursor-pointer block;
+    @apply p-0 m-0 flex flex-col h-full justify-center md:flex-row;
+  }
+  .nav-list-item {
+    @apply mx-2 my-4 md:my-0;
+  }
+  .nav-list-item-link {
+    @apply py-1 px-4 block;
+    &:hover,
+    &:focus {
+      @apply underline;
     }
   }
 }
-::ng-deep .btn {
-  @apply absolute -right-12 z-50 bg-light-50 m-2;
+
+::ng-deep {
+  .btn.btn-md {
+    @apply shadow-none;
+  }
 }
