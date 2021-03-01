@@ -1,8 +1,8 @@
 <ng-container *ngIf="isMobile">
   <rob-button [icon]="faBars" (buttonClick)="handleNavButtonClick()"
     ><span class="sr-only">Toggle Navigation</span></rob-button
-  ></ng-container
->
+  >
+</ng-container>
 <nav class="navigation" [ngClass]="{ expanded: state === 'open' && isMobile }">
   <ul class="nav-list">
     <li class="nav-list-item">
