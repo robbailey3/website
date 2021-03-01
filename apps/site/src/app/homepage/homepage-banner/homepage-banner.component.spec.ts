@@ -11,4 +11,9 @@ describe('HomepageBannerComponent', () => {
 
     expect(spectator.component).toBeTruthy();
   });
+
+  it('should contain a title in a h1 element', () => {
+    const expectedText = 'Rob Bailey Software Engineer';
+    expect(spectator.query('h1').textContent.trim()).toEqual(expectedText);
+  });
 });

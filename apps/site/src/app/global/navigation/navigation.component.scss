@@ -2,7 +2,7 @@
   position: relative;
 }
 .navigation {
-  @apply bg-primary-900 text-light-50 md:text-dark-900 fixed w-3/4 h-screen z-50 -left-3/4 top-0 duration-500 shadow-lg md:relative md:w-auto md:left-auto md:h-auto md:shadow-none;
+  @apply text-dark-900 bg-light-50 fixed w-3/4 h-screen z-50 -left-3/4 top-0 duration-500 shadow-lg md:relative md:w-auto md:left-auto md:h-auto md:shadow-none;
   &.expanded {
     @apply left-0;
   }
