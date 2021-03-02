@@ -1,3 +1,4 @@
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { Spectator, createComponentFactory } from '@ngneat/spectator';
 import * as e from 'express';
 import { HomepageBannerComponent } from '../homepage-banner/homepage-banner.component';
@@ -10,7 +11,8 @@ describe('HomepageRootComponent', () => {
 
   const createComponent = createComponentFactory({
     component: HomepageRootComponent,
-    declarations: [HomepageBannerComponent]
+    declarations: [HomepageBannerComponent],
+    schemas: [CUSTOM_ELEMENTS_SCHEMA]
   });
 
   beforeEach(() => {
