@@ -1,10 +1,14 @@
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { Spectator, createComponentFactory } from '@ngneat/spectator';
 
 import { HomepageBannerComponent } from './homepage-banner.component';
 
 describe('HomepageBannerComponent', () => {
   let spectator: Spectator<HomepageBannerComponent>;
-  const createComponent = createComponentFactory(HomepageBannerComponent);
+  const createComponent = createComponentFactory({
+    component: HomepageBannerComponent,
+    schemas: [CUSTOM_ELEMENTS_SCHEMA]
+  });
 
   it('should create', () => {
     spectator = createComponent();
