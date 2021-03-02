@@ -39,6 +39,7 @@ import { IntersectionObserverDirective } from './intersection-observer/intersect
     TooltipDirective,
     FocusTrapDirective,
     AlertComponent,
+    LazyImageComponent,
     IntersectionObserverDirective
   ],
   providers: [NotificationsService],

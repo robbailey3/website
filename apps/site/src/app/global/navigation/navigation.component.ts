@@ -1,4 +1,5 @@
 import { Component, HostListener, Inject, OnInit } from '@angular/core';
+import { NavigationEnd, Router } from '@angular/router';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
 import { WINDOW } from '@ng-toolkit/universal';
 import { Subject } from 'rxjs';
@@ -18,11 +19,18 @@ export class NavigationComponent implements OnInit {
 
   public faBars = faBars;
 
-  constructor(@Inject(WINDOW) public window: Window) {}
+  constructor(@Inject(WINDOW) public window: Window, public router: Router) {}
 
   public ngOnInit() {
     this.subscribeToWindowSize();
     this.handleWindowResize();
+    this.router.events.subscribe({
+      next: ($event) => {
+        if ($event instanceof NavigationEnd) {
+          this.state = 'closed';
+        }
+      }
+    });
   }
 
   @HostListener('window:resize')
