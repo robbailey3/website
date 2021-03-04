@@ -2,9 +2,10 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
 import { SharedModule } from './shared/shared.module';
-import { UserModule } from './user/user.module';
+import { UsersModule } from './users/users.module';
 import { PhotosModule } from './photos/photos.module';
 import { UtilsModule } from './utils/utils.module';
+import { PhotoAlbumsModule } from './photo-albums/photo-albums.module';
 
 @Module({
   imports: [
@@ -18,9 +19,10 @@ import { UtilsModule } from './utils/utils.module';
           ? './apps/api/.env'
           : './apps/api/.dev.env'
     }),
-    UserModule,
+    UsersModule,
     PhotosModule,
-    UtilsModule
+    UtilsModule,
+    PhotoAlbumsModule
   ]
 })
 export class AppModule {}

@@ -1,14 +1,14 @@
 import * as bcrypt from 'bcrypt';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { UserDto } from '../user/dto/user.dto';
+import { UserDto } from '../users/dto/user.dto';
 import { LoginDto } from './dto/login.dto';
-import { UserService } from '../user/user.service';
+import { UsersService } from '../users/users.service';
 
 @Injectable()
 export class AuthService {
   constructor(
-    private readonly userService: UserService,
+    private readonly usersService: UsersService,
     private readonly jwtService: JwtService
   ) {}
 
@@ -19,7 +19,7 @@ export class AuthService {
    */
   public async validateUser(email: string, pass: string): Promise<any> {
     return new Promise((resolve, reject) => {
-      this.userService.findOne({ email }).subscribe({
+      this.usersService.findOne({ email }).subscribe({
         next: async (user: UserDto) => {
           if (!user || !user.password) {
             reject();
@@ -47,7 +47,7 @@ export class AuthService {
    */
   public login(user: LoginDto): Promise<any> {
     return new Promise((resolve, reject) => {
-      this.userService
+      this.usersService
         .findOneAndUpdate<UserDto>(
           { email: user.email },
           { $set: { lastLogIn: new Date() } },

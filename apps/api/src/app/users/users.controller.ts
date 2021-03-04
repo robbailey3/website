@@ -12,13 +12,13 @@ import { ApiBody, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { Observable } from 'rxjs';
 import { EntityQuery } from '../shared/entity-query/entity-query';
 import { UserDto } from './dto/user.dto';
-import { UserService } from './user.service';
+import { UsersService } from './users.service';
 import { QueryParserInterceptor } from '../shared/query-parser/query-parser.interceptor';
 
 @Controller('user')
 @ApiTags('User')
-export class UserController {
-  constructor(private readonly userService: UserService) {}
+export class UsersController {
+  constructor(private readonly userService: UsersService) {}
 
   @Get('')
   @ApiOkResponse({ type: [UserDto] })

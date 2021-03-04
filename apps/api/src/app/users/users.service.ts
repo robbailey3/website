@@ -7,7 +7,7 @@ import { UserDto } from './dto/user.dto';
 import { EntityService } from '../shared/entity-service/entity.service';
 
 @Injectable()
-export class UserService extends EntityService {
+export class UsersService extends EntityService {
   constructor(database: DatabaseService) {
     super(database, 'users');
   }

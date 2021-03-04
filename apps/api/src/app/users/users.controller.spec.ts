@@ -1,22 +1,22 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { Observable } from 'rxjs';
-import { UserController } from './user.controller';
-import { UserService } from './user.service';
+import { UsersController } from './users.controller';
+import { UsersService } from './users.service';
 
-jest.mock('./user.service.ts');
+jest.mock('./users.service.ts');
 
-describe('UserController', () => {
-  let controller: UserController;
-  let service: UserService;
+describe('UsersController', () => {
+  let controller: UsersController;
+  let service: UsersService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      controllers: [UserController],
-      providers: [UserService]
+      controllers: [UsersController],
+      providers: [UsersService]
     }).compile();
 
-    controller = module.get<UserController>(UserController);
-    service = module.get<UserService>(UserService);
+    controller = module.get<UsersController>(UsersController);
+    service = module.get<UsersService>(UsersService);
     service.find = () => new Observable();
   });
 
@@ -25,7 +25,7 @@ describe('UserController', () => {
   });
 
   describe('[METHOD]: find', () => {
-    it('should call userService->find', () => {
+    it('should call UsersService->find', () => {
       const spy = jest.spyOn(service, 'find');
       controller.find({ limit: 0, skip: 0, sort: {}, filter: {} });
       expect(spy).toHaveBeenCalled();
