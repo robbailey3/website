@@ -1,6 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { ObjectID } from 'mongodb';
 import { Exclude, Type } from 'class-transformer';
 import {
+  IsArray,
   IsDate,
   IsEmail,
   IsEmpty,
@@ -13,7 +15,7 @@ export class UserDto {
   @ApiProperty()
   @IsEmpty()
   @Type(() => String)
-  public _id: any;
+  public _id: ObjectID;
 
   @IsString()
   @IsNotEmpty()
@@ -41,4 +43,8 @@ export class UserDto {
   @ApiProperty()
   @IsEmpty()
   public lastLogIn: Date;
+
+  @ApiProperty()
+  @IsEmpty()
+  public failedLogins: number[];
 }

@@ -15,8 +15,8 @@ import { UserDto } from './dto/user.dto';
 import { UsersService } from './users.service';
 import { QueryParserInterceptor } from '../shared/query-parser/query-parser.interceptor';
 
-@Controller('user')
-@ApiTags('User')
+@Controller('users')
+@ApiTags('Users')
 export class UsersController {
   constructor(private readonly userService: UsersService) {}
 
@@ -33,10 +33,8 @@ export class UsersController {
   @Post('')
   @ApiBody({ type: UserDto })
   public insertUser(@Body() user: UserDto) {
-    return this.userService.insertUser(user).pipe(
-      map((newUser) => {
-        return plainToClass(UserDto, newUser);
-      })
-    );
+    return this.userService
+      .insertUser(user)
+      .pipe(map((newUser) => plainToClass(UserDto, newUser)));
   }
 }

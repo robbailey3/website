@@ -4,9 +4,15 @@ import { JwtService } from '@nestjs/jwt';
 import { UserDto } from '../users/dto/user.dto';
 import { LoginDto } from './dto/login.dto';
 import { UsersService } from '../users/users.service';
+import { Observable } from 'rxjs';
+import { UpdateWriteOpResult } from 'mongodb';
 
 @Injectable()
 export class AuthService {
+  private readonly BRUTE_TIMEOUT = 1000 * 60 * 0.5; // 15 minutes
+
+  private readonly MAX_ATTEMPTS = 5;
+
   constructor(
     private readonly usersService: UsersService,
     private readonly jwtService: JwtService
@@ -17,62 +23,91 @@ export class AuthService {
    * @param email The email address of the user
    * @param pass The password of the user. NOTE: This should NEVER be exposed to any logs or anything. Ever.
    */
-  public async validateUser(email: string, pass: string): Promise<any> {
-    return new Promise((resolve, reject) => {
-      this.usersService.findOne({ email }).subscribe({
-        next: async (user: UserDto) => {
-          if (!user || !user.password) {
-            reject();
-            return;
-          }
-          // Use bcrypt to check if the password is correct
-          const passwordIsCorrect = await bcrypt.compare(pass, user.password);
+  public async validateUser(
+    email: string,
+    pass: string
+  ): Promise<Partial<UserDto>> {
+    try {
+      const user = await this.usersService
+        .findOne<UserDto>({ email })
+        .toPromise();
 
-          const { password, ...result } = user;
-          if (passwordIsCorrect) {
-            resolve(result);
-          }
-          reject();
-        },
-        error: (err) => {
-          reject(err);
-        }
-      });
-    });
+      if (!user || !user.password) {
+        throw new UnauthorizedException();
+      }
+
+      if (this.checkBruteForce(user)) {
+        throw new UnauthorizedException();
+      }
+
+      const passwordIsCorrect = await bcrypt.compare(pass, user.password);
+
+      if (!passwordIsCorrect) {
+        await this.recordLoginAttempt(user).toPromise();
+        throw new UnauthorizedException();
+      }
+
+      const { password, ...result } = user;
+
+      return result;
+    } catch {
+      throw new UnauthorizedException();
+    }
   }
 
   /**
    * This method returns a JWT token for a user who has successfully logged in. This, hopefully, will be me ()
-   * @param user The email and password object
+   * @param loginUser The email and password object
    */
-  public login(user: LoginDto): Promise<any> {
-    return new Promise((resolve, reject) => {
-      this.usersService
-        .findOneAndUpdate<UserDto>(
-          { email: user.email },
-          { $set: { lastLogIn: new Date() } },
-          { upsert: true }
-        )
-        .subscribe({
-          next: (result: UserDto) => {
-            const userFromDB = result;
-            if (!userFromDB) {
-              // This shouldn't happen, but just in case.
-              throw new UnauthorizedException('Login Failed');
-            }
-            // Create the JWT Payload
-            // eslint-disable-next-line no-underscore-dangle
-            const payload = { email: userFromDB.email, id: userFromDB._id };
-            resolve({
-              token: this.jwtService.sign(payload, {
-                expiresIn: '1h'
-              })
-            });
-          },
-          error: (err) => {
-            reject(err);
-          }
-        });
+  public async login(loginUser: LoginDto): Promise<any> {
+    const user = await this.usersService
+      .findOneAndUpdate<UserDto>(
+        { email: loginUser.email },
+        { $set: { lastLogIn: new Date() } },
+        { upsert: true }
+      )
+      .toPromise();
+
+    if (!user) {
+      // This shouldn't happen, but just in case.
+      throw new UnauthorizedException('Login Failed');
+    }
+
+    // Create the JWT Payload
+    const payload: Partial<UserDto> = {
+      email: user.email,
+      // eslint-disable-next-line no-underscore-dangle
+      _id: user._id
+    };
+
+    return {
+      token: this.jwtService.sign(payload, {
+        expiresIn: '1h'
+      })
+    };
+  }
+
+  /**
+   * Update a user document to record a failed login attempt
+   * @param {UserDto} user
+   * @return {*}  {Observable<UpdateWriteOpResult>}
+   */
+  public recordLoginAttempt(user: UserDto): Observable<UpdateWriteOpResult> {
+    return this.usersService.updateOne<UserDto>(user, {
+      $push: { failedLogins: Date.now() }
     });
+  }
+
+  /**
+   * Check if the user is currently locked out of their account.
+   * @param {UserDto} user
+   * @return {*}  {boolean}
+   */
+  public checkBruteForce(user: UserDto): boolean {
+    return (
+      user.failedLogins?.filter(
+        (failedLogin) => failedLogin > Date.now() - this.BRUTE_TIMEOUT
+      ).length > this.MAX_ATTEMPTS
+    );
   }
 }
