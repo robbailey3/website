@@ -49,6 +49,10 @@ export class PhotosController {
     );
   };
 
+  public static allowedFiletypes = ['.jpg', '.png', '.jpeg'];
+
+  public static allowedMimetypes = ['image/jpeg', 'image/png'];
+
   constructor(private readonly photosService: PhotosService) {}
 
   @Get('')
@@ -65,7 +69,7 @@ export class PhotosController {
     summary: 'Upload new photos'
   })
   @ApiParam({
-    name: 'id',
+    name: 'albumId',
     type: 'string',
     description: 'The ID of the photo album to which photos should be added'
   })
@@ -84,20 +88,22 @@ export class PhotosController {
       storage: multer.diskStorage({
         destination: PhotosController.fileDestination,
         filename: (req, file, callback) => {
-          const name = PhotosController.createFileName(file);
-          callback(null, name);
+          callback(null, PhotosController.createFileName(file));
         }
       }),
       fileFilter: (_req, file, callback) => {
-        const allowedFileTypes = ['.png', '.jpg', '.jpeg'];
-        const allowedMimetypes = ['image/jpeg', 'image/png'];
         const fileExtension = path.extname(file.originalname).toLowerCase();
-        if (!allowedFileTypes.includes(fileExtension)) {
-          callback(new Error(`Incorrect file type: ${fileExtension}`), false);
-        }
-        if (!allowedMimetypes.includes(file.mimetype)) {
+        if (!PhotosController.allowedFiletypes.includes(fileExtension)) {
           callback(
-            new Error(`Incorrect file mimetype: ${file.mimetype}`),
+            new BadRequestException(`Incorrect file type: ${fileExtension}`),
+            false
+          );
+        }
+        if (!PhotosController.allowedMimetypes.includes(file.mimetype)) {
+          callback(
+            new BadRequestException(
+              `Incorrect file mimetype: ${file.mimetype}`
+            ),
             false
           );
         }

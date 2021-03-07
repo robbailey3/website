@@ -102,9 +102,13 @@ export class PhotoDto {
 
   public alt: string;
 
-  public size: Dimensions;
+  public imageDimensions: Dimensions;
 
-  public thumbnailSize: Dimensions;
+  public thumbnailDimensions: Dimensions;
+
+  public size: number;
+
+  public thumbnailSize: number;
 
   public encoding: string;
 
