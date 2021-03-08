@@ -87,7 +87,7 @@ export class PhotosController {
       },
       storage: multer.diskStorage({
         destination: PhotosController.fileDestination,
-        filename: (req, file, callback) => {
+        filename: (_req, file, callback) => {
           callback(null, PhotosController.createFileName(file));
         }
       }),
