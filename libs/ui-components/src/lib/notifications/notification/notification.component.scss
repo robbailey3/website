@@ -1,30 +1,23 @@
 .notification {
-  @apply m-4 relative z-50 shadow-lg rounded-sm py-2 px-4;
+  @apply m-4 relative z-50 shadow-lg rounded-sm py-1 px-4;
   &.notification-success {
+    @apply bg-success-500 text-light-50;
   }
   &.notification-error {
+    @apply bg-accent-800 text-light-50;
   }
   &.notification-info {
+    @apply bg-warning-50 text-dark-900;
   }
   &.notification-warning {
+    @apply bg-warning-500 text-dark-900;
   }
 }
 ::ng-deep {
   .notification {
-    &.notification-success {
-      .btn.btn-ghost {
-      }
-    }
-    &.notification-error {
-      .btn.btn-ghost {
-      }
-    }
-    &.notification-info {
-      .btn.btn-ghost {
-      }
-    }
-    &.notification-warning {
-      .btn.btn-ghost {
+    rob-button {
+      .btn {
+        padding: 0.5rem;
       }
     }
   }

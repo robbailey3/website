@@ -15,8 +15,9 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@whisky-tracker/ui-components": ["libs/ui-components/src/index.ts"]
-    }
+      "@website/ui-components": ["libs/ui-components/src/index.ts"]
+    },
+    "types": ["node"]
   },
   "angularCompilerOptions": {
     "strictTemplates": true

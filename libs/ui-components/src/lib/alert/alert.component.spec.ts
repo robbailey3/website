@@ -23,6 +23,7 @@ describe('AlertComponent', () => {
     expect(component).toBeTruthy();
   });
 
+  // TODO: Refactor to use test.each
   it('should have to correct class based on the variant', () => {
     ['info', 'warning', 'error', 'success'].forEach(
       (variant: 'info' | 'warning' | 'error' | 'success') => {
@@ -44,6 +45,7 @@ describe('AlertComponent', () => {
     spectator.fixture.detectChanges();
     expect(spectator.query('.alert-dismiss')).toBeTruthy();
   });
+
   describe('[METHOD]: handleDismissClick', () => {
     it('should call component->close', () => {
       const spy = jest.spyOn(component, 'close');

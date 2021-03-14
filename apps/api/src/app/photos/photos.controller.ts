@@ -41,7 +41,7 @@ export class PhotosController {
     return (
       Date.now() +
       crypto
-        .randomBytes(8)
+        .randomBytes(4)
         .toString('hex')
         .replace(/\//g, '_')
         .replace(/\+/g, '-') +
@@ -52,6 +52,8 @@ export class PhotosController {
   public static allowedFiletypes = ['.jpg', '.png', '.jpeg'];
 
   public static allowedMimetypes = ['image/jpeg', 'image/png'];
+
+  public static maxPhotosPerUpload = 100;
 
   constructor(private readonly photosService: PhotosService) {}
 
@@ -64,6 +66,7 @@ export class PhotosController {
     return this.photosService.find(filter, options);
   }
 
+  // TODO: Look into how the below method can be cleaned up
   @ApiOperation({
     description: 'Uploads new photos into the album',
     summary: 'Upload new photos'
@@ -81,7 +84,7 @@ export class PhotosController {
   @Post(':albumId/upload')
   @ApiBearerAuth()
   @UseInterceptors(
-    FilesInterceptor('files', 100, {
+    FilesInterceptor('files', PhotosController.maxPhotosPerUpload, {
       limits: {
         fileSize: PhotosController.maxFileSize // A 40MB limit per file
       },
@@ -112,13 +115,14 @@ export class PhotosController {
     })
   )
   public uploadFile(
-    @UploadedFiles() files: any[],
+    @UploadedFiles()
+    files: { albumID: string | ObjectId }[] & Express.Multer.File[],
     @Param('albumId') _id: string | ObjectId
   ) {
     if (!files) {
       throw new BadRequestException('No files uploaded.');
     }
-    files.forEach((file) => {
+    files.forEach((file: any) => {
       // eslint-disable-next-line no-param-reassign
       file.albumID = _id;
       this.photosService.addFileToResizeQueue(file);

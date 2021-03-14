@@ -1,9 +1,9 @@
 // eslint-disable-next-line import/order
-import { AppRoutingModule } from './app-routing.module';
-import { UiComponentsModule } from '@whisky-tracker/ui-components';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { ServiceWorkerModule } from '@angular/service-worker';
+import { UiComponentsModule } from '@website/ui-components';
+import { AppRoutingModule } from './app-routing.module';
 
 import { GlobalModule } from './global/global.module';
 
@@ -18,12 +18,12 @@ import { HomepageModule } from './homepage/homepage.module';
     AppRoutingModule,
     BrowserModule.withServerTransition({ appId: 'serverApp' }),
     GlobalModule,
-    UiComponentsModule,
     ServiceWorkerModule.register('ngsw-worker.js', {
       enabled: environment.production
     }),
     AuthModule,
-    HomepageModule
+    HomepageModule,
+    UiComponentsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

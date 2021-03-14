@@ -29,7 +29,7 @@ export class CarouselComponent implements AfterContentInit {
    */
   @Input() interval = 1000;
 
-  private setIntervalReturn: NodeJS.Timeout;
+  private setIntervalReturn: any;
 
   public activeIndex = 0;
 
@@ -62,9 +62,9 @@ export class CarouselComponent implements AfterContentInit {
    * after the specified interval.
    */
   public startCarousel() {
-    this.setIntervalReturn = (setInterval(() => {
+    this.setIntervalReturn = setInterval(() => {
       this.next();
-    }, this.interval) as unknown) as NodeJS.Timeout;
+    }, this.interval);
   }
 
   /**

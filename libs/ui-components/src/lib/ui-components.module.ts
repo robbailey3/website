@@ -16,6 +16,9 @@ import { FocusTrapDirective } from './focus-trap/focus-trap.directive';
 import { AlertComponent } from './alert/alert.component';
 import { LazyImageComponent } from './lazy-image/lazy-image.component';
 import { IntersectionObserverDirective } from './intersection-observer/intersection-observer.directive';
+import { CarouselComponent } from './carousel/carousel.component';
+import { CarouselItemComponent } from './carousel/carousel-item/carousel-item.component';
+import { CarouselModule } from './carousel/carousel.module';
 
 @NgModule({
   imports: [
@@ -23,7 +26,8 @@ import { IntersectionObserverDirective } from './intersection-observer/intersect
     BrowserAnimationsModule,
     ButtonsModule,
     FontAwesomeModule,
-    FormItemsModule
+    FormItemsModule,
+    CarouselModule
   ],
   exports: [
     AccordionModule,
@@ -40,7 +44,8 @@ import { IntersectionObserverDirective } from './intersection-observer/intersect
     FocusTrapDirective,
     AlertComponent,
     LazyImageComponent,
-    IntersectionObserverDirective
+    IntersectionObserverDirective,
+    CarouselModule
   ],
   providers: [NotificationsService],
   declarations: [

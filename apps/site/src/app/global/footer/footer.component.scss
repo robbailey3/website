@@ -1,7 +1,7 @@
 #page-footer {
   @apply bg-primary text-light-50 py-24;
   .footer-wrapper {
-    @apply container mx-auto flex flex-wrap px-4;
+    @apply container mx-auto flex flex-wrap px-4 max-w-5xl;
   }
   .footer-navigation {
     @apply flex flex-wrap w-full md:w-2/3;
