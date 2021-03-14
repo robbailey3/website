@@ -1,6 +1,6 @@
 import { Spectator, createComponentFactory } from '@ngneat/spectator';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 
 import { ButtonComponent } from './button.component';
 
@@ -9,7 +9,7 @@ describe('ButtonComponent', () => {
   let component: ButtonComponent;
   const componentFactory = createComponentFactory({
     component: ButtonComponent,
-    imports: [FontAwesomeModule]
+    imports: [FontAwesomeModule, RouterTestingModule]
   });
 
   beforeEach(() => {

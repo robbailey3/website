@@ -5,6 +5,7 @@ import {
   Output,
   ViewEncapsulation
 } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import { IconDefinition, IconProp } from '@fortawesome/fontawesome-svg-core';
 
 /**
@@ -31,6 +32,8 @@ export class ButtonComponent {
   @Input() label = '';
 
   @Input() icon: IconProp | IconDefinition;
+
+  @Input() routerLink: string | any[];
 
   @Output() public buttonClick: EventEmitter<MouseEvent> = new EventEmitter();
 

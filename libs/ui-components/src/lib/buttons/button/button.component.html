@@ -1,5 +1,5 @@
 <ng-template #transclude><ng-content></ng-content></ng-template>
-<ng-container *ngIf="!href; else noHref">
+<ng-container *ngIf="!href || !routerLink; else noHref">
   <button
     [ngClass]="{
       'btn-primary': variant === 'primary',
@@ -41,6 +41,7 @@
       'btn-xl': size === 'xl',
       'btn-xxl': size === 'xxl'
     }"
+    [routerLink]="routerLink"
     class="btn"
     (click)="handleButtonClick($event)"
   >
