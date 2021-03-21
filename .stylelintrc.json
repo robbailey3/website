@@ -9,7 +9,7 @@
     ],
     "indentation": 2,
     "number-leading-zero": null,
-    "unit-allowed-list": ["em", "rem", "s"],
+    "unit-allowed-list": ["em", "rem", "%", "px"],
     "selector-type-no-unknown": null,
     "selector-pseudo-element-no-unknown": null,
     "no-empty-source": null

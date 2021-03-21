@@ -10,6 +10,10 @@ const routes: Routes = [
       import('./about/about.module').then((res) => res.AboutModule)
   },
   {
+    path: 'cv',
+    loadChildren: () => import('./cv/cv.module').then((res) => res.CvModule)
+  },
+  {
     path: 'photos',
     loadChildren: () =>
       import('./photos/photos.module').then((res) => res.PhotosModule)

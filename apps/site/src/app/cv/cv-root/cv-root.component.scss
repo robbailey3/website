@@ -1,0 +1,6 @@
+.cv-root {
+  @apply container mx-auto max-w-5xl flex flex-wrap;
+}
+.cv-content {
+  @apply p-8 my-4;
+}
