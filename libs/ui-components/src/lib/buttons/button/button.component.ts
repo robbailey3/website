@@ -40,4 +40,20 @@ export class ButtonComponent {
   public handleButtonClick($event: MouseEvent) {
     this.buttonClick.emit($event);
   }
+
+  public generateButtonClass() {
+    return {
+      'btn-primary': this.variant === 'primary',
+      'btn-secondary': this.variant === 'secondary',
+      'btn-tertiary': this.variant === 'tertiary',
+      'btn-danger': this.variant === 'danger',
+      'btn-ghost': this.variant === 'ghost',
+      'btn-xs': this.size === 'xs',
+      'btn-sm': this.size === 'sm',
+      'btn-md': this.size === 'md',
+      'btn-lg': this.size === 'lg',
+      'btn-xl': this.size === 'xl',
+      'btn-xxl': this.size === 'xxl'
+    };
+  }
 }
