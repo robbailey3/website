@@ -28,19 +28,7 @@
 <ng-template #noHref>
   <a
     [href]="href"
-    [ngClass]="{
-      'btn-primary': variant === 'primary',
-      'btn-secondary': variant === 'secondary',
-      'btn-tertiary': variant === 'tertiary',
-      'btn-danger': variant === 'danger',
-      'btn-ghost': variant === 'ghost',
-      'btn-xs': size === 'xs',
-      'btn-sm': size === 'sm',
-      'btn-md': size === 'md',
-      'btn-lg': size === 'lg',
-      'btn-xl': size === 'xl',
-      'btn-xxl': size === 'xxl'
-    }"
+    [ngClass]="generateButtonClass()"
     [routerLink]="routerLink"
     class="btn"
     (click)="handleButtonClick($event)"

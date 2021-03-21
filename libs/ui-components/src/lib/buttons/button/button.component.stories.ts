@@ -4,6 +4,7 @@ import { faIcons } from '@fortawesome/free-solid-svg-icons';
 
 import { action } from '@storybook/addon-actions';
 
+import { RouterModule } from '@angular/router';
 import { ButtonComponent } from './button.component';
 
 export default {
@@ -12,7 +13,7 @@ export default {
   decorators: [
     moduleMetadata({
       declarations: [ButtonComponent],
-      imports: [FontAwesomeModule]
+      imports: [FontAwesomeModule, RouterModule]
     })
   ]
 };
