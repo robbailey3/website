@@ -1,0 +1,25 @@
+<nav class="cv-navigation">
+  <ul>
+    <li>
+      <a
+        [routerLink]="['/cv']"
+        [routerLinkActive]="'active'"
+        [routerLinkActiveOptions]="{ exact: true }"
+        >Profile</a
+      >
+    </li>
+    <li>
+      <a [routerLink]="['skills']" [routerLinkActive]="'active'">Skills</a>
+    </li>
+    <li>
+      <a [routerLink]="['experience']" [routerLinkActive]="'active'"
+        >Experience</a
+      >
+    </li>
+    <li>
+      <a [routerLink]="['education']" [routerLinkActive]="'active'"
+        >Education</a
+      >
+    </li>
+  </ul>
+</nav>

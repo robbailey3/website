@@ -1,0 +1,25 @@
+nav.cv-navigation {
+  ul {
+    @apply mt-12;
+  }
+  li {
+    @apply block text-center;
+
+    a {
+      @apply block px-4 py-2 relative mb-8;
+      &.active {
+        @apply text-accent-500;
+      }
+      &::after {
+        content: '';
+        width: 1px;
+        @apply bg-accent-500 absolute h-8 -bottom-8 left-1/2 block;
+      }
+    }
+    &:last-child {
+      a::after {
+        display: none;
+      }
+    }
+  }
+}
