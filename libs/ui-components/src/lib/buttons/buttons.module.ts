@@ -1,8 +1,8 @@
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ButtonComponent } from './button/button.component';
 import { RouterModule } from '@angular/router';
+import { ButtonComponent } from './button/button.component';
 
 @NgModule({
   declarations: [ButtonComponent],

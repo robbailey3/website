@@ -28,7 +28,7 @@ export interface License {
   node_id: string;
 }
 
-export interface GitHubUsersRepositories {
+export interface GitHubUsersRepository {
   id: number;
   node_id: string;
   name: string;

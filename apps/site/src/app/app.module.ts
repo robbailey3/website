@@ -3,6 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { UiComponentsModule } from '@website/ui-components';
+import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 
 import { GlobalModule } from './global/global.module';
@@ -22,6 +23,7 @@ import { HomepageModule } from './homepage/homepage.module';
       enabled: environment.production
     }),
     AuthModule,
+    HttpClientModule,
     HomepageModule,
     UiComponentsModule
   ],

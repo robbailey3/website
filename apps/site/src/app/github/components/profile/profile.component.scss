@@ -1,0 +1,37 @@
+.profile {
+  @apply bg-dark-700 py-16;
+  .profile-wrapper {
+    @apply container mx-auto max-w-5xl;
+  }
+  .profile-header {
+    @apply text-light-50 flex flex-wrap max-w-2xl mx-auto items-center;
+    .avatar-image {
+      @apply w-full md:w-1/4 max-w-full rounded-full overflow-hidden mx-auto border-2 border-accent-500;
+      img {
+        @apply block w-full;
+      }
+    }
+    .profile-names {
+      @apply w-full md:w-3/4 p-4 text-center md:text-left;
+      h1 {
+        @apply text-4xl;
+      }
+      .handle {
+        @apply text-accent-500;
+      }
+    }
+  }
+
+  .profile-info {
+    @apply text-center max-w-2xl mx-auto my-4 text-light-50 text-sm;
+    .info-basics {
+      @apply flex flex-wrap my-8 items-center;
+    }
+    .bio {
+      @apply max-w-sm mx-auto my-4;
+    }
+    .basic-info-item {
+      @apply w-full md:w-1/4;
+    }
+  }
+}

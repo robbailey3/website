@@ -1,0 +1,11 @@
+:host {
+  @apply w-full md:w-1/3 p-4;
+}
+
+::ng-deep .card {
+  @apply p-4 block;
+}
+
+.repository-title {
+  @apply text-lg;
+}

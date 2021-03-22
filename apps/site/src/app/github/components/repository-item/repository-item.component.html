@@ -1,0 +1,15 @@
+<ng-container *ngIf="repository">
+  <div class="repository-item">
+    <rob-card>
+      <h2 class="repository-title">
+        <a
+          [href]="repository.html_url"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {{ repository.name }}
+        </a>
+      </h2>
+    </rob-card>
+  </div>
+</ng-container>
