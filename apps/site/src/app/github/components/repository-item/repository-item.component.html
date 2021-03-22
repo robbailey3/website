@@ -1,15 +1,13 @@
 <ng-container *ngIf="repository">
   <div class="repository-item">
-    <rob-card>
-      <h2 class="repository-title">
-        <a
-          [href]="repository.html_url"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          {{ repository.name }}
-        </a>
-      </h2>
-    </rob-card>
+    <h2 class="repository-title">
+      <a [href]="repository.html_url" target="_blank" rel="noopener noreferrer">
+        {{ repository.name }}
+      </a>
+    </h2>
+    <p class="repository-description">{{ repository.description }}</p>
+    <div class="repository-information">
+      <span class="repository-language">{{ repository.language }}</span>
+    </div>
   </div>
 </ng-container>

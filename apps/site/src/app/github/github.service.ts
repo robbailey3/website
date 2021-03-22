@@ -1,10 +1,18 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { GitHubRepositoryBranch } from './interfaces/github-repository-branches';
 import { GitHubRepositoryCommit } from './interfaces/github-repository-commits';
 import { GitHubUsersRepository } from './interfaces/github-users-repositories';
 import { GitHubUser } from './interfaces/github-user';
+
+type GetUsersRepositoriesParams = {
+  // eslint-disable-next-line camelcase
+  per_page?: number;
+  sort?: 'created' | 'updated' | 'pushed' | 'full_name';
+  direction?: 'asc' | 'desc';
+  page?: number;
+};
 
 @Injectable({
   providedIn: 'root'
@@ -15,10 +23,23 @@ export class GithubService {
   constructor(private readonly http: HttpClient) {}
 
   public getUsersRepositories(
-    username: string
+    username: string,
+    options: GetUsersRepositoriesParams = {
+      sort: 'pushed',
+      page: 1,
+      per_page: 25,
+      direction: 'desc'
+    }
   ): Observable<GitHubUsersRepository[]> {
+    const params = new HttpParams()
+      .set('per_page', String(options.per_page))
+      .set('sort', options.sort)
+      .set('direction', options.direction)
+      .set('page', String(options.page));
+
     return this.http.get<GitHubUsersRepository[]>(
-      `${this.API_BASE}/users/${username}/repos`
+      `${this.API_BASE}/users/${username}/repos`,
+      { params }
     );
   }
 
