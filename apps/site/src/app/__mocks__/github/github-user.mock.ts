@@ -1,0 +1,37 @@
+export default {
+  login: 'robbailey3',
+  id: 23728942,
+  node_id: 'MDQ6VXNlcjIzNzI4OTQy',
+  avatar_url: 'https://avatars.githubusercontent.com/u/23728942?v=4',
+  gravatar_id: '',
+  url: 'https://api.github.com/users/robbailey3',
+  html_url: 'https://github.com/robbailey3',
+  followers_url: 'https://api.github.com/users/robbailey3/followers',
+  following_url:
+    'https://api.github.com/users/robbailey3/following{/other_user}',
+  gists_url: 'https://api.github.com/users/robbailey3/gists{/gist_id}',
+  starred_url: 'https://api.github.com/users/robbailey3/starred{/owner}{/repo}',
+  subscriptions_url: 'https://api.github.com/users/robbailey3/subscriptions',
+  organizations_url: 'https://api.github.com/users/robbailey3/orgs',
+  repos_url: 'https://api.github.com/users/robbailey3/repos',
+  events_url: 'https://api.github.com/users/robbailey3/events{/privacy}',
+  received_events_url:
+    'https://api.github.com/users/robbailey3/received_events',
+  type: 'User',
+  site_admin: false,
+  name: 'Rob Bailey',
+  company: 'Netcall',
+  blog: 'https://robbailey3.co.uk',
+  location: 'Nottingham',
+  email: null,
+  hireable: true,
+  bio:
+    '🚀 A human who likes to code 💻\r\nLover of the latest tech. \r\n\r\nSoftware Engineer at Netcall.',
+  twitter_username: 'rob_bailey3',
+  public_repos: 25,
+  public_gists: 1,
+  followers: 1,
+  following: 14,
+  created_at: '2016-11-24T21:31:28Z',
+  updated_at: '2021-03-23T20:06:46Z'
+};

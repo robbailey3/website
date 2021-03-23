@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+import { faStar, faCodeBranch } from '@fortawesome/free-solid-svg-icons';
 import { GitHubUsersRepository } from '../../interfaces/github-users-repositories';
 
 @Component({
@@ -8,4 +9,9 @@ import { GitHubUsersRepository } from '../../interfaces/github-users-repositorie
 })
 export class RepositoryItemComponent {
   @Input() repository: GitHubUsersRepository;
+
+  public icons = {
+    faStar,
+    faCodeBranch
+  };
 }

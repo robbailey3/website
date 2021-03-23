@@ -1,5 +1,9 @@
 :host {
-  @apply w-full p-4 border-b border-dark-100 block border-opacity-25;
+  @apply w-full md:w-1/2 p-4 block border-opacity-25;
+}
+
+.repository-item {
+  @apply flex flex-col justify-between h-full shadow-sm rounded p-4;
 }
 
 .repository-title {
@@ -7,13 +11,19 @@
 }
 
 .repository-description {
-  @apply text-sm my-2;
+  @apply text-sm my-4;
 }
 
 .repository-information {
-  .repository-language {
-    @apply text-xs text-dark-200;
+  @apply flex flex-wrap text-xs text-dark-200;
+
+  .info-right {
+    @apply md:ml-auto;
   }
-  .repository {
+  .repository-info-item {
+    @apply mr-4;
+    fa-icon {
+      @apply mr-1;
+    }
   }
 }
