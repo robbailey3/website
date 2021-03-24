@@ -3,7 +3,7 @@ export interface Commit {
   url: string;
 }
 
-export interface GitHubRepositoryBranches {
+export interface GitHubRepositoryBranch {
   name: string;
   commit: Commit;
   protected: boolean;

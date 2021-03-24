@@ -1,0 +1,30 @@
+<ng-container *ngIf="repository">
+  <div class="repository-item">
+    <h2 class="repository-title">
+      <a [href]="repository.html_url" target="_blank" rel="noopener noreferrer">
+        {{ repository.name }}
+      </a>
+    </h2>
+    <p class="repository-description">{{ repository.description }}</p>
+    <div class="repository-information">
+      <div class="info-left">
+        <span class="repository-language repository-info-item">{{
+          repository.language
+        }}</span>
+      </div>
+      <div class="info-right">
+        <span class="repository-forks repository-info-item">
+          <fa-icon [icon]="icons.faCodeBranch"></fa-icon
+          >{{ repository.forks_count }}</span
+        >
+        <span class="repository-stars repository-info-item">
+          <fa-icon [icon]="icons.faStar"></fa-icon
+          >{{ repository.stargazers_count }}</span
+        >
+        <span class="repository-size repository-info-item"
+          >{{ repository.size.toLocaleString() }}KB</span
+        >
+      </div>
+    </div>
+  </div>
+</ng-container>

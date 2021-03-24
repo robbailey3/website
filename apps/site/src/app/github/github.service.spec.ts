@@ -24,7 +24,10 @@ describe('GithubService', () => {
 
       service.getUsersRepositories(username).subscribe();
 
-      expectOne(`${API_URL}/users/${username}/repos`, HttpMethod.GET);
+      expectOne(
+        `${API_URL}/users/${username}/repos?per_page=25&sort=pushed&direction=desc&page=1`,
+        HttpMethod.GET
+      );
     });
   });
 

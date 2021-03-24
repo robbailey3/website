@@ -81,7 +81,7 @@ export interface Parent {
   html_url: string;
 }
 
-export interface GitHubRepositoryCommits {
+export interface GitHubRepositoryCommit {
   sha: string;
   node_id: string;
   commit: Commit;

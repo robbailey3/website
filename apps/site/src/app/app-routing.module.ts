@@ -10,6 +10,11 @@ const routes: Routes = [
       import('./about/about.module').then((res) => res.AboutModule)
   },
   {
+    path: 'github',
+    loadChildren: () =>
+      import('./github/github.module').then((res) => res.GithubModule)
+  },
+  {
     path: 'cv',
     loadChildren: () => import('./cv/cv.module').then((res) => res.CvModule)
   },
