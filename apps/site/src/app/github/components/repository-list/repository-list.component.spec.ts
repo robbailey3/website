@@ -1,6 +1,6 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { Spectator, createComponentFactory } from '@ngneat/spectator';
-
+import MockUserRepos from '../../../__mocks__/github/github-user-repos.mock';
 import { RepositoryListComponent } from './repository-list.component';
 
 describe('RepositoryListComponent', () => {
@@ -11,8 +11,14 @@ describe('RepositoryListComponent', () => {
   });
 
   it('should create', () => {
-    spectator = createComponent();
+    spectator = createComponent({ props: { repositories: MockUserRepos } });
 
     expect(spectator.component).toBeTruthy();
+  });
+
+  it('should render an instance of repositoryItemComponent for each repository', () => {
+    expect(spectator.queryAll('rob-repository-item').length).toEqual(
+      MockUserRepos.length
+    );
   });
 });
