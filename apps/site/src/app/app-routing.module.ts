@@ -3,7 +3,16 @@ import { RouterModule, Routes } from '@angular/router';
 import { HomepageRootComponent } from './homepage/homepage-root/homepage-root.component';
 
 const routes: Routes = [
-  { path: '', pathMatch: 'full', component: HomepageRootComponent },
+  {
+    path: '',
+    pathMatch: 'full',
+    component: HomepageRootComponent,
+    data: {
+      title: 'Home - Rob Bailey',
+      description:
+        'The portfolio site for the Software Engineer known as Rob Bailey'
+    }
+  },
   {
     path: 'about',
     loadChildren: () =>

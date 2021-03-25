@@ -9,7 +9,16 @@ const routes: Routes = [
     pathMatch: 'full',
     component: GithubRootComponent,
     children: [
-      { path: '', pathMatch: 'full', component: GithubDashboardComponent }
+      {
+        path: '',
+        pathMatch: 'full',
+        component: GithubDashboardComponent,
+        data: {
+          title: 'GitHub profile - Rob Bailey',
+          description:
+            'A dashboard displaying data retrieved from GitHub.com about the user Rob Bailey'
+        }
+      }
     ]
   }
 ];
