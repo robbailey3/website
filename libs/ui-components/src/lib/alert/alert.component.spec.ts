@@ -24,18 +24,18 @@ describe('AlertComponent', () => {
   });
 
   // TODO: Refactor to use test.each
-  it('should have to correct class based on the variant', () => {
-    ['info', 'warning', 'error', 'success'].forEach(
-      (variant: 'info' | 'warning' | 'error' | 'success') => {
-        component.variant = variant;
-        spectator.fixture.detectChanges();
+  test.each(['info', 'warning', 'error', 'success'])(
+    'should apply the appropriate class when the variant is %s',
+    (variant: 'info' | 'warning' | 'error' | 'success') => {
+      component.variant = variant;
+      spectator.fixture.detectChanges();
 
-        const el = spectator.query('.alert');
+      const el = spectator.query('.alert');
 
-        expect(el.classList).toContain(`alert-${variant}`);
-      }
-    );
-  });
+      expect(el.classList).toContain(`alert-${variant}`);
+    }
+  );
+
   it('should display the dismiss button if the component is dismissable', () => {
     component.dismissable = false;
     spectator.fixture.detectChanges();
