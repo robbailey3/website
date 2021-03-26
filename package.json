@@ -64,7 +64,7 @@
     "@ng-toolkit/universal": "^8.1.0",
     "@ngneat/tailwind": "^5.2.5",
     "@nguniversal/express-engine": "^11.2.1",
-    "@nrwl/angular": "^11.2.11",
+    "@nrwl/angular": "^11.4.0",
     "@octokit/rest": "^18.3.5",
     "@tinymce/tinymce-angular": "^4.2.1",
     "bcrypt": "^5.0.1",
