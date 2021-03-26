@@ -1,11 +1,5 @@
-import { Component, HostListener, Inject } from '@angular/core';
-import {
-  ActivatedRoute,
-  NavigationEnd,
-  Router,
-  RouterEvent
-} from '@angular/router';
-import { WINDOW } from '@ng-toolkit/universal';
+import { Component, HostListener, OnInit } from '@angular/core';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { filter, map, mergeMap } from 'rxjs/operators';
 import { PageMetaService } from './shared/services/page-meta/page-meta.service';
 import { RouteMetaData } from './shared/types/RouteMetaData';
@@ -15,7 +9,7 @@ import { RouteMetaData } from './shared/types/RouteMetaData';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   private lastPageTitle: string;
 
   private pageBlurTitle = 'Come back! 😭 Rob misses you';
@@ -24,7 +18,9 @@ export class AppComponent {
     private readonly router: Router,
     private readonly activatedRoute: ActivatedRoute,
     private readonly pageMeta: PageMetaService
-  ) {
+  ) {}
+
+  public ngOnInit() {
     this.setupRouteListener();
   }
 
