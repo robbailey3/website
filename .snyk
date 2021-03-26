@@ -6,16 +6,31 @@ ignore:
     - '@nrwl/angular > @nrwl/jest > jest-resolve > read-pkg-up > read-pkg > normalize-package-data > hosted-git-info':
         reason: None given
         expires: '2021-04-24T08:39:46.767Z'
+      '@nrwl/angular > @nrwl/cypress > @nrwl/workspace > npm-run-all > read-pkg > normalize-package-data > hosted-git-info':
+        reason: ''
+        expires: '2021-04-25T16:33:36.978Z'
+    - '@nrwl/angular > @nrwl/cypress > @nrwl/workspace > @nrwl/jest > jest-resolve > read-pkg-up > read-pkg > normalize-package-data > hosted-git-info':
+        reason: None given
+        expires: '2021-04-25T16:33:36.978Z'
   SNYK-JS-EJS-1049328:
     - '@nrwl/angular > @nrwl/devkit > ejs':
         reason: None given
         expires: '2021-04-24T08:56:18.470Z'
+      '@nrwl/angular > @nrwl/cypress > @nrwl/workspace > @nrwl/devkit > ejs':
+        reason: None given
+        expires: '2021-04-25T16:33:36.977Z'
     - '@nrwl/angular > @nrwl/linter > @nrwl/devkit > ejs':
         reason: None given
         expires: '2021-04-24T08:56:18.470Z'
+      '@nrwl/angular > @nrwl/cypress > @nrwl/workspace > @nrwl/linter > @nrwl/devkit > ejs':
+        reason: None given
+        expires: '2021-04-25T16:33:36.977Z'
     - '@nrwl/angular > @nrwl/cypress > @nrwl/devkit > ejs':
         reason: None given
         expires: '2021-04-24T08:56:18.470Z'
+      '@nrwl/angular > @nrwl/cypress > @nrwl/workspace > @nrwl/jest > @nrwl/devkit > ejs':
+        reason: None given
+        expires: '2021-04-25T16:33:36.977Z'
     - '@nrwl/angular > @nrwl/jest > @nrwl/devkit > ejs':
         reason: None given
         expires: '2021-04-24T08:56:18.470Z'
@@ -30,21 +45,39 @@ ignore:
     - '@nrwl/angular > jasmine-marbles > lodash':
         reason: None given
         expires: '2021-04-24T08:56:18.470Z'
+      '@nrwl/angular > @nrwl/cypress > @nrwl/workspace > lodash':
+        reason: None given
+        expires: '2021-04-25T16:33:36.977Z'
     - '@nrwl/angular > @nrwl/cypress > @cypress/webpack-preprocessor > @babel/core > lodash':
         reason: None given
         expires: '2021-04-24T08:56:18.470Z'
+      '@nrwl/angular > @nrwl/cypress > @nrwl/workspace > inquirer > lodash':
+        reason: None given
+        expires: '2021-04-25T16:33:36.977Z'
     - '@nrwl/angular > @nrwl/devkit > @nrwl/tao > inquirer > lodash':
         reason: None given
         expires: '2021-04-24T08:56:18.470Z'
+      '@nrwl/angular > @nrwl/cypress > @nrwl/workspace > @nrwl/devkit > @nrwl/tao > inquirer > lodash':
+        reason: None given
+        expires: '2021-04-25T16:33:36.977Z'
     - '@nrwl/angular > @nrwl/cypress > @cypress/webpack-preprocessor > @babel/core > @babel/types > lodash':
         reason: None given
         expires: '2021-04-24T08:56:18.470Z'
+      '@nrwl/angular > @nrwl/cypress > @nrwl/workspace > @nrwl/cli > @nrwl/tao > inquirer > lodash':
+        reason: None given
+        expires: '2021-04-25T16:33:36.977Z'
     - '@nrwl/angular > @nrwl/cypress > @cypress/webpack-preprocessor > @babel/preset-env > @babel/types > lodash':
         reason: None given
         expires: '2021-04-24T08:56:18.470Z'
+      '@nrwl/angular > @nrwl/cypress > @nrwl/workspace > @nrwl/linter > @nrwl/devkit > @nrwl/tao > inquirer > lodash':
+        reason: None given
+        expires: '2021-04-25T16:33:36.978Z'
     - '@nrwl/angular > @nrwl/cypress > @cypress/webpack-preprocessor > @babel/core > @babel/traverse > lodash':
         reason: None given
         expires: '2021-04-24T08:56:18.470Z'
+      '@nrwl/angular > @nrwl/cypress > @nrwl/workspace > @nrwl/jest > @nrwl/devkit > @nrwl/tao > inquirer > lodash':
+        reason: None given
+        expires: '2021-04-25T16:33:36.978Z'
     - '@nrwl/angular > @nrwl/cypress > @cypress/webpack-preprocessor > @babel/core > @babel/helper-module-transforms > lodash':
         reason: None given
         expires: '2021-04-24T08:56:18.470Z'
@@ -790,21 +823,39 @@ ignore:
     - '@nrwl/angular > jasmine-marbles > lodash':
         reason: None given
         expires: '2021-04-24T08:56:18.470Z'
+      '@nrwl/angular > @nrwl/cypress > @nrwl/workspace > lodash':
+        reason: None given
+        expires: '2021-04-25T16:33:36.977Z'
     - '@nrwl/angular > @nrwl/cypress > @cypress/webpack-preprocessor > @babel/core > lodash':
         reason: None given
         expires: '2021-04-24T08:56:18.470Z'
+      '@nrwl/angular > @nrwl/cypress > @nrwl/workspace > inquirer > lodash':
+        reason: None given
+        expires: '2021-04-25T16:33:36.977Z'
     - '@nrwl/angular > @nrwl/devkit > @nrwl/tao > inquirer > lodash':
         reason: None given
         expires: '2021-04-24T08:56:18.470Z'
+      '@nrwl/angular > @nrwl/cypress > @nrwl/workspace > @nrwl/devkit > @nrwl/tao > inquirer > lodash':
+        reason: None given
+        expires: '2021-04-25T16:33:36.977Z'
     - '@nrwl/angular > @nrwl/cypress > @cypress/webpack-preprocessor > @babel/core > @babel/types > lodash':
         reason: None given
         expires: '2021-04-24T08:56:18.470Z'
+      '@nrwl/angular > @nrwl/cypress > @nrwl/workspace > @nrwl/cli > @nrwl/tao > inquirer > lodash':
+        reason: None given
+        expires: '2021-04-25T16:33:36.977Z'
     - '@nrwl/angular > @nrwl/cypress > @cypress/webpack-preprocessor > @babel/preset-env > @babel/types > lodash':
         reason: None given
         expires: '2021-04-24T08:56:18.470Z'
+      '@nrwl/angular > @nrwl/cypress > @nrwl/workspace > @nrwl/linter > @nrwl/devkit > @nrwl/tao > inquirer > lodash':
+        reason: None given
+        expires: '2021-04-25T16:33:36.978Z'
     - '@nrwl/angular > @nrwl/cypress > @cypress/webpack-preprocessor > @babel/core > @babel/traverse > lodash':
         reason: None given
         expires: '2021-04-24T08:56:18.470Z'
+      '@nrwl/angular > @nrwl/cypress > @nrwl/workspace > @nrwl/jest > @nrwl/devkit > @nrwl/tao > inquirer > lodash':
+        reason: None given
+        expires: '2021-04-25T16:33:36.978Z'
     - '@nrwl/angular > @nrwl/cypress > @cypress/webpack-preprocessor > @babel/core > @babel/helper-module-transforms > lodash':
         reason: None given
         expires: '2021-04-24T08:56:18.470Z'
