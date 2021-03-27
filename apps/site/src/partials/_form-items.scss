@@ -3,10 +3,10 @@
     @apply my-1 block text-sm;
   }
   .form-control {
-    @apply block py-1 px-3 text-light-50;
-    background: rgba(255, 255, 255, 0.1);
+    @apply block py-1 px-3 text-dark-900;
+    background: #f5f5f5;
     option {
-      @apply text-light-50 bg-dark-800 border-none;
+      @apply text-dark-900 border-none;
     }
   }
 
