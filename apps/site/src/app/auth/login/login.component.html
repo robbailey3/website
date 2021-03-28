@@ -1,1 +1,7 @@
-<p>login works!</p>
+<rob-card class="login-container">
+  <h1>Login</h1>
+  <rob-login-form
+    (formSubmit)="handleFormSubmit($event)"
+    [displayErrorMessage]="displayErrorMessage"
+  ></rob-login-form>
+</rob-card>

@@ -1,1 +1,34 @@
-<p>login-form works!</p>
+<ng-container *ngIf="displayErrorMessage">
+  <div class="error-wrapper">
+    <rob-alert variant="error"><span>Login Failed</span></rob-alert>
+  </div>
+</ng-container>
+<form #loginForm="ngForm">
+  <rob-text-input
+    ngModel
+    label="Email"
+    name="email"
+    type="email"
+    id="login-email"
+    placeholder="user@email.com"
+    [required]="true"
+    [email]="true"
+  ></rob-text-input>
+  <rob-text-input
+    ngModel
+    label="Password"
+    name="password"
+    type="password"
+    id="login-password"
+    [required]="true"
+  ></rob-text-input>
+  <rob-button
+    type="submit"
+    variant="primary"
+    [disabled]="!loginForm.valid"
+    (buttonClick)="handleFormSubmit(loginForm.value)"
+    >Submit</rob-button
+  >
+  {{ loginForm.valid }}
+  {{ loginForm.value | json }}
+</form>

@@ -16,6 +16,7 @@
     }"
     [disabled]="disabled"
     class="btn"
+    type="type"
     (click)="handleButtonClick($event)"
   >
     <span class="icon" *ngIf="icon" [ngClass]="{ 'mr-2': label !== '' }"

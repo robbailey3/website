@@ -8,7 +8,7 @@
     'alert-success': variant === 'success'
   }"
 >
-  <span class="alert-content">{{ content }}</span>
+  <span class="alert-content"><ng-content></ng-content></span>
   <div class="alert-dismiss" *ngIf="dismissable">
     <rob-button
       variant="ghost"
