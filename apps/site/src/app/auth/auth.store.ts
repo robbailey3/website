@@ -27,6 +27,6 @@ export class AuthStore extends Store<Auth> {
 
   logout() {
     deleteTokenFromLocalStorage();
-    this.update(createAuth({}));
+    this.update({ token: null });
   }
 }

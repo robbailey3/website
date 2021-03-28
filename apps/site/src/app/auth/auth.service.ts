@@ -42,12 +42,6 @@ export class AuthService {
     }
   }
 
-  public retrieveTokenFromLocalStorage() {
-    if ('localStorage' in this.window) {
-      this.window.localStorage.getItem('auth_token');
-    }
-  }
-
   public tokenHasExpired(token: string): boolean {
     try {
       // eslint-disable-next-line dot-notation
@@ -57,8 +51,11 @@ export class AuthService {
     }
   }
 
-  public isLoggedIn(): boolean {
-    return true;
+  public isLoggedIn(token: string): boolean {
+    if (!token) {
+      return false;
+    }
+    return !this.tokenHasExpired(token);
   }
 
   public logout() {

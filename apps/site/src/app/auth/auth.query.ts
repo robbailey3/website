@@ -8,10 +8,7 @@ import { AuthStore } from './auth.store';
 @Injectable({ providedIn: 'root' })
 export class AuthQuery extends Query<Auth> {
   isLoggedIn$ = this.select((state) => state.token).pipe(
-    map((token) => {
-      console.log({ token });
-      return !this.authService.tokenHasExpired(token);
-    })
+    map((token) => this.authService.isLoggedIn(token))
   );
 
   constructor(
