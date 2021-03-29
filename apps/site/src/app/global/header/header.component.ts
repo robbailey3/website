@@ -17,7 +17,6 @@ export class HeaderComponent {
   private subscribeToLoggedInState() {
     this.authQuery.isLoggedIn$.subscribe({
       next: (loggedInState: boolean) => {
-        console.log(loggedInState);
         this.isLoggedIn.next(loggedInState);
       }
     });

@@ -8,7 +8,9 @@ import { AuthStore } from './auth.store';
 @Injectable({ providedIn: 'root' })
 export class AuthQuery extends Query<Auth> {
   isLoggedIn$ = this.select((state) => state.token).pipe(
-    map((token) => this.authService.isLoggedIn(token))
+    map((token) => {
+      return this.authService.isLoggedIn(token);
+    })
   );
 
   constructor(

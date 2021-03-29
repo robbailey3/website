@@ -1,4 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Notification, NotificationsService } from '@website/ui-components';
 import { Subscription } from 'rxjs';
 import { GithubService } from '../github.service';
 import { GitHubUser } from '../interfaces/github-user';
@@ -20,7 +21,10 @@ export class GithubDashboardComponent implements OnInit, OnDestroy {
 
   public user: GitHubUser;
 
-  constructor(private readonly githubService: GithubService) {}
+  constructor(
+    private readonly githubService: GithubService,
+    private readonly notificationsService: NotificationsService
+  ) {}
 
   ngOnInit(): void {
     this.getRepositories();
@@ -43,7 +47,7 @@ export class GithubDashboardComponent implements OnInit, OnDestroy {
         next: (response) => {
           this.repositories = response;
         },
-        error: this.handleServiceError
+        error: (err) => this.handleServiceError(err)
       });
   }
 
@@ -54,11 +58,14 @@ export class GithubDashboardComponent implements OnInit, OnDestroy {
         next: (response) => {
           this.user = response;
         },
-        error: this.handleServiceError
+        error: (err) => this.handleServiceError(err)
       });
   }
 
   private handleServiceError(err: Error) {
-    console.error(err);
+    console.log(this);
+    this.notificationsService.add(
+      new Notification(`Something went wrong: ${err.message}`, 'error')
+    );
   }
 }

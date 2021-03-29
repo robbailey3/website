@@ -58,7 +58,6 @@ export class NavigationComponent implements OnInit {
   }
 
   public logout() {
-    console.log(this.authService);
     this.authService.logout();
   }
 }

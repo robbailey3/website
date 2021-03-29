@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { Notification, NotificationsService } from '@website/ui-components';
 import { AuthService } from '../auth.service';
 import { LoginBody } from '../types/login-body';
@@ -11,18 +12,24 @@ import { LoginBody } from '../types/login-body';
 export class LoginComponent {
   public displayErrorMessage = false;
 
+  public isLoading = false;
+
   constructor(
     private readonly authService: AuthService,
-    private notificationsService: NotificationsService
+    private readonly notificationsService: NotificationsService,
+    private readonly router: Router
   ) {}
 
   public handleFormSubmit(body: LoginBody) {
+    this.isLoading = true;
     this.authService.login(body.email, body.password).subscribe({
-      next: (result) => {
-        console.log(result);
+      next: () => {
+        this.isLoading = false;
+        this.router.navigateByUrl('/admin');
       },
       error: (err) => {
         this.displayErrorMessage = true;
+        this.isLoading = false;
         this.notificationsService.add(
           new Notification('Login failed', 'error', true, 5000)
         );

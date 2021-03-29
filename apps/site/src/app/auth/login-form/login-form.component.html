@@ -27,6 +27,7 @@
     variant="primary"
     [disabled]="!loginForm.valid"
     (buttonClick)="handleFormSubmit(loginForm.value)"
+    [disabled]="isLoading"
     >Submit</rob-button
   >
   {{ loginForm.valid }}

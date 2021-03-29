@@ -9,6 +9,8 @@ import { LoginBody } from '../types/login-body';
 export class LoginFormComponent {
   @Input() displayErrorMessage = false;
 
+  @Input() isLoading = false;
+
   @Output() formSubmit: EventEmitter<LoginBody> = new EventEmitter();
 
   public handleFormSubmit(formValue: LoginBody) {

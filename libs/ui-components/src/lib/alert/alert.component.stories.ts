@@ -22,7 +22,7 @@ Alert.args = {
   content: 'Alert Content',
   variant: 'info',
   dismissable: true
-} as AlertComponent;
+} as Partial<AlertComponent>;
 
 Alert.argTypes = {
   variant: {
