@@ -6,6 +6,7 @@ import { HomepageBannerComponent } from './homepage-banner/homepage-banner.compo
 import { HomepageIntroductionComponent } from './homepage-introduction/homepage-introduction.component';
 import { HomepageCarouselComponent } from './homepage-carousel/homepage-carousel.component';
 import { HomepageTechnologiesComponent } from './homepage-technologies/homepage-technologies.component';
+import { TechnologyItemComponent } from './homepage-technologies/technology-item/technology-item.component';
 
 @NgModule({
   declarations: [
@@ -13,7 +14,8 @@ import { HomepageTechnologiesComponent } from './homepage-technologies/homepage-
     HomepageBannerComponent,
     HomepageIntroductionComponent,
     HomepageCarouselComponent,
-    HomepageTechnologiesComponent
+    HomepageTechnologiesComponent,
+    TechnologyItemComponent
   ],
   imports: [CommonModule, UiComponentsModule]
 })

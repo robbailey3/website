@@ -1,57 +1,11 @@
 import { Component } from '@angular/core';
-
-interface TechnologyItem {
-  name: string;
-  logoSrc: string;
-  description: string;
-}
-
+import { TechnologyItem } from './technology-item/technology-item.interface';
+import { technologies } from './technologies';
 @Component({
   selector: 'rob-homepage-technologies',
   templateUrl: './homepage-technologies.component.html',
   styleUrls: ['./homepage-technologies.component.scss']
 })
 export class HomepageTechnologiesComponent {
-  public technologies: TechnologyItem[] = [
-    {
-      name: 'Angular',
-      logoSrc: '',
-      description: ''
-    },
-    {
-      name: 'Angular',
-      logoSrc: '',
-      description: ''
-    },
-    {
-      name: 'Angular',
-      logoSrc: '',
-      description: ''
-    },
-    {
-      name: 'Angular',
-      logoSrc: '',
-      description: ''
-    },
-    {
-      name: 'Angular',
-      logoSrc: '',
-      description: ''
-    },
-    {
-      name: 'Angular',
-      logoSrc: '',
-      description: ''
-    },
-    {
-      name: 'Angular',
-      logoSrc: '',
-      description: ''
-    },
-    {
-      name: 'Angular',
-      logoSrc: '',
-      description: ''
-    }
-  ];
+  public technologies: TechnologyItem[] = technologies;
 }
