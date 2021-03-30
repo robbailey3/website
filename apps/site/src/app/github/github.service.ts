@@ -18,7 +18,7 @@ type GetUsersRepositoriesParams = {
   providedIn: 'root'
 })
 export class GithubService {
-  private readonly API_BASE = 'https://apidd.github.com';
+  private readonly API_BASE = 'https://api.github.com';
 
   constructor(private readonly http: HttpClient) {}
 
