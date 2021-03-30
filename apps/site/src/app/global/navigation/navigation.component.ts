@@ -1,9 +1,10 @@
-import { Component, HostListener, Inject, OnInit } from '@angular/core';
+import { Component, HostListener, Inject, Input, OnInit } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
 import { WINDOW } from '@ng-toolkit/universal';
 import { Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import { AuthService } from '../../auth/auth.service';
 
 @Component({
   selector: 'rob-navigation',
@@ -11,6 +12,8 @@ import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
   styleUrls: ['./navigation.component.scss']
 })
 export class NavigationComponent implements OnInit {
+  @Input() isLoggedIn = false;
+
   public isMobile = false;
 
   public $windowSize: Subject<number> = new Subject();
@@ -19,7 +22,11 @@ export class NavigationComponent implements OnInit {
 
   public faBars = faBars;
 
-  constructor(@Inject(WINDOW) public window: Window, public router: Router) {}
+  constructor(
+    @Inject(WINDOW) public window: Window,
+    public router: Router,
+    private readonly authService: AuthService
+  ) {}
 
   public ngOnInit() {
     this.subscribeToWindowSize();
@@ -48,5 +55,9 @@ export class NavigationComponent implements OnInit {
 
   public handleNavButtonClick() {
     this.state = this.state === 'open' ? 'closed' : 'open';
+  }
+
+  public logout() {
+    this.authService.logout();
   }
 }

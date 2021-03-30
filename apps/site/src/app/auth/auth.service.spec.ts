@@ -1,6 +1,7 @@
 import { createServiceFactory, SpectatorService } from '@ngneat/spectator';
 import { HttpClientModule } from '@angular/common/http';
 
+import { NgtUniversalModule } from '@ng-toolkit/universal';
 import { AuthService } from './auth.service';
 
 describe('AuthService', () => {
@@ -9,7 +10,7 @@ describe('AuthService', () => {
 
   const serviceFactory = createServiceFactory({
     service: AuthService,
-    imports: [HttpClientModule]
+    imports: [HttpClientModule, NgtUniversalModule]
   });
 
   beforeEach(() => {

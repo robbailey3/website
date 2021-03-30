@@ -2,9 +2,12 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { NgtUniversalModule } from '@ng-toolkit/universal';
 import { UiComponentsModule } from '@website/ui-components';
+import { AuthService } from '../../auth/auth.service';
 import { NavigationComponent } from '../navigation/navigation.component';
 
 import { HeaderComponent } from './header.component';
+
+jest.mock('../../auth/auth.service');
 
 describe('HeaderComponent', () => {
   let component: HeaderComponent;
@@ -13,7 +16,8 @@ describe('HeaderComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [HeaderComponent, NavigationComponent],
-      imports: [RouterTestingModule, UiComponentsModule, NgtUniversalModule]
+      imports: [RouterTestingModule, UiComponentsModule, NgtUniversalModule],
+      providers: [AuthService]
     }).compileComponents();
   });
 
