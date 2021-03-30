@@ -6,6 +6,7 @@ import { UsersModule } from './users/users.module';
 import { PhotosModule } from './photos/photos.module';
 import { UtilsModule } from './utils/utils.module';
 import { PhotoAlbumsModule } from './photo-albums/photo-albums.module';
+import { DevDiaryModule } from './dev-diary/dev-diary.module';
 
 @Module({
   imports: [
@@ -22,7 +23,8 @@ import { PhotoAlbumsModule } from './photo-albums/photo-albums.module';
     UsersModule,
     PhotosModule,
     UtilsModule,
-    PhotoAlbumsModule
+    PhotoAlbumsModule,
+    DevDiaryModule
   ]
 })
 export class AppModule {}

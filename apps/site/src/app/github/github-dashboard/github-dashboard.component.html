@@ -1,0 +1,9 @@
+<div *ngIf="user && repositories; else loading">
+  <rob-profile [user]="user"></rob-profile>
+  <rob-repository-list [repositories]="repositories"></rob-repository-list>
+</div>
+<ng-template #loading>
+  <div class="py-32 relative">
+    <rob-loader></rob-loader>
+  </div>
+</ng-template>

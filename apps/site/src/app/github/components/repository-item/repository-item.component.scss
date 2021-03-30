@@ -1,0 +1,29 @@
+:host {
+  @apply w-full md:w-1/2 p-4 block border-opacity-25;
+}
+
+.repository-item {
+  @apply flex flex-col justify-between h-full shadow-sm rounded p-4;
+}
+
+.repository-title {
+  @apply text-xl overflow-ellipsis overflow-hidden;
+}
+
+.repository-description {
+  @apply text-sm my-4;
+}
+
+.repository-information {
+  @apply flex flex-wrap text-xs text-dark-200;
+
+  .info-right {
+    @apply md:ml-auto;
+  }
+  .repository-info-item {
+    @apply mr-4;
+    fa-icon {
+      @apply mr-1;
+    }
+  }
+}

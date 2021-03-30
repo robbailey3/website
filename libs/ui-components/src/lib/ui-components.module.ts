@@ -16,23 +16,21 @@ import { FocusTrapDirective } from './focus-trap/focus-trap.directive';
 import { AlertComponent } from './alert/alert.component';
 import { LazyImageComponent } from './lazy-image/lazy-image.component';
 import { IntersectionObserverDirective } from './intersection-observer/intersection-observer.directive';
-import { CarouselComponent } from './carousel/carousel.component';
-import { CarouselItemComponent } from './carousel/carousel-item/carousel-item.component';
 import { CarouselModule } from './carousel/carousel.module';
+import { LoaderModule } from './loader/loader.module';
 
 @NgModule({
   imports: [
     CommonModule,
-    BrowserAnimationsModule,
     ButtonsModule,
     FontAwesomeModule,
     FormItemsModule,
-    CarouselModule
+    CarouselModule,
+    LoaderModule
   ],
   exports: [
     AccordionModule,
     ButtonsModule,
-    BrowserAnimationsModule,
     FontAwesomeModule,
     FormItemsModule,
     NotificationsModule,
@@ -45,7 +43,8 @@ import { CarouselModule } from './carousel/carousel.module';
     AlertComponent,
     LazyImageComponent,
     IntersectionObserverDirective,
-    CarouselModule
+    CarouselModule,
+    LoaderModule
   ],
   providers: [NotificationsService],
   declarations: [

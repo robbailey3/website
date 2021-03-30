@@ -1,0 +1,8 @@
+<ng-container *ngIf="repositories">
+  <div class="repositories-list">
+    <h2>Repositories</h2>
+    <ng-container *ngFor="let repository of repositories">
+      <rob-repository-item [repository]="repository"></rob-repository-item>
+    </ng-container>
+  </div>
+</ng-container>

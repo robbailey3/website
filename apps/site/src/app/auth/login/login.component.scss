@@ -1,0 +1,7 @@
+.login-container {
+  @apply w-full max-w-xl mx-auto my-8 block;
+
+  ::ng-deep .card {
+    @apply p-8;
+  }
+}

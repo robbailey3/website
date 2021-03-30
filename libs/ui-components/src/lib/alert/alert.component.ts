@@ -10,8 +10,6 @@ import { faTimes } from '@fortawesome/free-solid-svg-icons';
 export class AlertComponent {
   @Input() public variant: 'success' | 'error' | 'warning' | 'info' = 'info';
 
-  @Input() public content: string;
-
   @Input() public dismissable = false;
 
   public faTimes = faTimes;

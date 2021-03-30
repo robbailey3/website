@@ -6,7 +6,11 @@ const routes: Routes = [
   {
     path: '',
     pathMatch: 'full',
-    component: AboutRootComponent
+    component: AboutRootComponent,
+    data: {
+      title: 'About - Rob Bailey',
+      description: 'About Rob Bailey'
+    }
   }
 ];
 

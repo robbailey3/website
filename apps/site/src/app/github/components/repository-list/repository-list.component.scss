@@ -1,0 +1,6 @@
+.repositories-list {
+  @apply max-w-3xl container mx-auto flex flex-wrap py-8;
+  h2 {
+    @apply w-full text-center;
+  }
+}
