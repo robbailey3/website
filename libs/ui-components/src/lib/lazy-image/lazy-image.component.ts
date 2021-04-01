@@ -32,7 +32,7 @@ export class LazyImageComponent implements OnInit {
   }
 
   private loadFullsizeImage() {
-    const img = new Image();
+    const img = new HTMLImageElement();
     img.src = this.src;
     img.onload = () => this.handleImageLoad();
   }

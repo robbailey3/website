@@ -27,7 +27,8 @@ import { HomepageModule } from './homepage/homepage.module';
     HttpClientModule,
     HomepageModule,
     UiComponentsModule,
-    environment.production ? [] : AkitaNgDevtools.forRoot()
+    environment.production ? [] : AkitaNgDevtools.forRoot(),
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
   ],
   providers: [],
   bootstrap: [AppComponent]
