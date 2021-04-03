@@ -1,22 +1,15 @@
 import { Injectable } from '@angular/core';
 import { Store, StoreConfig } from '@datorama/akita';
+import { LocalStorageService } from '../shared/services/local-storage/local-storage.service';
 import { Auth, createAuth } from './auth.model';
-
-const retrieveTokenFromLocalStorage = () => {
-  return window.localStorage.getItem('auth_token');
-};
-
-const deleteTokenFromLocalStorage = () => {
-  return window.localStorage.removeItem('auth_token');
-};
 
 @Injectable({ providedIn: 'root' })
 @StoreConfig({ name: 'auth' })
 export class AuthStore extends Store<Auth> {
-  constructor() {
+  constructor(private readonly localStorage: LocalStorageService) {
     super(
       createAuth({
-        token: retrieveTokenFromLocalStorage()
+        token: localStorage.getItem('auth_token')
       })
     );
   }
@@ -26,7 +19,7 @@ export class AuthStore extends Store<Auth> {
   }
 
   logout() {
-    deleteTokenFromLocalStorage();
+    this.localStorage.deleteItem('auth_token');
     this.update({ token: null });
   }
 }

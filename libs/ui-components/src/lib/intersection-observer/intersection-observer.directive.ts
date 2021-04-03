@@ -19,15 +19,17 @@ export class IntersectionObserverDirective {
   }
 
   private setUpObserver() {
-    if ('IntersectionObserver' in window) {
-      const observer = new window.IntersectionObserver((entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            this.isInViewport.emit(true);
-            console.log(this.isInViewport);
-          }
-        });
-      });
+    if ('IntersectionObserver' in this.window) {
+      const observer = new (this.window as any).IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              this.isInViewport.emit(true);
+              console.log(this.isInViewport);
+            }
+          });
+        }
+      );
       observer.observe(this.el.nativeElement);
     }
   }

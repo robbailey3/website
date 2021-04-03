@@ -1,8 +1,12 @@
+import { isPlatformBrowser } from '@angular/common';
 import {
   AfterContentInit,
   Component,
   ContentChildren,
+  Inject,
   Input,
+  PlatformRef,
+  PLATFORM_ID,
   QueryList
 } from '@angular/core';
 import {
@@ -47,6 +51,8 @@ export class CarouselComponent implements AfterContentInit {
 
   public faPlay = faPlay;
 
+  constructor(@Inject(PLATFORM_ID) private readonly platformId: Object) {}
+
   public ngAfterContentInit(): void {
     if (this.carouselItems.length === 0 || !this.carouselItems) {
       throw new Error(
@@ -62,9 +68,10 @@ export class CarouselComponent implements AfterContentInit {
    * after the specified interval.
    */
   public startCarousel() {
-    this.setIntervalReturn = setInterval(() => {
-      this.next();
-    }, this.interval);
+    if (isPlatformBrowser(this.platformId))
+      this.setIntervalReturn = setInterval(() => {
+        this.next();
+      }, this.interval);
   }
 
   /**
