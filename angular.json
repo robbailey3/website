@@ -50,8 +50,7 @@
                   "maximumError": "10kb"
                 }
               ],
-              "serviceWorker": true,
-              "ngswConfigPath": "apps/site/ngsw-config.json"
+              "serviceWorker": false
             }
           }
         },
@@ -129,9 +128,7 @@
           "options": {
             "browserTarget": "site:build:production",
             "serverTarget": "site:server:production",
-            "routes": [
-              "/"
-            ]
+            "routes": ["/"]
           },
           "configurations": {
             "production": {}

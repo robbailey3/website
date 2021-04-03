@@ -1,7 +1,6 @@
 // eslint-disable-next-line import/order
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { ServiceWorkerModule } from '@angular/service-worker';
 import { UiComponentsModule } from '@website/ui-components';
 import { HttpClientModule } from '@angular/common/http';
 import { AkitaNgDevtools } from '@datorama/akita-ngdevtools';
@@ -20,15 +19,11 @@ import { HomepageModule } from './homepage/homepage.module';
     AppRoutingModule,
     BrowserModule.withServerTransition({ appId: 'serverApp' }),
     GlobalModule,
-    ServiceWorkerModule.register('ngsw-worker.js', {
-      enabled: environment.production
-    }),
     AuthModule,
     HttpClientModule,
     HomepageModule,
     UiComponentsModule,
-    environment.production ? [] : AkitaNgDevtools.forRoot(),
-    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
+    environment.production ? [] : AkitaNgDevtools.forRoot()
   ],
   providers: [],
   bootstrap: [AppComponent]
