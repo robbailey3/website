@@ -1,39 +1,78 @@
 <footer id="page-footer">
   <div class="footer-wrapper">
-    <div class="footer-navigation">
-      <div class="footer-navigation-column">
-        <nav>
-          <ul>
-            <li><a [routerLink]="['/']">Link</a></li>
-            <li><a [routerLink]="['/']">Link</a></li>
-            <li><a [routerLink]="['/']">Link</a></li>
-            <li><a [routerLink]="['/']">Link</a></li>
-            <li><a [routerLink]="['/']">Link</a></li>
-          </ul>
-        </nav>
-      </div>
-      <div class="footer-navigation-column">
-        <nav>
-          <ul>
-            <li><a [routerLink]="['/']">Link</a></li>
-            <li><a [routerLink]="['/']">Link</a></li>
-            <li><a [routerLink]="['/']">Link</a></li>
-            <li><a [routerLink]="['/']">Link</a></li>
-            <li><a [routerLink]="['/']">Link</a></li>
-          </ul>
-        </nav>
-      </div>
-    </div>
-    <div class="footer-social">
+    <div class="footer-navigation footer-column">
+      <h2>Navigation</h2>
       <nav>
         <ul>
-          <li><a [routerLink]="['/']">Link</a></li>
-          <li><a [routerLink]="['/']">Link</a></li>
-          <li><a [routerLink]="['/']">Link</a></li>
-          <li><a [routerLink]="['/']">Link</a></li>
-          <li><a [routerLink]="['/']">Link</a></li>
+          <li><a [routerLink]="['/']">Home</a></li>
+          <li><a [routerLink]="['/about']">About</a></li>
+          <li><a [routerLink]="['/github']">GitHub Profile</a></li>
+          <li><a [routerLink]="['/cv']">CV</a></li>
+          <li><a [routerLink]="['/login']">Login</a></li>
         </ul>
       </nav>
+    </div>
+    <div class="footer-column footer-social">
+      <h2>Find Me On</h2>
+      <nav>
+        <ul>
+          <li>
+            <a
+              href="https://github.com/robbailey3"
+              target="_blank"
+              rel="noopener noreferrer"
+              ><fa-icon [icon]="icons.github"></fa-icon
+              ><span class="sr-only">GitHub</span></a
+            >
+          </li>
+          <li>
+            <a
+              href="https://stackoverflow.com/users/7959497/rob-bailey"
+              target="_blank"
+              rel="noopener noreferrer"
+              ><fa-icon [icon]="icons.stackoverflow"></fa-icon
+              ><span class="sr-only">Stack Overflow</span></a
+            >
+          </li>
+          <li>
+            <a
+              href="https://www.linkedin.com/in/robbailey3"
+              target="_blank"
+              rel="noopener noreferrer"
+              ><fa-icon [icon]="icons.linkedin"></fa-icon
+              ><span class="sr-only">LinkedIn</span></a
+            >
+          </li>
+          <li>
+            <a
+              href="https://twitter.com/rob_bailey3"
+              target="_blank"
+              rel="noopener noreferrer"
+              ><fa-icon [icon]="icons.twitter"></fa-icon
+              ><span class="sr-only">Twitter</span></a
+            >
+          </li>
+          <li>
+            <a
+              href="https://www.instagram.com/robbailey3/"
+              target="_blank"
+              rel="noopener noreferrer"
+              ><fa-icon [icon]="icons.instagram"></fa-icon
+              ><span class="sr-only">Instagram</span></a
+            >
+          </li>
+        </ul>
+      </nav>
+    </div>
+    <div class="footer-column footer-text">
+      <p>
+        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Eos adipisci
+        porro quae nulla possimus.
+      </p>
+      <rob-button variant="secondary">Learn More</rob-button>
+    </div>
+    <div class="footer-copyright">
+      <p>&copy; Rob Bailey 2021</p>
     </div>
   </div>
 </footer>
