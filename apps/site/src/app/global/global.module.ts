@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { UiComponentsModule } from '@website/ui-components';
 import { NgtUniversalModule } from '@ng-toolkit/universal';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { HeaderComponent } from './header/header.component';
 import { NavigationComponent } from './navigation/navigation.component';
 import { FooterComponent } from './footer/footer.component';
@@ -16,7 +17,8 @@ import { AuthModule } from '../auth/auth.module';
     RouterModule,
     UiComponentsModule,
     AdminModule,
-    AuthModule
+    AuthModule,
+    FontAwesomeModule
   ],
   exports: [
     HeaderComponent,
