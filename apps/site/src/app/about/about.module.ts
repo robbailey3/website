@@ -10,7 +10,15 @@ import { AboutProjectComponent } from './about-project/about-project.component';
 import { TimelineItemComponent } from './about-timeline/components/timeline-item/timeline-item.component';
 
 @NgModule({
-  declarations: [AboutRootComponent, AboutBasicsComponent, AboutTimelineComponent, AboutInterestsComponent, AboutSkillsComponent, AboutProjectComponent, TimelineItemComponent],
+  declarations: [
+    AboutRootComponent,
+    AboutBasicsComponent,
+    AboutTimelineComponent,
+    AboutInterestsComponent,
+    AboutSkillsComponent,
+    AboutProjectComponent,
+    TimelineItemComponent
+  ],
   imports: [CommonModule, AboutRoutingModule]
 })
 export class AboutModule {}
