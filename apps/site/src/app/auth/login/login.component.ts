@@ -1,3 +1,4 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { Notification, NotificationsService } from '@website/ui-components';
@@ -27,7 +28,7 @@ export class LoginComponent {
         this.isLoading = false;
         this.router.navigateByUrl('/admin');
       },
-      error: (err) => {
+      error: () => {
         this.displayErrorMessage = true;
         this.isLoading = false;
         this.notificationsService.add(
