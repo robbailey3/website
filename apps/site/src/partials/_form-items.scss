@@ -11,7 +11,7 @@
   }
 
   .form-error {
-    @apply text-xs block my-1;
+    @apply text-xs block my-1 text-accent-600;
   }
   .form-control-helpers {
     @apply flex items-center;

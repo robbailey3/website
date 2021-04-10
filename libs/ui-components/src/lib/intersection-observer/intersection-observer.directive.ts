@@ -25,7 +25,6 @@ export class IntersectionObserverDirective {
           entries.forEach((entry) => {
             if (entry.isIntersecting) {
               this.isInViewport.emit(true);
-              console.log(this.isInViewport);
             }
           });
         }

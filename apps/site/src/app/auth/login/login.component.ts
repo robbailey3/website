@@ -27,7 +27,7 @@ export class LoginComponent {
         this.isLoading = false;
         this.router.navigateByUrl('/admin');
       },
-      error: (err) => {
+      error: () => {
         this.displayErrorMessage = true;
         this.isLoading = false;
         this.notificationsService.add(
