@@ -1,0 +1,16 @@
+.timeline-wrapper {
+  @apply relative overflow-hidden;
+  .timeline {
+    @apply flex relative p-4 items-center;
+  }
+  .timeline-line {
+    @apply top-1/2 absolute block w-full h-0.5 bg-dark;
+  }
+  .start-year,
+  .end-year {
+    @apply absolute top-1/2;
+  }
+  .end-year {
+    @apply right-0;
+  }
+}

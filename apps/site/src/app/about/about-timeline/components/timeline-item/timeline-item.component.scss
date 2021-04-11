@@ -1,0 +1,13 @@
+:host {
+  @apply absolute mt-8 min-w-min;
+}
+
+::ng-deep {
+  .card{
+    @apply p-4;
+  }
+}
+
+h2 {
+  @apply text-lg;
+}

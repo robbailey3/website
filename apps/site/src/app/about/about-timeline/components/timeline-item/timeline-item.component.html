@@ -1,1 +1,6 @@
-<p>timeline-item works!</p>
+<rob-card>
+  <h2 class="title">{{ timelineItem.title }}</h2>
+  <span class="from-date">{{ timelineItem.from | date: 'MMMM YYYY' }}</span>
+  <p class="summary">{{ timelineItem.summary }}</p>
+  <span class="to-date">{{ endDate }}</span>
+</rob-card>

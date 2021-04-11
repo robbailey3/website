@@ -1,1 +1,17 @@
 <p>about-timeline works!</p>
+<div class="timeline-wrapper" #timelineWrapper>
+  <div
+    class="timeline"
+    [ngStyle]="{ width: ((endYear - startYear) / yearsPerViewWidth) * 100 + 'vw' }"
+    #timelineInner
+  >
+    <span class="start-year">{{ startYear }}</span>
+    <div class="timeline-line"></div>
+    <div class="timeline-items">
+      <ng-container *ngFor="let timelineItem of timeline">
+        <rob-timeline-item [timelineItem]="timelineItem" [left]="calculateItemPosition(timelineItem)" [width]="calculateItemWidth(timelineItem)"></rob-timeline-item>
+      </ng-container>
+    </div>
+    <span class="end-year">{{ endYear }}</span>
+  </div>
+</div>
