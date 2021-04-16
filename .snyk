@@ -6,18 +6,18 @@ ignore:
     - '@nrwl/angular > @nrwl/jest > jest-resolve > read-pkg-up > read-pkg > normalize-package-data > hosted-git-info':
         reason: None given
         expires: '2021-04-24T08:39:46.767Z'
-      '@datorama/akita > schematics-utilities > npm-registry-client > normalize-package-data > hosted-git-info':
-        reason: None given
-        expires: '2021-04-29T08:07:27.064Z'
     - '@nrwl/angular > @nrwl/cypress > @nrwl/workspace > @nrwl/jest > jest-resolve > read-pkg-up > read-pkg > normalize-package-data > hosted-git-info':
         reason: None given
         expires: '2021-04-25T16:33:36.978Z'
-      '@datorama/akita > schematics-utilities > npm-registry-client > npm-package-arg > hosted-git-info':
-        reason: None given
-        expires: '2021-04-29T08:07:27.064Z'
     - '@nrwl/angular > @nrwl/cypress > @nrwl/workspace > npm-run-all > read-pkg > normalize-package-data > hosted-git-info':
         reason: ''
         expires: '2021-04-25T16:33:36.978Z'
+    - '@datorama/akita > schematics-utilities > npm-registry-client > normalize-package-data > hosted-git-info':
+        reason: None given
+        expires: '2021-04-29T08:07:27.064Z'
+    - '@datorama/akita > schematics-utilities > npm-registry-client > npm-package-arg > hosted-git-info':
+        reason: None given
+        expires: '2021-04-29T08:07:27.064Z'
   SNYK-JS-EJS-1049328:
     - '@nrwl/angular > @nrwl/devkit > ejs':
         reason: None given
@@ -47,10 +47,10 @@ ignore:
     - '@nrwl/angular > @nrwl/cypress > fork-ts-checker-webpack-plugin > chokidar > glob-parent':
         reason: None given
         expires: '2021-04-24T08:56:18.470Z'
-      '@datorama/akita > schematics-utilities > @angular-devkit/core > chokidar > glob-parent':
+    - '@datorama/akita > schematics-utilities > @angular-devkit/schematics > @angular-devkit/core > chokidar > glob-parent':
         reason: None given
         expires: '2021-04-29T08:07:27.064Z'
-    - '@datorama/akita > schematics-utilities > @angular-devkit/schematics > @angular-devkit/core > chokidar > glob-parent':
+    - '@datorama/akita > schematics-utilities > @angular-devkit/core > chokidar > glob-parent':
         reason: None given
         expires: '2021-04-29T08:07:27.064Z'
   SNYK-JS-LODASH-1018905:
@@ -1624,4 +1624,8 @@ ignore:
     - '@datorama/akita > schematics-utilities > npm-registry-client > ssri':
         reason: None given
         expires: '2021-04-29T08:07:27.064Z'
+  SNYK-JS-SSRI-1246392:
+    - '@datorama/akita > schematics-utilities > npm-registry-client > ssri':
+        reason: None given
+        expires: '2021-05-16T07:12:39.215Z'
 patch: {}
