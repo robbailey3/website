@@ -1,19 +1,19 @@
 .chip {
-  @apply rounded-full px-2 inline-block text-sm shadow-sm;
+  @apply rounded-full px-2 inline-block text-sm shadow-sm mr-2;
   &.chip-primary {
-    @apply bg-primary;
+    @apply bg-primary text-light-50;
   }
   &.chip-secondary {
     @apply bg-secondary;
   }
   &.chip-accent {
-    @apply bg-accent;
+    @apply bg-accent text-light-50;
   }
   &.chip-error {
-    @apply bg-accent-800;
+    @apply bg-accent-800 text-light-50;
   }
   &.chip-dark {
-    @apply bg-dark;
+    @apply bg-dark text-light-50;
   }
   &.chip-light {
     @apply bg-light;

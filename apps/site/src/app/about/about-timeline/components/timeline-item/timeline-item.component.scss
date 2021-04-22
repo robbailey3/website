@@ -1,13 +1,34 @@
-:host {
-  @apply absolute mt-8 min-w-min;
+::ng-deep {
+  .card {
+    @apply p-4 block h-full;
+  }
 }
 
-::ng-deep {
-  .card{
-    @apply p-4;
+:host {
+  @apply block w-full p-4 relative;
+  &::before {
+    content: '';
+    @apply absolute -left-4 w-8 h-8 rounded-full top-1/2 block bg-primary;
+    transform: translate(-50%, -50%);
   }
+}
+
+rob-card {
+  height: 100%;
+  display: block;
 }
 
 h2 {
   @apply text-lg;
+}
+
+.timeline-item-dates {
+  @apply flex text-light-900 text-sm;
+
+  fa-icon {
+    @apply text-xs text-light-900 mr-2;
+  }
+  .date-separator {
+    @apply mx-1;
+  }
 }

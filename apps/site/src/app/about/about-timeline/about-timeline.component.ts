@@ -1,48 +1,20 @@
-import {
-  AfterViewInit,
-  Component,
-  ElementRef,
-  HostListener,
-  Inject,
-  OnInit,
-  ViewChild
-} from '@angular/core';
-import { WINDOW } from '@ng-toolkit/universal';
+import { Component, OnInit } from '@angular/core';
 import { timelineItems } from './data/timeline-items';
-import { TimelineItem } from './interfaces/timeline-item';
 @Component({
   selector: 'rob-about-timeline',
   templateUrl: './about-timeline.component.html',
   styleUrls: ['./about-timeline.component.scss']
 })
-export class AboutTimelineComponent implements OnInit, AfterViewInit {
+export class AboutTimelineComponent implements OnInit {
   public startYear: number;
 
   public endYear: number;
 
   public timeline = timelineItems.sort(
-    (a, b) => a.from.getTime() - b.from.getTime()
+    (a, b) => b.from.getTime() - a.from.getTime()
   );
 
-  public scrollLevel = 0;
-
-  public yearsPerViewWidth = 4;
-
-  constructor(@Inject(WINDOW) public window: Window) {}
-
-  @ViewChild('timelineWrapper')
-  public timelineWrapper: ElementRef<HTMLDivElement>;
-
-  @ViewChild('timelineInner')
-  public timelineInner: ElementRef<HTMLDivElement>;
-
-  @HostListener('window:scroll')
-  public handleScroll() {
-    const wrapperPosition = this.timelineWrapper.nativeElement.getBoundingClientRect();
-    this.scrollLevel = Math.max(this.window.scrollY - wrapperPosition.y, 0);
-    this.timelineInner.nativeElement.style.transform = `translateX(-${this.scrollLevel}px)`;
-    this.timelineInner.nativeElement.style.top = `${this.scrollLevel / 2}px`;
-  }
+  public totalMonths: number;
 
   public calculateStartYear(): number {
     return Math.min(...this.timeline.map((item) => item.from.getFullYear()));
@@ -52,29 +24,20 @@ export class AboutTimelineComponent implements OnInit, AfterViewInit {
     return Math.max(...this.timeline.map((item) => item.to.getFullYear()));
   }
 
-  public calculateItemPosition(timelineItem: TimelineItem): number {
-    const relativeStartYear = timelineItem.from.getFullYear() - this.startYear;
-    const deltaX =
-      (this.window.innerWidth / this.yearsPerViewWidth) * relativeStartYear;
-    return deltaX;
-  }
-
-  public calculateItemWidth(timelineItem: TimelineItem): number {
-    return (
-      ((timelineItem.to.getFullYear() - timelineItem.from.getFullYear()) / 4) *
-      this.window.innerWidth
-    );
-  }
-
   public ngOnInit() {
     this.startYear = this.calculateStartYear();
     this.endYear = this.calculateEndYear();
-    console.log(this.timelineWrapper);
+    this.totalMonths = this.monthDiff(
+      this.timeline[0].from,
+      this.timeline[this.timeline.length - 1].to
+    );
   }
 
-  public ngAfterViewInit() {
-    this.timelineWrapper.nativeElement.style.height = `${
-      this.timelineInner.nativeElement.getBoundingClientRect().width / 2
-    }px`;
+  public monthDiff(d1, d2) {
+    let months;
+    months = (d2.getFullYear() - d1.getFullYear()) * 12;
+    months -= d1.getMonth();
+    months += d2.getMonth();
+    return Math.abs(months);
   }
 }

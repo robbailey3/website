@@ -4,7 +4,7 @@
     "at-rule-no-unknown": [
       true,
       {
-        "ignoreAtRules": ["extends", "ignores"]
+        "ignoreAtRules": ["extends", "ignores", "apply"]
       }
     ],
     "indentation": 2,

@@ -3,4 +3,5 @@ export interface TimelineItem {
   summary: string;
   title: string;
   to: Date;
+  highlights?: string[];
 }
