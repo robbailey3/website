@@ -9,6 +9,7 @@ import { AboutInterestsComponent } from './about-interests/about-interests.compo
 import { AboutSkillsComponent } from './about-skills/about-skills.component';
 import { AboutProjectComponent } from './about-project/about-project.component';
 import { TimelineItemComponent } from './about-timeline/components/timeline-item/timeline-item.component';
+import { InterestComponent } from './about-interests/interest/interest.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { TimelineItemComponent } from './about-timeline/components/timeline-item
     AboutInterestsComponent,
     AboutSkillsComponent,
     AboutProjectComponent,
-    TimelineItemComponent
+    TimelineItemComponent,
+    InterestComponent
   ],
   imports: [CommonModule, AboutRoutingModule, UiComponentsModule]
 })
