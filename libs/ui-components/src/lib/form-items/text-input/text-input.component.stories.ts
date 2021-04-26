@@ -1,3 +1,4 @@
+import { FormsModule } from '@angular/forms';
 import { Story } from '@storybook/angular';
 import { TextInputComponent } from './text-input.component';
 
@@ -9,7 +10,7 @@ export const TextInput: Story<TextInputComponent> = (
   args: TextInputComponent
 ) => ({
   moduleMetadata: {
-    imports: [],
+    imports: [FormsModule],
     declarations: [TextInputComponent]
   },
   component: TextInputComponent,
@@ -28,15 +29,15 @@ export const TextInput: Story<TextInputComponent> = (
   },
   template: `
   <form ngForm #form="ngForm">
-    <rob-text-input 
-    [label]="label" 
-    [helperText]="helperText" 
+    <rob-text-input
+    [label]="label"
+    [helperText]="helperText"
     [required]="required"
-    [id]="id" 
-    [name]="name" 
-    [type]="type" 
-    [minLength]="minLength" 
-    [maxLength]="maxLength" 
+    [id]="id"
+    [name]="name"
+    [type]="type"
+    [minLength]="minLength"
+    [maxLength]="maxLength"
     [placeholder]="placeholder"
     [(ngModel)]="value"></rob-text-input>
   <form>`
