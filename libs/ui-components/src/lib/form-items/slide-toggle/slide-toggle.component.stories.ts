@@ -1,3 +1,4 @@
+import { FormsModule } from '@angular/forms';
 import { Story } from '@storybook/angular';
 import { SlideToggleComponent } from './slide-toggle.component';
 
@@ -9,7 +10,7 @@ export const SlideToggle: Story<SlideToggleComponent> = (
   args: SlideToggleComponent
 ) => ({
   moduleMetadata: {
-    imports: [],
+    imports: [FormsModule],
     declarations: [SlideToggleComponent]
   },
   component: SlideToggleComponent,
@@ -17,11 +18,11 @@ export const SlideToggle: Story<SlideToggleComponent> = (
   template: `
   <form ngForm #form="ngForm">
     <rob-slide-toggle
-    [label]="label" 
-    [helperText]="helperText" 
+    [label]="label"
+    [helperText]="helperText"
     [required]="required"
-    [id]="id" 
-    [name]="name" 
+    [id]="id"
+    [name]="name"
     [(ngModel)]="value"></rob-slide-toggle>
   <form>`
 });
