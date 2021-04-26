@@ -6,7 +6,6 @@ import { AboutRoutingModule } from './about-routing.module';
 import { AboutBasicsComponent } from './about-basics/about-basics.component';
 import { AboutTimelineComponent } from './about-timeline/about-timeline.component';
 import { AboutInterestsComponent } from './about-interests/about-interests.component';
-import { AboutSkillsComponent } from './about-skills/about-skills.component';
 import { AboutProjectComponent } from './about-project/about-project.component';
 import { TimelineItemComponent } from './about-timeline/components/timeline-item/timeline-item.component';
 import { InterestComponent } from './about-interests/interest/interest.component';
@@ -17,7 +16,6 @@ import { InterestComponent } from './about-interests/interest/interest.component
     AboutBasicsComponent,
     AboutTimelineComponent,
     AboutInterestsComponent,
-    AboutSkillsComponent,
     AboutProjectComponent,
     TimelineItemComponent,
     InterestComponent
