@@ -70,7 +70,7 @@
     "@sentry/tracing": "^6.2.5",
     "@tinymce/tinymce-angular": "^4.2.2",
     "bcrypt": "^5.0.1",
-    "bson": "^4.2.3",
+    "bson": "^4.3.0",
     "bull": "^3.22.0",
     "class-transformer": "^0.4.0",
     "class-validator": "^0.13.1",
