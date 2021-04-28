@@ -1,3 +1,4 @@
+import { FormsModule } from '@angular/forms';
 import { Story } from '@storybook/angular';
 import { SelectComponent } from './select.component';
 
@@ -7,7 +8,7 @@ export default {
 
 export const Select: Story<SelectComponent> = (args: SelectComponent) => ({
   moduleMetadata: {
-    imports: [],
+    imports: [FormsModule],
     declarations: [SelectComponent]
   },
   component: SelectComponent,
@@ -16,14 +17,14 @@ export const Select: Story<SelectComponent> = (args: SelectComponent) => ({
   },
   template: `
   <form ngForm #form="ngForm">
-    <rob-select 
-    [label]="label" 
-    [helperText]="helperText" 
+    <rob-select
+    [label]="label"
+    [helperText]="helperText"
     [required]="required"
-    [id]="id" 
+    [id]="id"
     [options]="options"
     [multiple]="multiple"
-    [name]="name" 
+    [name]="name"
     [(ngModel)]="value"></rob-select>
   <form>`
 });

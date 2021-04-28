@@ -1,4 +1,5 @@
-import { FormItemsModule } from '../form-items.module';
+import { FormsModule } from '@angular/forms';
+import { WordCountDirective } from '../validators/word-count.directive';
 import { TextareaComponent } from './textarea.component';
 
 export default {
@@ -7,21 +8,22 @@ export default {
 
 export const Textarea = (args: TextareaComponent) => ({
   moduleMetadata: {
-    imports: [FormItemsModule]
+    imports: [FormsModule],
+    declarations: [TextareaComponent, WordCountDirective]
   },
   component: TextareaComponent,
   props: { ...args },
   template: `
   <form ngForm #form="ngForm">
-    <rob-textarea 
-    [label]="label" 
-    [helperText]="helperText" 
+    <rob-textarea
+    [label]="label"
+    [helperText]="helperText"
     [required]="required"
-    [id]="id" 
-    [name]="name" 
-    [minLength]="minLength" 
-    [maxLength]="maxLength" 
-    [maxWordCount]="maxWordCount" 
+    [id]="id"
+    [name]="name"
+    [minLength]="minLength"
+    [maxLength]="maxLength"
+    [maxWordCount]="maxWordCount"
     [placeholder]="placeholder"
     [rows]="rows"
     [cols]="cols"

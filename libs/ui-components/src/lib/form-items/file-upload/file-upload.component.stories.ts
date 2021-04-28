@@ -1,3 +1,4 @@
+import { FormsModule } from '@angular/forms';
 import { Story } from '@storybook/angular';
 import { FileUploadComponent } from './file-upload.component';
 
@@ -9,7 +10,7 @@ export const FileUpload: Story<FileUploadComponent> = (
   args: FileUploadComponent
 ) => ({
   moduleMetadata: {
-    imports: [],
+    imports: [FormsModule],
     declarations: [FileUploadComponent]
   },
   component: FileUploadComponent,
@@ -27,14 +28,14 @@ export const FileUpload: Story<FileUploadComponent> = (
   },
   template: `
   <form ngForm #form="ngForm">
-    <rob-file-upload 
-    [label]="label" 
-    [helperText]="helperText" 
+    <rob-file-upload
+    [label]="label"
+    [helperText]="helperText"
     [required]="required"
-    [id]="id" 
-    [name]="name" 
-    [minLength]="minLength" 
-    [maxLength]="maxLength" 
+    [id]="id"
+    [name]="name"
+    [minLength]="minLength"
+    [maxLength]="maxLength"
     [placeholder]="placeholder"
     [(ngModel)]="value"></rob-file-upload>
   <form>`

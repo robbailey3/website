@@ -1,3 +1,4 @@
+import { FormsModule } from '@angular/forms';
 import { EditorModule } from '@tinymce/tinymce-angular';
 import { RichTextComponent } from './rich-text.component';
 
@@ -7,7 +8,7 @@ export default {
 
 export const RichText = (args: RichTextComponent) => ({
   moduleMetadata: {
-    imports: [EditorModule],
+    imports: [EditorModule, FormsModule],
     declarations: [RichTextComponent]
   },
   component: RichTextComponent,
@@ -17,7 +18,7 @@ export const RichText = (args: RichTextComponent) => ({
     <rob-rich-text
       [label]="label"
       [id]="id"
-      [name]="name" 
+      [name]="name"
       [config]="config"
       [helperText]="helperText"
       [required]="required"
