@@ -1,0 +1,29 @@
+::ng-deep {
+  .card {
+    @apply p-4 block h-full;
+  }
+}
+
+:host {
+  @apply block w-full relative my-2;
+}
+
+rob-card {
+  height: 100%;
+  display: block;
+}
+
+h2 {
+  @apply text-lg;
+}
+
+.timeline-item-dates {
+  @apply flex text-light-900 text-sm;
+
+  fa-icon {
+    @apply text-xs text-light-900 mr-2;
+  }
+  .date-separator {
+    @apply mx-1;
+  }
+}
