@@ -3,13 +3,10 @@
   .timeline-wrapper {
     @apply relative;
     .timeline {
-      @apply relative p-4 items-center mx-auto max-w-5xl container;
-    }
-    .timeline-line {
-      @apply left-0 absolute block w-0.5 bg-dark-100 bg-opacity-25 h-full;
+      @apply relative p-4 pt-12 pb-6 items-center mx-auto max-w-5xl container;
     }
     .start-year, .end-year{
-      @apply absolute -left-6 p-2 rounded-full bg-accent text-light-100 top-0;
+      @apply absolute left-0 p-2 rounded-full bg-accent text-light-100 top-0;
     }
     .start-year {
       @apply top-auto -bottom-4;

@@ -5,12 +5,7 @@
 }
 
 :host {
-  @apply block w-full p-4 relative;
-  &::before {
-    content: '';
-    @apply absolute left-0 w-4 h-4 rounded-2xl top-1/2 block bg-primary;
-    transform: translate(-50%, -50%);
-  }
+  @apply block w-full relative my-2;
 }
 
 rob-card {
