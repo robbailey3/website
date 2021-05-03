@@ -1,3 +1,4 @@
+import { FormsModule } from '@angular/forms';
 import { RadioButtonComponent } from './radio-button.component';
 
 export default {
@@ -6,7 +7,7 @@ export default {
 
 export const RadioButton = (args: RadioButtonComponent) => ({
   moduleMetadata: {
-    imports: [],
+    imports: [FormsModule],
     declarations: [RadioButtonComponent]
   },
   component: RadioButtonComponent,
@@ -16,7 +17,7 @@ export const RadioButton = (args: RadioButtonComponent) => ({
     <rob-radio-button
       [label]="label"
       [id]="id"
-      [name]="name" 
+      [name]="name"
       [options]="options"
       [helperText]="helperText"
       [required]="required"

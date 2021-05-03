@@ -1,3 +1,4 @@
+import { FormsModule } from '@angular/forms';
 import { Story } from '@storybook/angular';
 import { SliderComponent } from './slider.component';
 
@@ -7,7 +8,7 @@ export default {
 
 export const Slider: Story<SliderComponent> = (args: SliderComponent) => ({
   moduleMetadata: {
-    imports: [],
+    imports: [FormsModule],
     declarations: [SliderComponent]
   },
   component: SliderComponent,
@@ -15,14 +16,14 @@ export const Slider: Story<SliderComponent> = (args: SliderComponent) => ({
   template: `
   <form ngForm #form="ngForm">
     <rob-slider
-    [label]="label" 
-    [helperText]="helperText" 
+    [label]="label"
+    [helperText]="helperText"
     [required]="required"
     [min]="min"
     [max]="max"
     [step]="step"
-    [id]="id" 
-    [name]="name" 
+    [id]="id"
+    [name]="name"
     [(ngModel)]="value"></rob-slider>
   <form>`
 });
