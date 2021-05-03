@@ -1,1 +1,13 @@
-<p>cv-profile works!</p>
+<section id="cv-profile">
+  <div class="profile-name">
+    <h2>{{ profile.firstName }} {{ profile.lastName }}</h2>
+    <div class="profile-social">
+      <ng-container *ngFor="let social of profile.socialMedia">
+        <a [href]="social.url">
+          <fa-icon [icon]="social.icon"></fa-icon>
+          <span class="sr-only">{{ social.name }}</span>
+        </a>
+      </ng-container>
+    </div>
+  </div>
+</section>

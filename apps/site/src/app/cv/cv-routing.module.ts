@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { CvEducationComponent } from './cv-education/cv-education.component';
 import { CvExperienceComponent } from './cv-experience/cv-experience.component';
+import { CvJsonComponent } from './cv-json/cv-json.component';
 import { CvProfileComponent } from './cv-profile/cv-profile.component';
 import { CvRootComponent } from './cv-root/cv-root.component';
 import { CvSkillsComponent } from './cv-skills/cv-skills.component';
@@ -42,6 +43,14 @@ const routes: Routes = [
         data: {
           title: 'CV - Rob Bailey: Experience',
           description: 'The experience section of the online CV for Rob Bailey'
+        }
+      },
+      {
+        path: 'json',
+        component: CvJsonComponent,
+        data: {
+          title: 'CV - Rob Bailey: JSON Version',
+          description: 'My CV in JSON format'
         }
       }
     ]

@@ -1,6 +1,10 @@
 .cv-root {
-  @apply container mx-auto max-w-5xl flex flex-wrap;
+  @apply container mx-auto max-w-5xl;
 }
 .cv-content {
   @apply p-8 my-4;
+}
+
+.cv-navigation{
+  @apply sticky top-16 bg-light-50 shadow-xl rounded m-4 inline-block;
 }

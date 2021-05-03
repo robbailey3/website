@@ -1,13 +1,23 @@
+import { IconProp } from '@fortawesome/fontawesome-svg-core';
+import { faLinkedin } from '@fortawesome/free-brands-svg-icons';
+
 export interface Location {
   city: string;
   country: string;
   remote?: boolean;
 }
 
+export interface CVSocialMedia {
+  name: string;
+  url: URL | string;
+  icon: IconProp;
+}
+
 export interface CVProfile {
   firstName: string;
   lastName: string;
   location: Location;
+  socialMedia: CVSocialMedia[];
 }
 
 export interface CVExperience {
@@ -52,7 +62,14 @@ export const CV: CVModel = {
       city: 'Nottingham',
       country: 'UK',
       remote: true
-    }
+    },
+    socialMedia: [
+      {
+        name: 'LinkedIn',
+        icon: faLinkedin,
+        url: 'https://www.linkedin.com/in/robbailey3/'
+      }
+    ]
   },
   education: [
     {
