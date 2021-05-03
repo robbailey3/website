@@ -10,6 +10,7 @@ import { CvEducationComponent } from './cv-education/cv-education.component';
 import { CvProfileComponent } from './cv-profile/cv-profile.component';
 import { CvNavigationComponent } from './cv-navigation/cv-navigation.component';
 import { CvJsonComponent } from './cv-json/cv-json.component';
+import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -21,6 +22,6 @@ import { CvJsonComponent } from './cv-json/cv-json.component';
     CvNavigationComponent,
     CvJsonComponent
   ],
-  imports: [CommonModule, CvRoutingModule, FontAwesomeModule]
+  imports: [CommonModule, CvRoutingModule, FontAwesomeModule, SharedModule]
 })
 export class CvModule {}
