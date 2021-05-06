@@ -67,5 +67,13 @@ describe('[PAGE]: Homepage', () => {
     it('should contain a rob-carousel component', () => {
       cy.get('rob-homepage-carousel').find('rob-carousel').should('exist');
     });
+
+    it('should contain 4 "slides"', () => {
+      cy.get('rob-carousel').find('rob-carousel-item').should('have.length', 4);
+    });
+
+    it('should progress to the next slide when the next button is pressed', () => {
+      cy.get('.carousel-prev > rob-button > .btn').trigger('click');
+    });
   });
 });
