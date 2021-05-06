@@ -1,6 +1,11 @@
 .cv-root {
-  @apply container mx-auto max-w-5xl flex flex-wrap;
+  @apply container mx-auto max-w-5xl grid;
+  grid-template-columns: 200px auto;
 }
 .cv-content {
-  @apply p-8 my-4;
+  @apply p-8 my-4 flex-1;
+}
+
+.cv-nav-sticky {
+  @apply sticky top-16 bg-light-50 shadow-xl rounded m-4 inline-block;
 }
