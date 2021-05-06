@@ -6,15 +6,9 @@ ignore:
     - '@nrwl/angular > @nrwl/jest > jest-resolve > read-pkg-up > read-pkg > normalize-package-data > hosted-git-info':
         reason: None given
         expires: '2021-05-26T09:44:09.432Z'
-      '@datorama/akita > schematics-utilities > npm-registry-client > normalize-package-data > hosted-git-info':
-        reason: None given
-        expires: '2021-06-02T12:44:25.562Z'
     - '@nrwl/angular > @nrwl/cypress > @nrwl/workspace > @nrwl/jest > jest-resolve > read-pkg-up > read-pkg > normalize-package-data > hosted-git-info':
         reason: None given
         expires: '2021-04-25T16:33:36.978Z'
-      '@datorama/akita > schematics-utilities > npm-registry-client > npm-package-arg > hosted-git-info':
-        reason: None given
-        expires: '2021-06-02T12:44:25.562Z'
     - '@nrwl/angular > @nrwl/cypress > @nrwl/workspace > npm-run-all > read-pkg > normalize-package-data > hosted-git-info':
         reason: ''
         expires: '2021-04-25T16:33:36.978Z'
@@ -30,6 +24,12 @@ ignore:
     - '@nrwl/angular > @nrwl/cypress > @nrwl/workspace > @nrwl/jest > jest-resolve > read-pkg-up > read-pkg > normalize-package-data > hosted-git-info':
         reason: None given
         expires: '2021-05-26T09:44:09.432Z'
+    - '@datorama/akita > schematics-utilities > npm-registry-client > normalize-package-data > hosted-git-info':
+        reason: None given
+        expires: '2021-06-02T12:44:25.562Z'
+    - '@datorama/akita > schematics-utilities > npm-registry-client > npm-package-arg > hosted-git-info':
+        reason: None given
+        expires: '2021-06-02T12:44:25.562Z'
   SNYK-JS-EJS-1049328:
     - '@nrwl/angular > @nrwl/devkit > ejs':
         reason: None given
@@ -65,25 +65,40 @@ ignore:
     - '@nrwl/angular > @nrwl/cypress > fork-ts-checker-webpack-plugin > chokidar > glob-parent':
         reason: None given
         expires: '2021-05-26T09:44:09.432Z'
-      '@datorama/akita > schematics-utilities > @angular-devkit/core > chokidar > glob-parent':
+      snyk > snyk-nodejs-lockfile-parser > @yarnpkg/core > @yarnpkg/shell > fast-glob > glob-parent:
         reason: None given
-        expires: '2021-06-02T12:44:25.563Z'
+        expires: '2021-06-05T19:09:58.934Z'
     - '@datorama/akita > schematics-utilities > @angular-devkit/schematics > @angular-devkit/core > chokidar > glob-parent':
         reason: None given
         expires: '2021-06-02T12:44:25.563Z'
+      snyk > snyk-nodejs-lockfile-parser > @yarnpkg/core > globby > fast-glob > glob-parent:
+        reason: None given
+        expires: '2021-06-05T19:09:58.934Z'
     - '@datorama/akita > schematics-utilities > @angular-devkit/core > chokidar > glob-parent':
         reason: None given
         expires: '2021-04-29T08:07:27.064Z'
+      '@yarnpkg/core > @yarnpkg/shell > fast-glob > glob-parent':
+        reason: None given
+        expires: '2021-06-05T19:09:58.934Z'
+    - '@datorama/akita > schematics-utilities > @angular-devkit/core > chokidar > glob-parent':
+        reason: None given
+        expires: '2021-06-02T12:44:25.563Z'
+      '@yarnpkg/core > globby > fast-glob > glob-parent':
+        reason: None given
+        expires: '2021-06-05T19:09:58.934Z'
   SNYK-JS-LODASH-1018905:
     - '@nrwl/angular > jasmine-marbles > lodash':
         reason: None given
         expires: '2021-05-26T09:44:09.432Z'
-      cypress > lodash:
+      snyk > snyk-nodejs-lockfile-parser > @yarnpkg/core > lodash:
         reason: None given
-        expires: '2021-06-02T12:44:25.563Z'
+        expires: '2021-06-05T19:09:58.934Z'
     - '@nrwl/angular > @nrwl/cypress > @cypress/webpack-preprocessor > @babel/core > lodash':
         reason: None given
         expires: '2021-04-24T08:56:18.470Z'
+      '@yarnpkg/core > lodash':
+        reason: None given
+        expires: '2021-06-05T19:09:58.934Z'
     - '@nrwl/angular > @nrwl/devkit > @nrwl/tao > inquirer > lodash':
         reason: None given
         expires: '2021-04-24T08:56:18.470Z'
@@ -1626,16 +1641,22 @@ ignore:
     - mongoose-query-parser > lodash:
         reason: None given
         expires: '2021-05-26T09:44:09.447Z'
+    - cypress > lodash:
+        reason: None given
+        expires: '2021-06-02T12:44:25.563Z'
   SNYK-JS-LODASH-1040724:
     - '@nrwl/angular > jasmine-marbles > lodash':
         reason: None given
         expires: '2021-05-26T09:44:09.432Z'
-      cypress > lodash:
+      snyk > snyk-nodejs-lockfile-parser > @yarnpkg/core > lodash:
         reason: None given
-        expires: '2021-06-02T12:44:25.563Z'
+        expires: '2021-06-05T19:09:58.934Z'
     - '@nrwl/angular > @nrwl/cypress > @cypress/webpack-preprocessor > @babel/core > lodash':
         reason: None given
         expires: '2021-04-24T08:56:18.470Z'
+      '@yarnpkg/core > lodash':
+        reason: None given
+        expires: '2021-06-05T19:09:58.934Z'
     - '@nrwl/angular > @nrwl/devkit > @nrwl/tao > inquirer > lodash':
         reason: None given
         expires: '2021-04-24T08:56:18.470Z'
@@ -3178,6 +3199,9 @@ ignore:
     - mongoose-query-parser > lodash:
         reason: None given
         expires: '2021-05-26T09:44:09.447Z'
+    - cypress > lodash:
+        reason: None given
+        expires: '2021-06-02T12:44:25.563Z'
   SNYK-JS-COLORSTRING-1082939:
     - sharp > color > color-string:
         reason: None given
@@ -3224,4 +3248,26 @@ ignore:
     - cypress:
         reason: None given
         expires: '2021-06-02T12:44:25.563Z'
+  SNYK-JS-PATHPARSE-1077067:
+    - '@nrwl/angular > @nrwl/jest > jest-resolve > resolve > path-parse':
+        reason: None given
+        expires: '2021-06-05T19:09:58.934Z'
+    - '@nrwl/angular > @nrwl/cypress > @nrwl/workspace > resolve > path-parse':
+        reason: None given
+        expires: '2021-06-05T19:09:58.934Z'
+    - '@datorama/akita > schematics-utilities > npm-registry-client > normalize-package-data > resolve > path-parse':
+        reason: None given
+        expires: '2021-06-05T19:09:58.934Z'
+    - '@nrwl/angular > @nrwl/cypress > @nrwl/workspace > @nrwl/jest > jest-resolve > resolve > path-parse':
+        reason: None given
+        expires: '2021-06-05T19:09:58.934Z'
+    - '@nrwl/angular > @nrwl/jest > jest-resolve > read-pkg-up > read-pkg > normalize-package-data > resolve > path-parse':
+        reason: None given
+        expires: '2021-06-05T19:09:58.934Z'
+    - '@nrwl/angular > @nrwl/cypress > @nrwl/workspace > npm-run-all > read-pkg > normalize-package-data > resolve > path-parse':
+        reason: None given
+        expires: '2021-06-05T19:09:58.934Z'
+    - '@nrwl/angular > @nrwl/cypress > @nrwl/workspace > @nrwl/jest > jest-resolve > read-pkg-up > read-pkg > normalize-package-data > resolve > path-parse':
+        reason: None given
+        expires: '2021-06-05T19:09:58.935Z'
 patch: {}
