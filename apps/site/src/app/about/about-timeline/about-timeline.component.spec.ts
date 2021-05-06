@@ -1,21 +1,21 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AboutRootComponent } from './about-root.component';
+import { AboutTimelineComponent } from './about-timeline.component';
 
-describe('AboutRootComponent', () => {
-  let component: AboutRootComponent;
-  let fixture: ComponentFixture<AboutRootComponent>;
+describe('AboutTimelineComponent', () => {
+  let component: AboutTimelineComponent;
+  let fixture: ComponentFixture<AboutTimelineComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [AboutRootComponent],
+      declarations: [AboutTimelineComponent],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
     }).compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AboutRootComponent);
+    fixture = TestBed.createComponent(AboutTimelineComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
