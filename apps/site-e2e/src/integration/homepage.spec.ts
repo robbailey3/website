@@ -1,7 +1,7 @@
 import { getGreeting } from '../support/app.po';
 
 describe('[PAGE]: Homepage', () => {
-  beforeEach(() => {
+  before(() => {
     cy.visit('/');
   });
 
@@ -60,6 +60,12 @@ describe('[PAGE]: Homepage', () => {
       cy.get('[data-cy="intro-cta"]')
         .find('a')
         .should('have.attr', 'href', '/about');
+    });
+  });
+
+  describe('[SECTION]: Homepage carousel', () => {
+    it('should contain a rob-carousel component', () => {
+      cy.get('rob-homepage-carousel').find('rob-carousel').should('exist');
     });
   });
 });
