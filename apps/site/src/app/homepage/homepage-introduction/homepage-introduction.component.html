@@ -3,6 +3,7 @@
     <div class="w-full md:w-1/2">
       <div class="w-full mx-auto max-w-xs">
         <rob-lazy-image
+          data-cy="selfie-image"
           src="/assets/images/homepage/me.png"
           thumbnailSrc="/assets/images/homepage/me_thumb.png"
           alt="Image of Rob Bailey"
@@ -11,13 +12,11 @@
       </div>
     </div>
     <div class="w-full md:w-1/2 py-16 text-light-50">
-      <p class="my-16">
-        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Sed magni,
-        error, esse totam fugit quidem nam a voluptatibus dolor aperiam delectus
-        debitis nostrum cupiditate eligendi assumenda architecto exercitationem
-        praesentium ullam!
-      </p>
-      <rob-button variant="secondary" [routerLink]="['about']"
+      <p class="my-16" data-cy="intro-text">TODO: More intro text</p>
+      <rob-button
+        variant="secondary"
+        [routerLink]="['about']"
+        data-cy="intro-cta"
         >Learn More</rob-button
       >
     </div>
