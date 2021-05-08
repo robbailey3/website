@@ -24,7 +24,7 @@ describe('HomepageBannerComponent', () => {
   it('should contain a p tag containing the specified text', () => {
     const expectedText =
       // eslint-disable-next-line max-len
-      'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Commodi iure labore amet? A, quos incidunt. Nemo similique dicta voluptate, consequatur, quod error quibusdam quam perferendis molestias enim iure quos dolorum!';
+      'TODO: introduction-text';
 
     expect(spectator.query('p').textContent.trim()).toEqual(expectedText);
   });
