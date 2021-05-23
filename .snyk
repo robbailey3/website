@@ -65,40 +65,34 @@ ignore:
     - '@nrwl/angular > @nrwl/cypress > fork-ts-checker-webpack-plugin > chokidar > glob-parent':
         reason: None given
         expires: '2021-05-26T09:44:09.432Z'
-      snyk > snyk-nodejs-lockfile-parser > @yarnpkg/core > @yarnpkg/shell > fast-glob > glob-parent:
-        reason: None given
-        expires: '2021-06-05T19:09:58.934Z'
     - '@datorama/akita > schematics-utilities > @angular-devkit/schematics > @angular-devkit/core > chokidar > glob-parent':
         reason: None given
         expires: '2021-06-02T12:44:25.563Z'
-      snyk > snyk-nodejs-lockfile-parser > @yarnpkg/core > globby > fast-glob > glob-parent:
-        reason: None given
-        expires: '2021-06-05T19:09:58.934Z'
     - '@datorama/akita > schematics-utilities > @angular-devkit/core > chokidar > glob-parent':
         reason: None given
         expires: '2021-04-29T08:07:27.064Z'
-      '@yarnpkg/core > @yarnpkg/shell > fast-glob > glob-parent':
-        reason: None given
-        expires: '2021-06-05T19:09:58.934Z'
     - '@datorama/akita > schematics-utilities > @angular-devkit/core > chokidar > glob-parent':
         reason: None given
         expires: '2021-06-02T12:44:25.563Z'
-      '@yarnpkg/core > globby > fast-glob > glob-parent':
+    - snyk > snyk-nodejs-lockfile-parser > @yarnpkg/core > @yarnpkg/shell > fast-glob > glob-parent:
+        reason: None given
+        expires: '2021-06-05T19:09:58.934Z'
+    - snyk > snyk-nodejs-lockfile-parser > @yarnpkg/core > globby > fast-glob > glob-parent:
+        reason: None given
+        expires: '2021-06-05T19:09:58.934Z'
+    - '@yarnpkg/core > @yarnpkg/shell > fast-glob > glob-parent':
+        reason: None given
+        expires: '2021-06-05T19:09:58.934Z'
+    - '@yarnpkg/core > globby > fast-glob > glob-parent':
         reason: None given
         expires: '2021-06-05T19:09:58.934Z'
   SNYK-JS-LODASH-1018905:
     - '@nrwl/angular > jasmine-marbles > lodash':
         reason: None given
         expires: '2021-05-26T09:44:09.432Z'
-      snyk > snyk-nodejs-lockfile-parser > @yarnpkg/core > lodash:
-        reason: None given
-        expires: '2021-06-05T19:09:58.934Z'
     - '@nrwl/angular > @nrwl/cypress > @cypress/webpack-preprocessor > @babel/core > lodash':
         reason: None given
         expires: '2021-04-24T08:56:18.470Z'
-      '@yarnpkg/core > lodash':
-        reason: None given
-        expires: '2021-06-05T19:09:58.934Z'
     - '@nrwl/angular > @nrwl/devkit > @nrwl/tao > inquirer > lodash':
         reason: None given
         expires: '2021-04-24T08:56:18.470Z'
@@ -1644,19 +1638,19 @@ ignore:
     - cypress > lodash:
         reason: None given
         expires: '2021-06-02T12:44:25.563Z'
+    - snyk > snyk-nodejs-lockfile-parser > @yarnpkg/core > lodash:
+        reason: None given
+        expires: '2021-06-05T19:09:58.934Z'
+    - '@yarnpkg/core > lodash':
+        reason: None given
+        expires: '2021-06-05T19:09:58.934Z'
   SNYK-JS-LODASH-1040724:
     - '@nrwl/angular > jasmine-marbles > lodash':
         reason: None given
         expires: '2021-05-26T09:44:09.432Z'
-      snyk > snyk-nodejs-lockfile-parser > @yarnpkg/core > lodash:
-        reason: None given
-        expires: '2021-06-05T19:09:58.934Z'
     - '@nrwl/angular > @nrwl/cypress > @cypress/webpack-preprocessor > @babel/core > lodash':
         reason: None given
         expires: '2021-04-24T08:56:18.470Z'
-      '@yarnpkg/core > lodash':
-        reason: None given
-        expires: '2021-06-05T19:09:58.934Z'
     - '@nrwl/angular > @nrwl/devkit > @nrwl/tao > inquirer > lodash':
         reason: None given
         expires: '2021-04-24T08:56:18.470Z'
@@ -3202,6 +3196,12 @@ ignore:
     - cypress > lodash:
         reason: None given
         expires: '2021-06-02T12:44:25.563Z'
+    - snyk > snyk-nodejs-lockfile-parser > @yarnpkg/core > lodash:
+        reason: None given
+        expires: '2021-06-05T19:09:58.934Z'
+    - '@yarnpkg/core > lodash':
+        reason: None given
+        expires: '2021-06-05T19:09:58.934Z'
   SNYK-JS-COLORSTRING-1082939:
     - sharp > color > color-string:
         reason: None given
@@ -3220,7 +3220,7 @@ ignore:
   SNYK-JS-SSRI-1246392:
     - '@datorama/akita > schematics-utilities > npm-registry-client > ssri':
         reason: None given
-        expires: '2021-05-16T07:12:39.215Z'
+        expires: '2021-06-22T20:15:26.509Z'
   SNYK-JS-BROWSERSLIST-1090194:
     - '@nrwl/angular > @nrwl/cypress > @cypress/webpack-preprocessor > @babel/preset-env > @babel/helper-compilation-targets > browserslist':
         reason: None given
