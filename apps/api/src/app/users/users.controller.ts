@@ -13,6 +13,7 @@ import {
   ApiBearerAuth,
   ApiBody,
   ApiOkResponse,
+  ApiOperation,
   ApiTags
 } from '@nestjs/swagger';
 import { Observable } from 'rxjs';
@@ -21,6 +22,7 @@ import { EntityQuery } from '../shared/entity-query/entity-query';
 import { UserDto } from './dto/user.dto';
 import { UsersService } from './users.service';
 import { QueryParserInterceptor } from '../shared/query-parser/query-parser.interceptor';
+import { AddDateModified } from '../utils/add-date-modified';
 
 @Controller('users')
 @ApiTags('Users')
@@ -30,6 +32,10 @@ export class UsersController {
   @Get('')
   @ApiOkResponse({ type: [UserDto] })
   @UseInterceptors(QueryParserInterceptor)
+  @ApiOperation({
+    description: 'Finds users',
+    summary: 'Find users'
+  })
   @ApiBearerAuth()
   @UseGuards(AuthGuard('jwt'))
   public find(@Query() query: EntityQuery<UserDto>): Observable<UserDto[]> {
@@ -42,12 +48,15 @@ export class UsersController {
   @Post('')
   @ApiBody({ type: UserDto })
   @ApiBearerAuth()
+  @ApiOperation({
+    description: 'Inserts a new user document into the database',
+    summary: 'Insert user'
+  })
   @UseGuards(AuthGuard('jwt'))
   public insertUser(@Body() user: UserDto) {
-    const newUser = user;
-    newUser.dateModified = new Date();
+    const newUser = AddDateModified(user) as UserDto;
     return this.userService
-      .insertUser(user)
+      .insertUser(newUser)
       .pipe(map((createdUser) => plainToClass(UserDto, createdUser)));
   }
 }

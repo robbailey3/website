@@ -1,5 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { Observable } from 'rxjs';
+import { UserDto } from './dto/user.dto';
 import { UsersController } from './users.controller';
 import { UsersService } from './users.service';
 
@@ -28,6 +29,16 @@ describe('UsersController', () => {
     it('should call UsersService->find', () => {
       const spy = jest.spyOn(service, 'find');
       controller.find({ limit: 0, skip: 0, sort: {}, filter: {} });
+      expect(spy).toHaveBeenCalled();
+    });
+  });
+
+  describe('[METHOD]: insertUser', () => {
+    it('should call UsersService->insertUser', () => {
+      const spy = jest
+        .spyOn(service, 'insertUser')
+        .mockReturnValue(new Observable());
+      controller.insertUser(new UserDto());
       expect(spy).toHaveBeenCalled();
     });
   });

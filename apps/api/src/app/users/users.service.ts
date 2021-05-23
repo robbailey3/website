@@ -15,7 +15,7 @@ export class UsersService extends EntityService {
   public insertUser(newUser: UserDto): Observable<UserDto> {
     return from(bcrypt.hash(newUser.password, 12)).pipe(
       switchMap((hashedPassword) => {
-        const { password, ...userWithoutPassword } = newUser;
+        const { password, ...userWithoutPassword } = newUser; // Use object destructuring to create a copy without password
         const user = {
           password: hashedPassword,
           ...userWithoutPassword
