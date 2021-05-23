@@ -6,10 +6,17 @@ import {
   Get,
   Post,
   Query,
+  UseGuards,
   UseInterceptors
 } from '@nestjs/common';
-import { ApiBody, ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiBody,
+  ApiOkResponse,
+  ApiTags
+} from '@nestjs/swagger';
 import { Observable } from 'rxjs';
+import { AuthGuard } from '@nestjs/passport';
 import { EntityQuery } from '../shared/entity-query/entity-query';
 import { UserDto } from './dto/user.dto';
 import { UsersService } from './users.service';
@@ -23,6 +30,8 @@ export class UsersController {
   @Get('')
   @ApiOkResponse({ type: [UserDto] })
   @UseInterceptors(QueryParserInterceptor)
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard('jwt'))
   public find(@Query() query: EntityQuery<UserDto>): Observable<UserDto[]> {
     const { filter, ...options } = query;
     return this.userService
@@ -32,9 +41,13 @@ export class UsersController {
 
   @Post('')
   @ApiBody({ type: UserDto })
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard('jwt'))
   public insertUser(@Body() user: UserDto) {
+    const newUser = user;
+    newUser.dateModified = new Date();
     return this.userService
       .insertUser(user)
-      .pipe(map((newUser) => plainToClass(UserDto, newUser)));
+      .pipe(map((createdUser) => plainToClass(UserDto, createdUser)));
   }
 }

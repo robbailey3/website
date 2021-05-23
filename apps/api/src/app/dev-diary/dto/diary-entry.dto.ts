@@ -2,8 +2,9 @@ import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 import { IsArray, IsBoolean, IsDate, IsEmpty, IsString } from 'class-validator';
 import { ObjectID } from 'mongodb';
+import { BaseEntityDto } from '../../shared/dto/base-entity.dto';
 
-export class DiaryEntryDto {
+export class DiaryEntryDto extends BaseEntityDto {
   @ApiProperty()
   @IsEmpty()
   @Type(() => String)

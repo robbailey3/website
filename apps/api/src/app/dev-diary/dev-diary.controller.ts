@@ -7,9 +7,11 @@ import {
   Param,
   Patch,
   Post,
-  Query
+  Query,
+  UseGuards
 } from '@nestjs/common';
-import { ApiBody } from '@nestjs/swagger';
+import { AuthGuard } from '@nestjs/passport';
+import { ApiBearerAuth, ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { ObjectID } from 'mongodb';
 import { Observable } from 'rxjs';
 import { EntityQuery } from '../shared/entity-query/entity-query';
@@ -17,10 +19,12 @@ import { DevDiaryService } from './dev-diary.service';
 import { DiaryEntryDto } from './dto/diary-entry.dto';
 
 @Controller('dev-diary')
+@ApiTags('Dev Diary')
 export class DevDiaryController {
   constructor(private readonly devDiaryService: DevDiaryService) {}
 
   @Get('')
+  @ApiOperation({ description: 'Fetches all diary entries' })
   public getEntries(
     @Query() query: EntityQuery<DiaryEntryDto>
   ): Observable<DiaryEntryDto[]> {
@@ -39,19 +43,27 @@ export class DevDiaryController {
   }
 
   @Post('')
-  public createEntry(@Body() newEntry: DiaryEntryDto) {
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard('jwt'))
+  public createEntry(@Body() entry: DiaryEntryDto) {
+    const newEntry = entry;
+    newEntry.dateModified = new Date();
     return this.devDiaryService.insertOne(newEntry);
   }
 
   @Patch(':id')
   @ApiBody({ type: DiaryEntryDto })
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard('jwt'))
   public updateEntry(
     @Param('id') id: string,
-    @Body() updatedEntry: Partial<DiaryEntryDto>
+    @Body() entry: Partial<DiaryEntryDto>
   ) {
     if (!ObjectID.isValid(id)) {
       throw new BadRequestException('Provided id must be a valid id');
     }
+    const updatedEntry = entry;
+    updatedEntry.dateModified = new Date();
     return this.devDiaryService.findOneAndUpdate(
       { _id: ObjectID.createFromHexString(id) },
       { $set: { ...updatedEntry } }

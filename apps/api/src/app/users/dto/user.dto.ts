@@ -10,8 +10,9 @@ import {
   IsString,
   MinLength
 } from 'class-validator';
+import { BaseEntityDto } from '../../shared/dto/base-entity.dto';
 
-export class UserDto {
+export class UserDto extends BaseEntityDto {
   @ApiProperty()
   @IsEmpty()
   @Type(() => String)
