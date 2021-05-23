@@ -15,6 +15,7 @@ import { ApiBearerAuth, ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { ObjectID } from 'mongodb';
 import { Observable } from 'rxjs';
 import { EntityQuery } from '../shared/entity-query/entity-query';
+import { AddDateModified } from '../shared/utils/add-date-modified';
 import { DevDiaryService } from './dev-diary.service';
 import { DiaryEntryDto } from './dto/diary-entry.dto';
 
@@ -46,8 +47,7 @@ export class DevDiaryController {
   @ApiBearerAuth()
   @UseGuards(AuthGuard('jwt'))
   public createEntry(@Body() entry: DiaryEntryDto) {
-    const newEntry = entry;
-    newEntry.dateModified = new Date();
+    const newEntry = AddDateModified(entry);
     return this.devDiaryService.insertOne(newEntry);
   }
 
@@ -55,15 +55,11 @@ export class DevDiaryController {
   @ApiBody({ type: DiaryEntryDto })
   @ApiBearerAuth()
   @UseGuards(AuthGuard('jwt'))
-  public updateEntry(
-    @Param('id') id: string,
-    @Body() entry: Partial<DiaryEntryDto>
-  ) {
+  public updateEntry(@Param('id') id: string, @Body() entry: DiaryEntryDto) {
     if (!ObjectID.isValid(id)) {
       throw new BadRequestException('Provided id must be a valid id');
     }
-    const updatedEntry = entry;
-    updatedEntry.dateModified = new Date();
+    const updatedEntry = AddDateModified(entry);
     return this.devDiaryService.findOneAndUpdate(
       { _id: ObjectID.createFromHexString(id) },
       { $set: { ...updatedEntry } }
