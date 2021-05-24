@@ -5,7 +5,8 @@
     .timeline {
       @apply relative p-4 pt-12 pb-6 items-center mx-auto max-w-5xl container;
     }
-    .start-year, .end-year{
+    .start-year,
+    .end-year {
       @apply absolute left-0 p-2 rounded-full bg-accent text-light-100 top-0;
     }
     .start-year {

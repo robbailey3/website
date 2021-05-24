@@ -8,7 +8,7 @@
       "prefix": "rob",
       "architect": {
         "build": {
-          "builder": "@angular-builders/custom-webpack:browser",
+          "builder": "@angular-devkit/build-angular:browser",
           "options": {
             "outputPath": "dist/site/browser",
             "index": "apps/site/src/index.html",
@@ -18,10 +18,7 @@
             "aot": true,
             "assets": ["apps/site/src/favicon.ico", "apps/site/src/assets"],
             "styles": ["apps/site/src/styles.scss"],
-            "scripts": [],
-            "customWebpackConfig": {
-              "path": "webpack.config.js"
-            }
+            "scripts": []
           },
           "configurations": {
             "production": {
