@@ -7,9 +7,11 @@ import {
   Param,
   Patch,
   Post,
-  Query
+  Query,
+  UseGuards
 } from '@nestjs/common';
-import { ApiBody } from '@nestjs/swagger';
+import { AuthGuard } from '@nestjs/passport';
+import { ApiBearerAuth, ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { ObjectID } from 'mongodb';
 import { Observable } from 'rxjs';
 import { EntityQuery } from '../shared/entity-query/entity-query';
@@ -21,6 +23,7 @@ export class DevDiaryController {
   constructor(private readonly devDiaryService: DevDiaryService) {}
 
   @Get('')
+  @ApiOperation({ description: 'Fetches all diary entries' })
   public getEntries(
     @Query() query: EntityQuery<DiaryEntryDto>
   ): Observable<DiaryEntryDto[]> {
@@ -29,6 +32,10 @@ export class DevDiaryController {
   }
 
   @Get(':id')
+  @ApiOperation({
+    description: 'Finds a single diary entry by its Id',
+    summary: 'Find single diary entry'
+  })
   public getSingleEntry(@Param('id') id: string) {
     if (!ObjectID.isValid(id)) {
       throw new BadRequestException('Provided id must be a valid id');
@@ -39,12 +46,24 @@ export class DevDiaryController {
   }
 
   @Post('')
+  @ApiOperation({
+    description: 'Inserts a new diary entry document into the database',
+    summary: 'Insert diary entry'
+  })
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard('jwt'))
   public createEntry(@Body() newEntry: DiaryEntryDto) {
     return this.devDiaryService.insertOne(newEntry);
   }
 
   @Patch(':id')
   @ApiBody({ type: DiaryEntryDto })
+  @ApiOperation({
+    description: 'Updates an existing diary entry in the database',
+    summary: 'Update diary entry'
+  })
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard('jwt'))
   public updateEntry(
     @Param('id') id: string,
     @Body() updatedEntry: Partial<DiaryEntryDto>
@@ -59,6 +78,12 @@ export class DevDiaryController {
   }
 
   @Delete(':id')
+  @ApiOperation({
+    description: 'Deletes a diary entry from the database',
+    summary: 'Delete diary entry'
+  })
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard('jwt'))
   public deleteEntry(@Param('id') id: string) {
     if (!ObjectID.isValid(id)) {
       throw new BadRequestException('Provided id must be a valid id');
