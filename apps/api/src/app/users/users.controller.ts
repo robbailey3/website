@@ -6,17 +6,26 @@ import {
   Get,
   Post,
   Query,
+  UseGuards,
   UseInterceptors
 } from '@nestjs/common';
-import { ApiBody, ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiBody,
+  ApiOkResponse,
+  ApiTags
+} from '@nestjs/swagger';
 import { Observable } from 'rxjs';
 import { EntityQuery } from '../shared/entity-query/entity-query';
 import { UserDto } from './dto/user.dto';
 import { UsersService } from './users.service';
 import { QueryParserInterceptor } from '../shared/query-parser/query-parser.interceptor';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('users')
 @ApiTags('Users')
+@ApiBearerAuth()
+@UseGuards(AuthGuard('jwt'))
 export class UsersController {
   constructor(private readonly userService: UsersService) {}
 

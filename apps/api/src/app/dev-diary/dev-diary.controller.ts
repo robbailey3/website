@@ -19,6 +19,7 @@ import { DevDiaryService } from './dev-diary.service';
 import { DiaryEntryDto } from './dto/diary-entry.dto';
 
 @Controller('dev-diary')
+@ApiTags('Dev Diary')
 export class DevDiaryController {
   constructor(private readonly devDiaryService: DevDiaryService) {}
 

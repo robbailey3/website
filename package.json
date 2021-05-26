@@ -8,7 +8,7 @@
     "nx": "nx",
     "start": "ng serve",
     "start:all": "concurrently 'npm:serve:api' 'npm:start'",
-    "serve:api": "docker-compose -f apps/api/docker-compose.yml up -d && nx run api:serve",
+    "serve:api": "docker compose -f apps/api/docker-compose.yml up -d && nx run api:serve",
     "build": "ng build",
     "test": "snyk test && ng test",
     "test:all": "nx run-many --all --target=test -- --detectOpenHandles",
