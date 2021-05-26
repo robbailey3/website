@@ -24,7 +24,10 @@ export class DevDiaryController {
   constructor(private readonly devDiaryService: DevDiaryService) {}
 
   @Get('')
-  @ApiOperation({ description: 'Fetches all diary entries' })
+  @ApiOperation({
+    description: 'Fetches all diary entries',
+    summary: 'Fetch Diary Entries'
+  })
   public getEntries(
     @Query() query: EntityQuery<DiaryEntryDto>
   ): Observable<DiaryEntryDto[]> {
