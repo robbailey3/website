@@ -26,7 +26,7 @@ The project is, as always, another learning opportunity. It will include all the
 
 ## Features
 
-- UI Component Library using Storybook (see https://robbailey3.github.io/whisky-tracker/)
+- UI Component Library using Storybook (see https://robbailey3.github.io/website/)
 - API Documentation using Swagger
 - Server-Side-Rendering using Angular Universal
 
