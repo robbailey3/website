@@ -7,6 +7,7 @@ import { HomepageIntroductionComponent } from './homepage-introduction/homepage-
 import { HomepageCarouselComponent } from './homepage-carousel/homepage-carousel.component';
 import { HomepageTechnologiesComponent } from './homepage-technologies/homepage-technologies.component';
 import { TechnologyItemComponent } from './homepage-technologies/technology-item/technology-item.component';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
   declarations: [
@@ -17,6 +18,6 @@ import { TechnologyItemComponent } from './homepage-technologies/technology-item
     HomepageTechnologiesComponent,
     TechnologyItemComponent
   ],
-  imports: [CommonModule, UiComponentsModule]
+  imports: [CommonModule, UiComponentsModule, RouterModule]
 })
 export class HomepageModule {}

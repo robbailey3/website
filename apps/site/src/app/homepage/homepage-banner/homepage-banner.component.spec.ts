@@ -24,8 +24,10 @@ describe('HomepageBannerComponent', () => {
   it('should contain a p tag containing the specified text', () => {
     const expectedText =
       // eslint-disable-next-line max-len
-      'TODO: introduction-text';
+      'Hi there!I make things with code.';
 
-    expect(spectator.query('p').textContent.trim()).toEqual(expectedText);
+    expect(
+      spectator.query('[data-cy="introduction-text"]').textContent.trim()
+    ).toEqual(expectedText);
   });
 });
