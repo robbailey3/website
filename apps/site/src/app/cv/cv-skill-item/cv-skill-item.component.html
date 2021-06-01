@@ -1,0 +1,13 @@
+<div class="cv-skill-item">
+  <div class="cv-skill-item-title">
+    {{ skill.name }}
+  </div>
+  <div class="skill-rating">
+    <div class="skill-bar">
+      <div class="skill-bar-inner" [style]="{ width: ratingPercentage }"></div>
+    </div>
+    <div class="skill-tooltip" [style]="{ left: ratingPercentage }">
+      {{ ratingPercentage }}
+    </div>
+  </div>
+</div>

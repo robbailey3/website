@@ -1,0 +1,8 @@
+.cv-skills {
+  .cv-skill-category {
+    @apply flex flex-wrap;
+    h3 {
+      @apply w-full;
+    }
+  }
+}

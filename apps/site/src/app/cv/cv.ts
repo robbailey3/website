@@ -102,17 +102,46 @@ export const CV: CVModel = {
       dateTo: new Date(),
       summary: '',
       highlights: ['Built a reusable component library'],
-      keywords: ['Vue']
+      keywords: ['Vue', 'C#']
     }
   ],
   skills: [
     {
-      title: 'Programming',
+      title: 'Programming Languages',
       skills: [
         { name: 'TypeScript', rating: 88 },
         {
           name: 'C#',
-          rating: 35
+          rating: 55
+        },
+        { name: 'JavaScript', rating: 90 },
+        { name: 'PHP', rating: 45 },
+        { name: 'Java', rating: 30 },
+        { name: 'Go', rating: 50 }
+      ]
+    },
+    {
+      title: 'DevTools',
+      skills: [{ name: 'Docker', rating: 70 }]
+    },
+    {
+      title: 'Frameworks',
+      skills: [
+        {
+          name: 'Angular',
+          rating: 90
+        },
+        {
+          name: 'React',
+          rating: 80
+        },
+        {
+          name: 'Vue',
+          rating: 70
+        },
+        {
+          name: 'Nest',
+          rating: 80
         }
       ]
     }

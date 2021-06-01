@@ -1,0 +1,26 @@
+:host {
+  @apply w-1/4;
+}
+.cv-skill-item {
+  @apply p-4;
+  .skill-rating {
+    @apply relative;
+    .skill-tooltip {
+      @apply absolute bottom-0 opacity-0;
+    }
+    &:hover {
+      .skill-tooltip {
+        @apply opacity-100 -bottom-12 bg-dark-900 text-light shadow-xl rounded-lg duration-300 p-2;
+        transform: translate(-50%, 0);
+      }
+    }
+  }
+  .skill-bar {
+    @apply h-4 bg-light-900 rounded-md overflow-hidden;
+    box-shadow: inset 0 1px 8px rgba(0, 0, 0, 0.4);
+    .skill-bar-inner {
+      @apply h-full bg-primary-200;
+      box-shadow: inset 0 1px 8px rgba(#fff, 0.4);
+    }
+  }
+}
