@@ -117,7 +117,8 @@ export const CV: CVModel = {
         { name: 'JavaScript', rating: 90 },
         { name: 'PHP', rating: 45 },
         { name: 'Java', rating: 30 },
-        { name: 'Go', rating: 50 }
+        { name: 'Go', rating: 50 },
+        { name: 'Python', rating: 50 }
       ]
     },
     {
@@ -144,6 +145,23 @@ export const CV: CVModel = {
           rating: 80
         }
       ]
+    },
+    {
+      title: 'Databases',
+      skills: [
+        {
+          name: 'MongoDB',
+          rating: 75
+        },
+        {
+          name: 'SQL',
+          rating: 45
+        }
+      ]
+    },
+    {
+      title: 'Miscellaneous',
+      skills: [{ name: 'Express', rating: 50 }]
     }
   ]
 };
