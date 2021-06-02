@@ -1,1 +1,27 @@
-<p>cv-education works!</p>
+<div class="cv-education">
+  <h2>Experience</h2>
+  <ng-container *ngFor="let education of educationItems">
+    <h3>
+      {{ education.qualification }}<span class="separator"> // </span
+      >{{ education.institution }}
+    </h3>
+    <div class="experience-dates">
+      <span class="from-date">{{
+        education.dateFrom | date: 'MMMM YYYY'
+      }}</span>
+      <span class="date-separator"> &ndash; </span>
+      <span *ngIf="dateIsPresent(education.dateTo); else endDate">Present</span>
+      <ng-template class="to-date" #endDate>{{
+        education.dateTo | date: 'MMMM YYYY'
+      }}</ng-template>
+    </div>
+    <div
+      class="experience-highlights"
+      *ngIf="education.highlights && education.highlights.length"
+    >
+      <ul>
+        <li *ngFor="let education of education.highlights">{{ education }}</li>
+      </ul>
+    </div>
+  </ng-container>
+</div>

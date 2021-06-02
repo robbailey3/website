@@ -9,3 +9,10 @@
 .cv-nav-sticky {
   @apply sticky top-16 bg-light-50 shadow-xl rounded m-4 inline-block;
 }
+
+.cv-title {
+  @apply text-right;
+  h1 {
+    @apply text-lg;
+  }
+}

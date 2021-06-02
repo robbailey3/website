@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { UiComponentsModule } from '@website/ui-components';
 import { CvRoutingModule } from './cv-routing.module';
 import { CvRootComponent } from './cv-root/cv-root.component';
 import { CvSkillsComponent } from './cv-skills/cv-skills.component';
@@ -24,6 +25,12 @@ import { CvSkillItemComponent } from './cv-skill-item/cv-skill-item.component';
     CvJsonComponent,
     CvSkillItemComponent
   ],
-  imports: [CommonModule, CvRoutingModule, FontAwesomeModule, SharedModule]
+  imports: [
+    CommonModule,
+    CvRoutingModule,
+    FontAwesomeModule,
+    SharedModule,
+    UiComponentsModule
+  ]
 })
 export class CvModule {}

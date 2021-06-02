@@ -1,5 +1,10 @@
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
-import { faLinkedin } from '@fortawesome/free-brands-svg-icons';
+import {
+  faGithub,
+  faLinkedin,
+  faStackOverflow,
+  faTwitter
+} from '@fortawesome/free-brands-svg-icons';
 
 export interface Location {
   city: string;
@@ -68,6 +73,21 @@ export const CV: CVModel = {
         name: 'LinkedIn',
         icon: faLinkedin,
         url: 'https://www.linkedin.com/in/robbailey3/'
+      },
+      {
+        name: 'GitHub',
+        icon: faGithub,
+        url: 'https://github.com/robbailey3'
+      },
+      {
+        name: 'StackOverflow',
+        icon: faStackOverflow,
+        url: 'https://stackoverflow.com/users/7959497/rob-bailey'
+      },
+      {
+        name: 'Twitter',
+        icon: faTwitter,
+        url: 'https://twitter.com/rob_bailey3'
       }
     ]
   },
@@ -100,9 +120,27 @@ export const CV: CVModel = {
       company: 'Netcall',
       dateFrom: new Date(2021, 2),
       dateTo: new Date(),
-      summary: '',
+      summary: 'Summary goes here',
       highlights: ['Built a reusable component library'],
       keywords: ['Vue', 'C#']
+    },
+    {
+      jobTitle: 'Quality Control Branding Specialist',
+      company: 'Oleeo',
+      dateFrom: new Date(2018, 0),
+      dateTo: new Date(2021, 2),
+      summary: 'Summary goes here',
+      highlights: ['Worked with Goldman Sachs'],
+      keywords: []
+    },
+    {
+      jobTitle: 'Quality Control Executive',
+      company: 'Oleeo',
+      dateFrom: new Date(2016, 2),
+      dateTo: new Date(2018, 0),
+      summary: 'Summary goes here',
+      highlights: ['Worked with Goldman Sachs'],
+      keywords: []
     }
   ],
   skills: [

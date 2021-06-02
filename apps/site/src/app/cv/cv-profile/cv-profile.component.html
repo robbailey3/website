@@ -3,11 +3,19 @@
     <h2>{{ profile.firstName }} {{ profile.lastName }}</h2>
     <div class="profile-social">
       <ng-container *ngFor="let social of profile.socialMedia">
-        <a [href]="social.url">
+        <a [href]="social.url" class="text-2xl mr-2">
           <fa-icon [icon]="social.icon"></fa-icon>
           <span class="sr-only">{{ social.name }}</span>
         </a>
       </ng-container>
     </div>
+    <div class="profile-location">
+      <span class="location-icon"
+        ><fa-icon [icon]="icons.location"></fa-icon
+      ></span>
+      <span class="location-city">{{ profile.location.city }} </span>
+      <span class="location-country">{{ profile.location.country }}</span>
+    </div>
+    <span *ngIf="profile.location.remote">Open to remote opportunities.</span>
   </div>
 </section>
