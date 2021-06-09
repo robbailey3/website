@@ -160,31 +160,38 @@ export const CV: CVModel = {
       ]
     },
     {
-      title: 'DevTools',
+      title: 'Frameworks and Libraries',
       skills: [
-        { name: 'Docker', rating: 70 },
-        { name: 'Git', rating: 80 }
+        { name: 'Angular', rating: 90 },
+        { name: 'React', rating: 80 },
+        { name: 'Vue', rating: 75 },
+        { name: 'NodeJS', rating: 80 },
+        { name: 'NestJS', rating: 85 },
+        { name: 'Express', rating: 70 },
+        { name: 'RxJS', rating: 75 },
+        { name: 'Akita', rating: 62 },
+        {
+          name: 'Redux',
+          rating: 50
+        }
       ]
     },
     {
-      title: 'Frameworks',
+      title: 'Testing',
       skills: [
-        {
-          name: 'Angular',
-          rating: 90
-        },
-        {
-          name: 'React',
-          rating: 80
-        },
-        {
-          name: 'Vue',
-          rating: 70
-        },
-        {
-          name: 'Nest',
-          rating: 80
-        }
+        { name: 'Jest', rating: 80 },
+        { name: 'Cypress', rating: 65 }
+      ]
+    },
+    {
+      title: 'Tools',
+      skills: [
+        { name: 'Docker', rating: 70 },
+        { name: 'Git', rating: 80 },
+        { name: 'Webpack', rating: 75 },
+        { name: 'GitHub Actions', rating: 40 },
+        { name: 'Nx', rating: 68 },
+        { name: 'CircleCI', rating: 52 }
       ]
     },
     {
@@ -202,7 +209,16 @@ export const CV: CVModel = {
     },
     {
       title: 'Miscellaneous',
-      skills: [{ name: 'Express', rating: 50 }]
+      skills: [
+        {
+          name: 'Accessibility',
+          rating: 80
+        },
+        {
+          name: 'SEO',
+          rating: 60
+        }
+      ]
     }
   ]
 };

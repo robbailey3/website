@@ -9,5 +9,10 @@ import { CV } from '../cv';
   animations: [fadeInDownOnEnterAnimation()]
 })
 export class CvSkillsComponent {
-  public skills = CV.skills;
+  public skills = CV.skills.map((skillCategory) => ({
+    title: skillCategory.title,
+    skills: skillCategory.skills.sort(
+      (skillA, skillB) => skillB.rating - skillA.rating
+    )
+  }));
 }
