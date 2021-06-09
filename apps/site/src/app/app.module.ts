@@ -7,6 +7,7 @@ import { AkitaNgDevtools } from '@datorama/akita-ngdevtools';
 import * as Sentry from '@sentry/angular';
 import { Router } from '@angular/router';
 
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
 import { GlobalModule } from './global/global.module';
 import { AppComponent } from './app.component';
@@ -14,12 +15,12 @@ import { environment } from '../environments/environment';
 import { AuthModule } from './auth/auth.module';
 import { HomepageModule } from './homepage/homepage.module';
 
-
 @NgModule({
   declarations: [AppComponent],
   imports: [
     AppRoutingModule,
     BrowserModule.withServerTransition({ appId: 'serverApp' }),
+    BrowserAnimationsModule,
     GlobalModule,
     AuthModule,
     HttpClientModule,

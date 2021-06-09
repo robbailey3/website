@@ -1,43 +1,54 @@
 <div class="cv-experience">
   <h2>Experience</h2>
-  <ng-container *ngFor="let experience of experienceItems">
-    <h3>
-      {{ experience.jobTitle }}<span class="separator"> // </span
-      >{{ experience.company }}
-    </h3>
-    <div class="experience-dates">
-      <span class="from-date">{{
-        experience.dateFrom | date: 'MMMM YYYY'
-      }}</span>
-      <span class="date-separator"> &ndash; </span>
-      <span *ngIf="dateIsPresent(experience.dateTo); else endDate"
-        >Present</span
-      >
-      <ng-template class="to-date" #endDate>{{
-        experience.dateTo | date: 'MMMM YYYY'
-      }}</ng-template>
-    </div>
-    <div class="experience-summary">
-      <p>{{ experience.summary }}</p>
-    </div>
+  <div
+    *ngFor="let experience of experienceItems; let i = index"
+    class="experience-item"
+  >
     <div
-      class="experience-highlights"
-      *ngIf="experience.highlights && experience.highlights.length"
+      *ngIf="experience"
+      [@fadeInDownOnEnter]="{ value: '', params: { delay: i * 250 } }"
     >
-      <ul>
-        <li *ngFor="let highlight of experience.highlights">{{ highlight }}</li>
-      </ul>
-    </div>
-    <div
-      class="experience-key-words"
-      *ngIf="experience.keywords && experience.keywords.length"
-    >
-      <rob-chip
-        *ngFor="let keyWord of experience.keywords"
-        variant="primary"
-        title="keyWord"
-        >{{ keyWord }}</rob-chip
+      <h3>
+        <span class="experience-job-title">{{ experience.jobTitle }}</span>
+        <span class="separator"> // </span>
+        <span class="experience-company">{{ experience.company }}</span>
+      </h3>
+      <div class="experience-dates">
+        <span class="from-date">{{
+          experience.dateFrom | date: 'MMMM YYYY'
+        }}</span>
+        <span class="date-separator"> &ndash; </span>
+        <span *ngIf="dateIsPresent(experience.dateTo); else endDate"
+          >Present</span
+        >
+        <ng-template class="to-date" #endDate>{{
+          experience.dateTo | date: 'MMMM YYYY'
+        }}</ng-template>
+      </div>
+      <div class="experience-summary">
+        <p>{{ experience.summary }}</p>
+      </div>
+      <div
+        class="experience-highlights"
+        *ngIf="experience.highlights && experience.highlights.length"
       >
+        <ul>
+          <li *ngFor="let highlight of experience.highlights">
+            {{ highlight }}
+          </li>
+        </ul>
+      </div>
+      <div
+        class="experience-key-words"
+        *ngIf="experience.keywords && experience.keywords.length"
+      >
+        <rob-chip
+          *ngFor="let keyWord of experience.keywords"
+          variant="primary"
+          [title]="keyWord"
+          >{{ keyWord }}</rob-chip
+        >
+      </div>
     </div>
-  </ng-container>
+  </div>
 </div>

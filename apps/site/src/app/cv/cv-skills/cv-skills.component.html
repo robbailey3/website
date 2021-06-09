@@ -2,8 +2,12 @@
   <h2>Skills</h2>
   <div class="cv-skill-category" *ngFor="let skillCategory of skills">
     <h3>{{ skillCategory.title }}</h3>
-    <ng-container *ngFor="let skill of skillCategory.skills">
-      <rob-cv-skill-item [skill]="skill"></rob-cv-skill-item>
+    <ng-container *ngFor="let skill of skillCategory.skills; let i = index">
+      <rob-cv-skill-item
+        *ngIf="skill"
+        [skill]="skill"
+        [@fadeInDownOnEnter]="{ value: '', params: { delay: i * 100 } }"
+      ></rob-cv-skill-item>
     </ng-container>
   </div>
 </section>

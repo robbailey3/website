@@ -3,10 +3,20 @@
     {{ skill.name }}
   </div>
   <div class="skill-rating">
-    <div class="skill-bar">
+    <div
+      class="skill-bar"
+      (mouseenter)="activateTooltip()"
+      (mouseleave)="deactivateTooltip()"
+    >
       <div class="skill-bar-inner" [style]="{ width: ratingPercentage }"></div>
     </div>
-    <div class="skill-tooltip" [style]="{ left: ratingPercentage }">
+    <div
+      class="skill-tooltip"
+      [style]="{ left: ratingPercentage }"
+      *ngIf="tooltipState === 'active'"
+      [@fadeInOnEnter]
+      [@fadeOutOnLeave]
+    >
       {{ ratingPercentage }}
     </div>
   </div>

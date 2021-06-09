@@ -161,7 +161,10 @@ export const CV: CVModel = {
     },
     {
       title: 'DevTools',
-      skills: [{ name: 'Docker', rating: 70 }]
+      skills: [
+        { name: 'Docker', rating: 70 },
+        { name: 'Git', rating: 80 }
+      ]
     },
     {
       title: 'Frameworks',

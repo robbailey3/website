@@ -69,6 +69,7 @@
     "@sentry/angular": "^6.2.5",
     "@sentry/tracing": "^6.2.5",
     "@tinymce/tinymce-angular": "^4.2.2",
+    "angular-animations": "^0.11.0",
     "bcrypt": "^5.0.1",
     "bson": "^4.2.3",
     "bull": "^3.22.1",
