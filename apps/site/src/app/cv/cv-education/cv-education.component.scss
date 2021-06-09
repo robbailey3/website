@@ -1,3 +1,17 @@
 .education-item {
   @apply my-8;
+  .separator {
+    @apply text-light-900;
+  }
+  .education-institution {
+    @apply text-accent-200;
+  }
+  .education-summary {
+    @apply my-4;
+  }
+  .education-highlights {
+    ul {
+      @apply list-disc ml-4;
+    }
+  }
 }

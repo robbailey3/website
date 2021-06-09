@@ -40,6 +40,7 @@ export interface CVEducation {
   qualification: string;
   dateFrom: Date;
   dateTo: Date;
+  summary?: string;
   highlights: string[];
 }
 
@@ -95,21 +96,34 @@ export const CV: CVModel = {
     {
       institution: 'Udacity',
       qualification: 'Full-Stack Developer NanoDegree',
-      highlights: [''],
+      summary:
+        // eslint-disable-next-line max-len
+        'The goal of the Full Stack Web Developer Nanodegree program is to equip learners with the unique skills they need to build database-backed APIs and web applications. A graduate of this program will be able to design and build databases for software applications, create and deploy database-backed web APIs, and secure and manage user authentication and access control for an application backend. Students will also learn how to deploy a Flask-based web application to the cloud using Docker and Kubernetes.',
+      highlights: [
+        'Built an API using Python and Flask to perform CRUD operations on a PostgreSQL database',
+        'Used Auth0 for Authentication to secure API endpoints',
+        'Built a quiz application including an API using Python and Flask'
+      ],
       dateFrom: new Date(2020, 3),
       dateTo: new Date(2020, 3)
     },
     {
       institution: 'Udacity',
       qualification: 'Front-End Developer NanoDegree',
-      highlights: [''],
+      summary:
+        // eslint-disable-next-line max-len
+        'The goal of the Front End Web Developer Nanodegree program is to equip learners with the unique skills they need to build and develop a variety of websites and applications. Graduates of this Nanodegree program will be able to construct responsive websites using CSS, Flexbox and CSS Grid, develop interactive websites and UI (User Interface) applications using JavaScript and HTML, and connect a web application to backend server data using JavaScript. Students will also build competency automating application build and deployment using Webpack and improving offline performance of websites using Service Worker.',
+      highlights: [],
       dateFrom: new Date(2018, 11),
       dateTo: new Date(2019, 1)
     },
     {
       institution: 'Keele University',
       qualification: 'BSc Physics with Philosophy',
-      highlights: [''],
+      summary:
+        // eslint-disable-next-line max-len
+        'Study Physics at Keele and you’ll learn to apply mathematics and computing to formulate and solve a wide range of physical problems. Physics is a fundamental, curiosity-driven science that has applications in many other areas of science and a vast range of industries, from telecommunications and power generation through to medicine.',
+      highlights: [],
       dateFrom: new Date(2012, 10),
       dateTo: new Date(2015, 7)
     }

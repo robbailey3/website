@@ -1,10 +1,12 @@
 import { Component } from '@angular/core';
+import { fadeInDownOnEnterAnimation } from 'angular-animations';
 import { CV } from '../cv';
 
 @Component({
   selector: 'rob-cv-education',
   templateUrl: './cv-education.component.html',
-  styleUrls: ['./cv-education.component.scss']
+  styleUrls: ['./cv-education.component.scss'],
+  animations: [fadeInDownOnEnterAnimation()]
 })
 export class CvEducationComponent {
   public educationItems = CV.education;
