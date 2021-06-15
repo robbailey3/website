@@ -92,7 +92,8 @@ export const CV: CVModel = {
         url: 'https://twitter.com/rob_bailey3'
       }
     ],
-    profile: 'I am the best person ever'
+    profile:
+      'A Software Engineer with skills in front-end and back-end development.'
   },
   education: [
     {
@@ -137,8 +138,19 @@ export const CV: CVModel = {
       dateFrom: new Date(2021, 2),
       dateTo: new Date(),
       summary: 'Summary goes here',
-      highlights: ['Built a reusable component library'],
-      keywords: ['Vue', 'C#']
+      highlights: [
+        'Built a reusable component library',
+        'Added Telemetry and Logging to a C# Azure Function App'
+      ],
+      keywords: [
+        'Vue',
+        'C#',
+        'Storybook',
+        'Jest',
+        'Azure',
+        'TypeScript',
+        'Serverless'
+      ]
     },
     {
       jobTitle: 'Quality Control Branding Specialist',
@@ -147,7 +159,7 @@ export const CV: CVModel = {
       dateTo: new Date(2021, 2),
       summary: 'Summary goes here',
       highlights: ['Worked with Goldman Sachs'],
-      keywords: []
+      keywords: ['SCSS', 'React', 'Angular', 'TypeScript', 'RSS']
     },
     {
       jobTitle: 'Quality Control Executive',
@@ -155,7 +167,7 @@ export const CV: CVModel = {
       dateFrom: new Date(2016, 2),
       dateTo: new Date(2018, 0),
       summary: 'Summary goes here',
-      highlights: ['Worked with Goldman Sachs'],
+      highlights: [],
       keywords: []
     }
   ],

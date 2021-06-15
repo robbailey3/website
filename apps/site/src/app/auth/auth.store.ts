@@ -19,7 +19,7 @@ export class AuthStore extends Store<Auth> {
   }
 
   logout() {
-    this.localStorage.deleteItem('auth_token');
+    this.localStorage.removeItem('auth_token');
     this.update({ token: null });
   }
 }

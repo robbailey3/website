@@ -15,7 +15,7 @@ export class LocalStorageService {
     this.localStorage.setItem(key, value);
   }
 
-  public deleteItem(key: string): void {
-    this.localStorage.deleteItem(key);
+  public removeItem(key: string): void {
+    this.localStorage.removeItem(key);
   }
 }

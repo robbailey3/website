@@ -2,8 +2,9 @@
   @apply py-8;
   .about-basics-wrapper {
     @apply container max-w-5xl mx-auto p-4;
-    h1 {
-      @apply my-4;
+    h1,
+    h2 {
+      @apply mt-8 mb-6;
     }
   }
 }
