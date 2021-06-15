@@ -23,6 +23,7 @@ export interface CVProfile {
   lastName: string;
   location: Location;
   socialMedia: CVSocialMedia[];
+  profile: string;
 }
 
 export interface CVExperience {
@@ -90,7 +91,8 @@ export const CV: CVModel = {
         icon: faTwitter,
         url: 'https://twitter.com/rob_bailey3'
       }
-    ]
+    ],
+    profile: 'I am the best person ever'
   },
   education: [
     {

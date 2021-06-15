@@ -1,3 +1,15 @@
 .profile-social {
-  @apply my-4;
+  @apply my-4 flex;
+}
+
+.location-icon {
+  @apply mr-2;
+}
+
+.location-remote {
+  @apply mt-4 block;
+}
+
+.profile {
+  @apply my-4 italic;
 }
