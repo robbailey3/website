@@ -139,8 +139,8 @@ export const CV: CVModel = {
       dateTo: new Date(),
       summary: 'Summary goes here',
       highlights: [
-        'Built a reusable component library',
-        'Added Telemetry and Logging to a C# Azure Function App'
+        'Built a reusable component library with Vue2 and storybook',
+        'Added Azure Application Insights Telemetry to an Azure Functions App built in C# .NET'
       ],
       keywords: [
         'Vue',
@@ -158,7 +158,13 @@ export const CV: CVModel = {
       dateFrom: new Date(2018, 0),
       dateTo: new Date(2021, 2),
       summary: 'Summary goes here',
-      highlights: ['Worked with Goldman Sachs'],
+      highlights: [
+        'Built accessible React components to display data retrieved from an RSS feed and integrated with a site created using Webflow',
+        'Built microsites for sales demos using Angular 9 which display jobs retrieved from a REST API',
+        'Built a bespoke survey webpage using TypeScript, Webpack and SCSS for clients to submit NPS scores and feedback',
+        'Reduced the time taken to brand a system by 50%, saving the company over £1000 per brand',
+        'Built a command-line interface using Node.js to quickly create branding files from templates'
+      ],
       keywords: ['SCSS', 'React', 'Angular', 'TypeScript', 'RSS']
     },
     {
@@ -167,8 +173,11 @@ export const CV: CVModel = {
       dateFrom: new Date(2016, 2),
       dateTo: new Date(2018, 0),
       summary: 'Summary goes here',
-      highlights: [],
-      keywords: []
+      highlights: [
+        'Performed manual functional and regression tests',
+        'Produced test scripts and reports'
+      ],
+      keywords: ['Manual Testing', 'Regression Testing']
     }
   ],
   skills: [
