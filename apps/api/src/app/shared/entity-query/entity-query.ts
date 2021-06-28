@@ -1,13 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
-import {
-  IsNumber,
-  isObject,
-  IsOptional,
-  Max,
-  Min,
-  ValidateNested,
-} from 'class-validator';
+import { IsNumber, IsOptional, Max, Min } from 'class-validator';
 import { FilterQuery, SortOptionObject } from 'mongodb';
 
 export class EntityQuery<T> {
@@ -23,7 +16,7 @@ export class EntityQuery<T> {
     required: false,
     name: 'limit',
     description: 'The number of results to retrieve.',
-    default: 100,
+    default: 100
   })
   public limit: number;
 
@@ -34,7 +27,7 @@ export class EntityQuery<T> {
     required: false,
     name: 'skip',
     description: 'The number of results to skip (useful for pagination).',
-    default: 0,
+    default: 0
   })
   public skip: number;
 
@@ -43,7 +36,7 @@ export class EntityQuery<T> {
     required: false,
     name: 'filter',
     description:
-      'A JSON representation of a MongoDB filter. E.g. { "title": { "$eq": "Hello" }}',
+      'A JSON representation of a MongoDB filter. E.g. { "title": { "$eq": "Hello" }}'
   })
   public filter: FilterQuery<T>;
 
@@ -51,7 +44,7 @@ export class EntityQuery<T> {
   @ApiProperty({
     required: false,
     name: 'sort',
-    description: 'How to sort the results',
+    description: 'How to sort the results'
   })
   public sort: SortOptionObject<T>;
 }

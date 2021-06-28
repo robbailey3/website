@@ -30,10 +30,10 @@ export class DatabaseService implements OnModuleInit {
       })
         .then((client: MongoClient) => {
           Logger.log('Connected to database', DatabaseService.name);
-          this.isLoaded.next();
           this.client = client;
           this.db = this.client.db();
           // this.setupInitialUser();
+          this.isLoaded.next();
           resolve();
         })
         .catch((err: Error) => {

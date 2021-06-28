@@ -1,16 +1,9 @@
 /* eslint-disable max-classes-per-file */
 import { Injectable } from '@nestjs/common';
 import { TestingModule, Test } from '@nestjs/testing';
-import { Observable } from 'rxjs';
+import { Subject } from 'rxjs';
 import { DatabaseService } from '../database/database.service';
 import { EntityService } from './entity.service';
-
-// jest.mock('../database/database.service.ts', () => ({
-//   getCollection: jest.fn().mockReturnValue({
-//     find: jest.fn(),
-//     findOne: jest.fn()
-//   })
-// }));
 
 @Injectable()
 class TestEntityService extends EntityService {
@@ -29,6 +22,10 @@ describe('[SERVICE]: EntityService', () => {
         {
           provide: DatabaseService,
           useClass: class MockDatabaseService {
+            isLoaded = new Subject();
+
+            public db = { collection: () => ({}) };
+
             public getCollection() {
               return {
                 find: jest.fn().mockReturnValue({

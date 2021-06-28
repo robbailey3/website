@@ -63,7 +63,7 @@ export class PhotosController {
   ): Observable<PhotoDto[]> {
     const { filter, ...options } = query;
 
-    return this.photosService.find(filter, options);
+    return this.photosService.find<PhotoDto>(filter, options);
   }
 
   // TODO: Look into how the below method can be cleaned up

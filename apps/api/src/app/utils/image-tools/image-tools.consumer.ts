@@ -4,6 +4,7 @@ import { Job } from 'bull';
 import { PhotoDto } from '../../photos/dto/photo.dto';
 import { PhotosService } from '../../photos/photos.service';
 import { ImageToolsService } from './image-tools.service';
+import { BaseEntity } from '../../shared/base-entity/base-entity';
 
 @Processor('image-resizer')
 export class ImageToolsConsumer {
@@ -56,10 +57,8 @@ export class ImageToolsConsumer {
 
       const meta = await this.imageToolsService.getMeta(file.path);
 
-      console.log(meta);
-
       const dbResult = await this.photosService
-        .insertOne<Partial<PhotoDto>>({
+        .insertOne<any>({
           mimeType: file.mimetype,
           src: `${fileNameSansExt}.${ext}`,
           thumbnailSrc: `${fileNameSansExt}_thumb.${ext}`,

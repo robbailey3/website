@@ -67,7 +67,6 @@ export class AuthService {
         { $set: { lastLogIn: new Date() } },
         { upsert: true }
       )
-      .pipe(map((result) => result.value))
       .toPromise();
 
     if (!user) {
