@@ -3,6 +3,8 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { DatabaseService } from '../shared/database/database.service';
 import { UsersService } from './users.service';
 
+jest.mock('../shared/database/database.service.ts');
+
 describe('UsersService', () => {
   let service: UsersService;
 

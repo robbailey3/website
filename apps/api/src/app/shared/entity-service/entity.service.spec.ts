@@ -5,7 +5,12 @@ import { Observable } from 'rxjs';
 import { DatabaseService } from '../database/database.service';
 import { EntityService } from './entity.service';
 
-jest.mock('../database/database.service.ts');
+// jest.mock('../database/database.service.ts', () => ({
+//   getCollection: jest.fn().mockReturnValue({
+//     find: jest.fn(),
+//     findOne: jest.fn()
+//   })
+// }));
 
 @Injectable()
 class TestEntityService extends EntityService {
@@ -16,19 +21,32 @@ class TestEntityService extends EntityService {
 
 describe('[SERVICE]: EntityService', () => {
   let service: TestEntityService;
-  let databaseService: DatabaseService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [TestEntityService, DatabaseService]
+      providers: [
+        TestEntityService,
+        {
+          provide: DatabaseService,
+          useClass: class MockDatabaseService {
+            public getCollection() {
+              return {
+                find: jest.fn().mockReturnValue({
+                  toArray: jest
+                    .fn()
+                    .mockReturnValue(new Promise((resolve) => resolve(null)))
+                }),
+                findOne: jest
+                  .fn()
+                  .mockReturnValue(new Promise((resolve) => resolve(null)))
+              };
+            }
+          }
+        }
+      ]
     }).compile();
 
     service = module.get<TestEntityService>(TestEntityService);
-    databaseService = module.get<DatabaseService>(DatabaseService);
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    databaseService.setCollection = (_collectionName: string) => {
-      return databaseService;
-    };
   });
 
   it('should be defined', () => {
@@ -37,7 +55,10 @@ describe('[SERVICE]: EntityService', () => {
 
   describe('[METHOD]: getMany', () => {
     it('should call databaseService->find', () => {
-      const spy: jest.SpyInstance = jest.spyOn(databaseService, 'find');
+      const spy: jest.SpyInstance = jest.spyOn(
+        (service as any).collection,
+        'find'
+      );
       service.find({});
       expect(spy).toHaveBeenCalled();
     });
@@ -45,7 +66,7 @@ describe('[SERVICE]: EntityService', () => {
 
   describe('[METHOD]: getOne', () => {
     it('should call databaseService->findOne', () => {
-      const spy = jest.spyOn(databaseService, 'findOne');
+      const spy = jest.spyOn((service as any).collection, 'findOne');
       service.findOne({});
       expect(spy).toHaveBeenCalled();
     });
