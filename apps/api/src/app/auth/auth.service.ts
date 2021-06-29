@@ -1,11 +1,12 @@
 import * as bcrypt from 'bcrypt';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
+import { Observable } from 'rxjs';
+import { UpdateWriteOpResult } from 'mongodb';
+import { map } from 'rxjs/operators';
 import { UserDto } from '../users/dto/user.dto';
 import { LoginDto } from './dto/login.dto';
 import { UsersService } from '../users/users.service';
-import { Observable } from 'rxjs';
-import { UpdateWriteOpResult } from 'mongodb';
 
 @Injectable()
 export class AuthService {
