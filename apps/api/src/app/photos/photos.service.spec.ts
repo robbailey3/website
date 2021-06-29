@@ -23,8 +23,7 @@ describe('PhotosService', () => {
           provide: ImageToolsService,
           useFactory: () => ({})
         }
-      ],
-      imports: [UtilsModule, SharedModule]
+      ]
     }).compile();
 
     service = module.get<PhotosService>(PhotosService);

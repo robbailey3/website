@@ -1,7 +1,7 @@
 /* eslint-disable max-classes-per-file */
 import { Injectable } from '@nestjs/common';
 import { TestingModule, Test } from '@nestjs/testing';
-import { Subject } from 'rxjs';
+import { BehaviorSubject, Subject } from 'rxjs';
 import { DatabaseService } from '../database/database.service';
 import { EntityService } from './entity.service';
 
@@ -22,7 +22,7 @@ describe('[SERVICE]: EntityService', () => {
         {
           provide: DatabaseService,
           useClass: class MockDatabaseService {
-            isLoaded = new Subject();
+            isLoaded = new BehaviorSubject(true);
 
             public db = { collection: () => ({}) };
 
