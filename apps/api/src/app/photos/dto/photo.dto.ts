@@ -91,8 +91,6 @@ export interface Meta {
 }
 
 export class PhotoDto extends BaseEntity {
-  public _id: ObjectId;
-
   public albumId: ObjectId;
 
   public src: string;

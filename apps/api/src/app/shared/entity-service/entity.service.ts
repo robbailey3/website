@@ -1,3 +1,4 @@
+import { Logger } from '@nestjs/common';
 import {
   ClientSession,
   Collection,
@@ -19,6 +20,7 @@ import {
   MapReduceOptions,
   MatchKeysAndValues,
   MongoCountPreferences,
+  ObjectId,
   UpdateManyOptions,
   UpdateOneOptions,
   UpdateQuery,
@@ -99,8 +101,7 @@ export abstract class EntityService {
             dateModified: new Date()
           } as any
         })
-      ),
-      map((result) => result)
+      )
     );
   }
 
@@ -180,7 +181,13 @@ export abstract class EntityService {
     return from(this.collection.insertMany(documents, options)).pipe(
       tap((result) =>
         this.updateMany(
-          { _id: { $in: result.insertedIds } },
+          {
+            _id: {
+              $in: Object.keys(result.insertedIds).map((key) =>
+                ObjectId.createFromHexString(key)
+              )
+            }
+          },
           {
             $set: { dateModified: new Date(), dateAdded: new Date() }
           }
