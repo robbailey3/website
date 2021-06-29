@@ -88,7 +88,7 @@
     "passport": "^0.4.1",
     "passport-jwt": "^4.0.0",
     "passport-local": "^1.0.0",
-    "prismjs": "^1.23.0",
+    "prismjs": "^1.24.0",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^6.6.7",
     "sharp": "^0.27.2",
