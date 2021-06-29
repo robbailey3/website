@@ -2,6 +2,7 @@ import {
   BadRequestException,
   Body,
   Controller,
+  Delete,
   Get,
   NotFoundException,
   Param,
@@ -19,7 +20,7 @@ import {
 } from '@nestjs/swagger';
 import { ObjectID } from 'mongodb';
 import { throwError } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, switchMap, tap } from 'rxjs/operators';
 import { EntityQuery } from '../shared/entity-query/entity-query';
 import { BlogService } from './blog.service';
 import { BlogDto } from './dto/blog.dto';
@@ -79,7 +80,11 @@ export class BlogController {
   @Post('')
   @ApiOperation({ description: 'Insert a new blog post into the database' })
   public insertPost(@Body() body: BlogDto) {
-    return this.blogService.insertOne<BlogDto>(body);
+    const newPost = {
+      slug: this.blogService.slugifyTitle(body.title),
+      ...body
+    };
+    return this.blogService.insertOne<BlogDto>(newPost);
   }
 
   @Patch('publish/:id')
@@ -88,26 +93,67 @@ export class BlogController {
     if (!ObjectID.isValid(id)) {
       throw new BadRequestException('Provided id must be a valid id');
     }
-    return this.blogService.findOneAndUpdate(
-      {
+    return this.blogService
+      .findOne<BlogDto>({
         _id: ObjectID.createFromHexString(id)
-      },
-      { $set: { isPublished: true, datePublished: new Date() } }
-    );
+      })
+      .pipe(
+        switchMap((doc) => {
+          const update = {
+            isPublished: !doc.isPublished,
+            datePublished: !doc.isPublished ? new Date() : doc.datePublished
+          };
+          return this.blogService.findOneAndUpdate<BlogDto>(
+            { _id: doc._id },
+            {
+              $set: update
+            }
+          );
+        }),
+        map((result) => {
+          return result.value;
+        })
+      );
   }
 
   @Patch(':id')
-  @ApiOperation({ description: 'Publish post' })
+  @ApiOperation({
+    description: 'Update a post document',
+    summary: 'Update post'
+  })
   @ApiBody({ type: BlogDto, description: 'The updated blog post' })
-  public updatePost(@Param('id') id: string, @Body() updatedPost: BlogDto) {
+  public updatePost(@Param('id') id: string, @Body() body: BlogDto) {
     if (!ObjectID.isValid(id)) {
       throw new BadRequestException('Provided id must be a valid id');
     }
-    return this.blogService.findOneAndUpdate(
-      {
+    const updatedPost = {
+      slug: this.blogService.slugifyTitle(body.title),
+      ...body
+    };
+    return this.blogService
+      .findOneAndUpdate(
+        {
+          _id: ObjectID.createFromHexString(id)
+        },
+        { $set: { ...updatedPost } }
+      )
+      .pipe(map((result) => result.value));
+  }
+
+  @Delete(':id')
+  @ApiOperation({
+    description: 'Delete a document by its ID',
+    summary: 'Delete document'
+  })
+  @ApiOkResponse({ type: BlogDto, description: 'The deleted document' })
+  public deletePost(@Param('id') id: string) {
+    if (!ObjectID.isValid(id)) {
+      throw new BadRequestException('Provided id must be a valid id');
+    }
+    return this.blogService
+      .findOneAndDelete({
         _id: ObjectID.createFromHexString(id)
-      },
-      { $set: { ...updatedPost } }
-    );
+      })
+      .pipe(map((result) => result.value));
   }
 }

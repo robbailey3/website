@@ -93,10 +93,11 @@ export abstract class EntityService {
     filter: FilterQuery<T>,
     update: UpdateQuery<T>,
     options: FindOneAndUpdateOption<T> = {}
-  ): Observable<T> {
+  ): Observable<FindAndModifyWriteOpResultObject<T>> {
+    Logger.log({ filter, update });
     return from(this.collection.findOneAndUpdate(filter, update, options)).pipe(
       switchMap(() =>
-        this.findOneAndUpdate<T>(filter, {
+        this.collection.findOneAndUpdate(filter, {
           $set: {
             dateModified: new Date()
           } as any
