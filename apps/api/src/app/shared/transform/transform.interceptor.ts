@@ -9,8 +9,7 @@ import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 
 export interface Response<T> {
-  results?: T[];
-  result?: T;
+  result?: T | T[];
 }
 @Injectable()
 export class TransformInterceptor<T>
@@ -21,21 +20,18 @@ export class TransformInterceptor<T>
   ): Observable<any> {
     const response = context.switchToHttp().getResponse();
     return next.handle().pipe(
-      map((results: any) => {
+      map((result: any) => {
         let count: number;
-        if (Array.isArray(results)) {
-          count = results.length;
+        if (Array.isArray(result)) {
+          count = result.length;
         } else {
-          count = results ? 1 : 0;
+          count = result ? 1 : 0;
         }
-        const common = {
+        return {
           status: response.statusCode,
           timestamp: Date.now(),
-          count
-        };
-        return {
-          ...common,
-          ...(Array.isArray(results) ? { results } : { result: results })
+          count,
+          result
         };
       })
     );
