@@ -13,6 +13,7 @@ import { ApiTags } from '@nestjs/swagger';
 import { ObjectID } from 'mongodb';
 import { EntityQuery } from '../shared/entity-query/entity-query';
 import { TaskDto } from './dto/task.dto';
+import { UpdateTaskDto } from './dto/update-task.dto';
 import { TasksService } from './tasks.service';
 
 @Controller('tasks')
@@ -42,7 +43,10 @@ export class TasksController {
   }
 
   @Patch(':id')
-  public updateTask(@Param('id') id: string, @Body() updatedTask: TaskDto) {
+  public updateTask(
+    @Param('id') id: string,
+    @Body() updatedTask: UpdateTaskDto
+  ) {
     if (!ObjectID.isValid(id)) {
       throw new BadRequestException('Provided id must be a valid id');
     }

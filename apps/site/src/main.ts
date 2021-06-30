@@ -22,7 +22,18 @@ Sentry.init({
   // Set tracesSampleRate to 1.0 to capture 100%
   // of transactions for performance monitoring.
   // We recommend adjusting this value in production
-  tracesSampleRate: 1.0
+  tracesSampleRate: 1.0,
+  beforeSend: (event) => {
+    if (event.exception) {
+      Sentry.showReportDialog({
+        title: 'Looks like Rob has cocked something up! 💩',
+        subtitle: 'Rob will be notified of this monumental error.',
+        subtitle2:
+          'Please fill out the stuff below so Rob can rectify this mistake.'
+      });
+    }
+    return event;
+  }
 });
 
 document.addEventListener('DOMContentLoaded', () => {

@@ -2,7 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { IsBoolean, IsEmpty, IsNotEmpty, IsString } from 'class-validator';
 import { BaseEntity } from '../../shared/base-entity/base-entity';
 
-export class BlogDto extends BaseEntity {
+export class BlogPostDto extends BaseEntity {
   @ApiProperty()
   @IsNotEmpty()
   @IsString()
