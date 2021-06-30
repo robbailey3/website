@@ -61,15 +61,13 @@ export class AuthService {
    * @param loginUser The email and password object
    */
   public async login(loginUser: LoginDto): Promise<any> {
-    const result = await this.usersService
+    const user = await this.usersService
       .findOneAndUpdate<UserDto>(
         { email: loginUser.email },
         { $set: { lastLogIn: new Date() } },
         { upsert: true }
       )
       .toPromise();
-
-    const user = result.value;
 
     if (!user) {
       // This shouldn't happen, but just in case.

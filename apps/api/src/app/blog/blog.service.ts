@@ -1,5 +1,6 @@
 /* eslint-disable no-param-reassign */
 import { Injectable } from '@nestjs/common';
+import { IndexSpecification } from 'mongodb';
 import { DatabaseService } from '../shared/database/database.service';
 import { EntityService } from '../shared/entity-service/entity.service';
 
@@ -7,6 +8,8 @@ import { EntityService } from '../shared/entity-service/entity.service';
 export class BlogService extends EntityService {
   constructor(db: DatabaseService) {
     super(db, 'blog');
+
+    this.initIndex();
   }
 
   public slugifyTitle(title: string): string {
@@ -27,5 +30,15 @@ export class BlogService extends EntityService {
       .replace(/-+/g, '-'); // collapse dashes
 
     return title;
+  }
+
+  private initIndex() {
+    this.database.isLoaded.subscribe({
+      next: () => {
+        this.createIndex({ title: 'text' } as any, {
+          default_language: 'english'
+        });
+      }
+    });
   }
 }

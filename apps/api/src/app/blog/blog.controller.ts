@@ -1,9 +1,11 @@
 import {
   BadRequestException,
   Body,
+  ConflictException,
   Controller,
   Delete,
   Get,
+  Logger,
   NotFoundException,
   Param,
   Patch,
@@ -84,7 +86,17 @@ export class BlogController {
       slug: this.blogService.slugifyTitle(body.title),
       ...body
     };
-    return this.blogService.insertOne<BlogDto>(newPost);
+    return this.blogService.countDocuments({ slug: newPost.slug }).pipe(
+      switchMap((count) => {
+        Logger.log({ count });
+        if (count > 0) {
+          return throwError(
+            new ConflictException('Post with specified slug already exists')
+          );
+        }
+        return this.blogService.insertOne<BlogDto>(newPost);
+      })
+    );
   }
 
   @Patch('publish/:id')
@@ -99,6 +111,9 @@ export class BlogController {
       })
       .pipe(
         switchMap((doc) => {
+          if (!doc) {
+            return throwError(new NotFoundException('Post not found'));
+          }
           const update = {
             isPublished: !doc.isPublished,
             datePublished: !doc.isPublished ? new Date() : doc.datePublished
@@ -109,9 +124,6 @@ export class BlogController {
               $set: update
             }
           );
-        }),
-        map((result) => {
-          return result.value;
         })
       );
   }
@@ -130,14 +142,12 @@ export class BlogController {
       slug: this.blogService.slugifyTitle(body.title),
       ...body
     };
-    return this.blogService
-      .findOneAndUpdate(
-        {
-          _id: ObjectID.createFromHexString(id)
-        },
-        { $set: { ...updatedPost } }
-      )
-      .pipe(map((result) => result.value));
+    return this.blogService.findOneAndUpdate(
+      {
+        _id: ObjectID.createFromHexString(id)
+      },
+      { $set: { ...updatedPost } }
+    );
   }
 
   @Delete(':id')
@@ -150,10 +160,8 @@ export class BlogController {
     if (!ObjectID.isValid(id)) {
       throw new BadRequestException('Provided id must be a valid id');
     }
-    return this.blogService
-      .findOneAndDelete({
-        _id: ObjectID.createFromHexString(id)
-      })
-      .pipe(map((result) => result.value));
+    return this.blogService.findOneAndDelete<BlogDto>({
+      _id: ObjectID.createFromHexString(id)
+    });
   }
 }

@@ -93,16 +93,20 @@ export abstract class EntityService {
     filter: FilterQuery<T>,
     update: UpdateQuery<T>,
     options: FindOneAndUpdateOption<T> = {}
-  ): Observable<FindAndModifyWriteOpResultObject<T>> {
-    Logger.log({ filter, update });
+  ): Observable<T> {
     return from(this.collection.findOneAndUpdate(filter, update, options)).pipe(
       switchMap(() =>
-        this.collection.findOneAndUpdate(filter, {
-          $set: {
-            dateModified: new Date()
-          } as any
-        })
-      )
+        this.collection.findOneAndUpdate(
+          filter,
+          {
+            $set: {
+              dateModified: new Date()
+            } as any
+          },
+          { returnOriginal: false }
+        )
+      ),
+      map((result) => result.value)
     );
   }
 
@@ -126,8 +130,10 @@ export abstract class EntityService {
   public findOneAndDelete<T extends BaseEntity>(
     filter: FilterQuery<T>,
     options: FindOneAndDeleteOption<T> = {}
-  ): Observable<FindAndModifyWriteOpResultObject<T>> {
-    return from(this.collection.findOneAndDelete(filter, options));
+  ): Observable<T> {
+    return from(this.collection.findOneAndDelete(filter, options)).pipe(
+      map((result) => result.value)
+    );
   }
 
   public updateOne<T extends BaseEntity>(
@@ -163,15 +169,16 @@ export abstract class EntityService {
     options: CollectionInsertOneOptions = {}
   ): Observable<T> {
     return from(this.collection.insertOne(document, options)).pipe(
-      tap((result) => {
-        this.updateMany<BaseEntity>(
-          { _id: result.insertedId },
-          {
-            $set: { dateModified: new Date(), dateAdded: new Date() }
-          }
+      switchMap((result) => {
+        return from(
+          this.collection.findOneAndUpdate(
+            { _id: result.insertedId },
+            { $set: { dateAdded: new Date(), dateModified: new Date() } },
+            { returnOriginal: false }
+          )
         );
       }),
-      map((result) => result.ops[0])
+      map((result) => result.value)
     );
   }
 
