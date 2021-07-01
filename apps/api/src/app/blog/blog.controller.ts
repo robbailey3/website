@@ -71,16 +71,9 @@ export class BlogController {
     if (!ObjectID.isValid(id)) {
       throw new BadRequestException('Provided id must be a valid id');
     }
-    return this.blogService
-      .findOne<BlogPostDto>({ _id: ObjectID.createFromHexString(id) })
-      .pipe(
-        map((result) => {
-          if (!result) {
-            throw new NotFoundException('Blog post not found');
-          }
-          return result;
-        })
-      );
+    return this.blogService.findOne<BlogPostDto>({
+      _id: ObjectID.createFromHexString(id)
+    });
   }
 
   @Post('')
@@ -96,21 +89,16 @@ export class BlogController {
     description: 'Insert a new blog post into the database',
     summary: 'Insert blog post'
   })
-  public insertPost(@Body() body: BlogPostDto) {
+  public async insertPost(@Body() body: BlogPostDto) {
     const newPost = {
       slug: this.blogService.slugifyTitle(body.title),
       ...body
     };
-    return this.blogService.countDocuments({ slug: newPost.slug }).pipe(
-      switchMap((count) => {
-        if (count > 0) {
-          return throwError(
-            new ConflictException('Post with specified slug already exists')
-          );
-        }
-        return this.blogService.insertOne<BlogPostDto>(newPost);
-      })
-    );
+    const count = await this.blogService.countDocuments({ slug: newPost.slug });
+    if (count > 0) {
+      throw new ConflictException('Post with specified slug already exists');
+    }
+    return this.blogService.insertOne<BlogPostDto>(newPost);
   }
 
   @Patch('publish/:id')
@@ -129,31 +117,23 @@ export class BlogController {
     description:
       'A 404 response is returned when no document is found with the provided ID'
   })
-  public publishPost(@Param('id') id: string) {
+  public async publishPost(@Param('id') id: string) {
     if (!ObjectID.isValid(id)) {
       throw new BadRequestException('Provided id must be a valid id');
     }
-    return this.blogService
-      .findOne<BlogPostDto>({
-        _id: ObjectID.createFromHexString(id)
-      })
-      .pipe(
-        switchMap((doc) => {
-          if (!doc) {
-            return throwError(new NotFoundException('Blog post not found'));
-          }
-          const update = {
-            isPublished: !doc.isPublished,
-            datePublished: !doc.isPublished ? new Date() : doc.datePublished
-          };
-          return this.blogService.findOneAndUpdate<BlogPostDto>(
-            { _id: doc._id },
-            {
-              $set: update
-            }
-          );
-        })
-      );
+    const document = await this.blogService.findOne<BlogPostDto>({
+      _id: ObjectID.createFromHexString(id)
+    });
+    const update = {
+      isPublished: !document.isPublished,
+      datePublished: !document.isPublished ? new Date() : document.datePublished
+    };
+    return this.blogService.findOneAndUpdate<BlogPostDto>(
+      { _id: document._id },
+      {
+        $set: update
+      }
+    );
   }
 
   @Patch(':id')
@@ -163,37 +143,34 @@ export class BlogController {
   })
   @ApiOkResponse({
     description: 'Returns the updated blog post document',
-    type: [BlogPostDto]
+    type: BlogPostDto
   })
   @ApiBadRequestResponse({
     description: 'A 400 bad response is returned when an invalid ID is provided'
   })
   @ApiBody({ type: BlogPostDto, description: 'The updated blog post' })
-  public updatePost(@Param('id') id: string, @Body() body: UpdateBlogPostDto) {
+  public async updatePost(
+    @Param('id') id: string,
+    @Body() body: UpdateBlogPostDto
+  ) {
     if (!ObjectID.isValid(id)) {
       throw new BadRequestException('Provided id must be a valid id');
     }
-    return this.blogService
-      .findOne<BlogPostDto>({ _id: ObjectID.createFromHexString(id) })
-      .pipe(
-        switchMap((doc) => {
-          if (!doc) {
-            return throwError(new NotFoundException('Blog post not found'));
-          }
-          const updatedPost = body.title
-            ? {
-                slug: this.blogService.slugifyTitle(body.title),
-                ...body
-              }
-            : body;
-          return this.blogService.findOneAndUpdate(
-            {
-              _id: doc._id
-            },
-            { $set: { ...updatedPost } }
-          );
-        })
-      );
+    const document = await this.blogService.findOne<BlogPostDto>({
+      _id: ObjectID.createFromHexString(id)
+    });
+    const updatedPost = body.title
+      ? {
+          slug: this.blogService.slugifyTitle(body.title),
+          ...body
+        }
+      : body;
+    return this.blogService.findOneAndUpdate(
+      {
+        _id: document._id
+      },
+      { $set: { ...updatedPost } }
+    );
   }
 
   @Delete(':id')
@@ -209,19 +186,8 @@ export class BlogController {
     if (!ObjectID.isValid(id)) {
       throw new BadRequestException('Provided id must be a valid id');
     }
-    return this.blogService
-      .findOne<BlogPostDto>({
-        _id: ObjectID.createFromHexString(id)
-      })
-      .pipe(
-        switchMap((doc) => {
-          if (!doc) {
-            return throwError(new NotFoundException('Blog post not found'));
-          }
-          return this.blogService.findOneAndDelete<BlogPostDto>({
-            _id: doc._id
-          });
-        })
-      );
+    return this.blogService.findOneAndDelete({
+      _id: ObjectID.createFromHexString(id)
+    });
   }
 }

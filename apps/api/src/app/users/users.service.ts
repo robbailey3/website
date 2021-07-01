@@ -12,16 +12,14 @@ export class UsersService extends EntityService {
     super(database, 'users');
   }
 
-  public insertUser(newUser: UserDto): Observable<UserDto> {
-    return from(bcrypt.hash(newUser.password, 12)).pipe(
-      switchMap((hashedPassword) => {
-        const { password, ...userWithoutPassword } = newUser;
-        const user = {
-          password: hashedPassword,
-          ...userWithoutPassword
-        } as UserDto;
-        return super.insertOne<UserDto>(user);
-      })
-    );
+  public async insertUser(newUser: UserDto): Promise<UserDto> {
+    const hashedPassword = await bcrypt.hash(newUser.password, 12);
+    const { password, ...userWithoutPassword } = newUser;
+    const user = {
+      password: hashedPassword,
+      ...userWithoutPassword
+    } as UserDto;
+
+    return this.insertOne<UserDto>(user);
   }
 }

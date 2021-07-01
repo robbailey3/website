@@ -29,9 +29,7 @@ export class AuthService {
     pass: string
   ): Promise<Partial<UserDto>> {
     try {
-      const user = await this.usersService
-        .findOne<UserDto>({ email })
-        .toPromise();
+      const user = await this.usersService.findOne<UserDto>({ email });
 
       if (!user || !user.password) {
         throw new UnauthorizedException();
@@ -44,7 +42,7 @@ export class AuthService {
       const passwordIsCorrect = await bcrypt.compare(pass, user.password);
 
       if (!passwordIsCorrect) {
-        await this.recordLoginAttempt(user).toPromise();
+        await this.recordLoginAttempt(user);
         throw new UnauthorizedException();
       }
 
@@ -61,13 +59,11 @@ export class AuthService {
    * @param loginUser The email and password object
    */
   public async login(loginUser: LoginDto): Promise<any> {
-    const user = await this.usersService
-      .findOneAndUpdate<UserDto>(
-        { email: loginUser.email },
-        { $set: { lastLogIn: new Date() } },
-        { upsert: true }
-      )
-      .toPromise();
+    const user = await this.usersService.findOneAndUpdate<UserDto>(
+      { email: loginUser.email },
+      { $set: { lastLogIn: new Date() } },
+      { upsert: true }
+    );
 
     if (!user) {
       // This shouldn't happen, but just in case.
@@ -93,8 +89,8 @@ export class AuthService {
    * @param {UserDto} user
    * @return {*}  {Observable<UpdateWriteOpResult>}
    */
-  public recordLoginAttempt(user: UserDto): Observable<UpdateWriteOpResult> {
-    return this.usersService.updateOne<UserDto>(user, {
+  public recordLoginAttempt(user: UserDto): Promise<UserDto> {
+    return this.usersService.findOneAndUpdate<UserDto>(user, {
       $push: { failedLogins: Date.now() }
     });
   }

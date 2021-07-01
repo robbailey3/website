@@ -132,7 +132,7 @@ describe('DevDiaryController', () => {
     const invalidID = 'invalid_id';
     beforeEach(() => {
       validID = new ObjectID().toHexString();
-      spy = jest.spyOn(service, 'deleteOne');
+      spy = jest.spyOn(service, 'findOneAndDelete');
     });
 
     it('should be defined', () => {

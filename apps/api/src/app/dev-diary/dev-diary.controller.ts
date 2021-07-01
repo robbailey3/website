@@ -30,7 +30,7 @@ export class DevDiaryController {
   })
   public getEntries(
     @Query() query: EntityQuery<DiaryEntryDto>
-  ): Observable<DiaryEntryDto[]> {
+  ): Promise<DiaryEntryDto[]> {
     const { filter, ...options } = query;
     return this.devDiaryService.find<DiaryEntryDto>(filter, options);
   }
@@ -92,7 +92,7 @@ export class DevDiaryController {
     if (!ObjectID.isValid(id)) {
       throw new BadRequestException('Provided id must be a valid id');
     }
-    return this.devDiaryService.deleteOne({
+    return this.devDiaryService.findOneAndDelete({
       _id: ObjectID.createFromHexString(id)
     });
   }
