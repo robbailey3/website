@@ -1,36 +1,101 @@
+import { BadRequestException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
-import { BehaviorSubject } from 'rxjs';
-import { DatabaseService } from '../shared/database/database.service';
+import { ObjectID } from 'mongodb';
 import { BlogController } from './blog.controller';
 import { BlogService } from './blog.service';
+import { BlogPostDto } from './dto/blogpost.dto';
 
-describe('BlogController', () => {
+jest.mock('./blog.service');
+
+describe('[CONTROLLER: BlogController]', () => {
   let controller: BlogController;
+  let service: BlogService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [BlogController],
-      providers: [
-        BlogService,
-        {
-          provide: DatabaseService,
-          useValue: {
-            isLoaded: new BehaviorSubject(true),
-            collection: {
-              find: jest.fn(),
-              findOne: jest.fn(),
-              insertOne: jest.fn(),
-              findOneAndDelete: jest.fn()
-            }
-          }
-        }
-      ]
+      providers: [BlogService]
     }).compile();
 
     controller = module.get<BlogController>(BlogController);
+    service = module.get<BlogService>(BlogService);
   });
 
   it('should be defined', () => {
     expect(controller).toBeDefined();
   });
+
+  describe('[METHOD]: getPosts', () => {
+    it('should call blogService->find', () => {
+      controller.getPosts({ filter: {}, sort: {}, limit: 0, skip: 0 });
+      expect(service.find).toHaveBeenCalled();
+    });
+
+    it('should pass the filter and options to the service', () => {
+      controller.getPosts({ filter: {}, sort: {}, limit: 0, skip: 0 });
+      expect(service.find).toHaveBeenCalledWith(
+        {},
+        { sort: {}, skip: 0, limit: 0 }
+      );
+    });
+  });
+  describe('[METHOD]: getPostById', () => {
+    const validID = new ObjectID().toHexString();
+    const invalidID = 'invalid_id';
+
+    it('should have a findOne method', () => {
+      expect(controller.getPostById).toBeDefined();
+    });
+    it('should throw an error when an invalid ID is passed', () => {
+      expect(() => controller.getPostById(invalidID)).toThrow(
+        BadRequestException
+      );
+    });
+
+    it('should not throw an error when a valid ID is provided', () => {
+      expect(() => controller.getPostById(validID)).not.toThrow(
+        BadRequestException
+      );
+    });
+
+    it('should call blogService->findOne', () => {
+      controller.getPostById(validID);
+
+      expect(service.findOne).toHaveBeenCalled();
+    });
+  });
+  describe('[METHOD]: insertPost', () => {
+    it('should have a insertPost method', () => {
+      expect(controller.insertPost).toBeDefined();
+    });
+
+    it('should call blogService->insertOne', () => {
+      controller.insertPost(new BlogPostDto());
+
+      expect(service.insertOne).toHaveBeenCalled();
+    });
+  });
+  describe('[METHOD]: publishPost', () => {
+    const validID = new ObjectID().toHexString();
+    const invalidID = 'invalid_id';
+    it('should call blogService->findOneAndUpdate', () => {
+      controller.publishPost(validID);
+      service.findOne = jest.fn().mockReturnValue(new BlogPostDto());
+      expect(service.findOneAndUpdate).toHaveBeenCalled();
+    });
+
+    it('should throw an error when an invalid ID is passed', () => {
+      expect(() => controller.getPostById(invalidID)).toThrow(
+        BadRequestException
+      );
+    });
+
+    it('should not throw an error when a valid ID is provided', () => {
+      expect(() => controller.getPostById(validID)).not.toThrow(
+        BadRequestException
+      );
+    });
+  });
+  describe('[METHOD]: updatePost', () => {});
+  describe('[METHOD]: deletePost', () => {});
 });

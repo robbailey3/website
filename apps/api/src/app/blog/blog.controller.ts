@@ -5,15 +5,12 @@ import {
   Controller,
   Delete,
   Get,
-  Logger,
-  NotFoundException,
   Param,
   Patch,
   Post,
   Query
 } from '@nestjs/common';
 import {
-  ApiAcceptedResponse,
   ApiBadRequestResponse,
   ApiBody,
   ApiCreatedResponse,
@@ -24,8 +21,6 @@ import {
   ApiTags
 } from '@nestjs/swagger';
 import { ObjectID } from 'mongodb';
-import { throwError } from 'rxjs';
-import { map, switchMap, tap } from 'rxjs/operators';
 import { EntityQuery } from '../shared/entity-query/entity-query';
 import { BlogService } from './blog.service';
 import { BlogPostDto } from './dto/blogpost.dto';

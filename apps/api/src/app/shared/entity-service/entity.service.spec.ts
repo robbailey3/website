@@ -1,7 +1,7 @@
 /* eslint-disable max-classes-per-file */
 import { Injectable } from '@nestjs/common';
 import { TestingModule, Test } from '@nestjs/testing';
-import { BehaviorSubject, Subject } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import { DatabaseService } from '../database/database.service';
 import { EntityService } from './entity.service';
 
@@ -14,6 +14,7 @@ class TestEntityService extends EntityService {
 
 describe('[SERVICE]: EntityService', () => {
   let service: TestEntityService;
+  let db: DatabaseService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -21,24 +22,7 @@ describe('[SERVICE]: EntityService', () => {
         TestEntityService,
         {
           provide: DatabaseService,
-          useClass: class MockDatabaseService {
-            isLoaded = new BehaviorSubject(true);
-
-            public db = { collection: () => ({}) };
-
-            public getCollection() {
-              return {
-                find: jest.fn().mockReturnValue({
-                  toArray: jest
-                    .fn()
-                    .mockReturnValue(new Promise((resolve) => resolve(null)))
-                }),
-                findOne: jest
-                  .fn()
-                  .mockReturnValue(new Promise((resolve) => resolve(null)))
-              };
-            }
-          }
+          useValue: { collection: {}, isLoaded: new BehaviorSubject(true) }
         }
       ]
     }).compile();
@@ -48,24 +32,5 @@ describe('[SERVICE]: EntityService', () => {
 
   it('should be defined', () => {
     expect(service).toBeDefined();
-  });
-
-  describe('[METHOD]: getMany', () => {
-    it('should call databaseService->find', () => {
-      const spy: jest.SpyInstance = jest.spyOn(
-        (service as any).collection,
-        'find'
-      );
-      service.find({});
-      expect(spy).toHaveBeenCalled();
-    });
-  });
-
-  describe('[METHOD]: getOne', () => {
-    it('should call databaseService->findOne', () => {
-      const spy = jest.spyOn((service as any).collection, 'findOne');
-      service.findOne({});
-      expect(spy).toHaveBeenCalled();
-    });
   });
 });
