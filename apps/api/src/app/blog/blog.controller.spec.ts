@@ -1,4 +1,4 @@
-import { BadRequestException } from '@nestjs/common';
+import { BadRequestException, NotFoundException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { ObjectID } from 'mongodb';
 import { BlogController } from './blog.controller';
@@ -38,6 +38,20 @@ describe('[CONTROLLER: BlogController]', () => {
         { sort: {}, skip: 0, limit: 0 }
       );
     });
+
+    it('should return an array of blog posts', async () => {
+      const expectedResult = [new BlogPostDto()];
+      service.find = jest.fn().mockResolvedValue(expectedResult);
+
+      const result = await controller.getPosts({
+        filter: {},
+        sort: {},
+        limit: 0,
+        skip: 0
+      });
+
+      expect(result).toEqual(expectedResult);
+    });
   });
   describe('[METHOD]: getPostById', () => {
     const validID = new ObjectID().toHexString();
@@ -69,8 +83,8 @@ describe('[CONTROLLER: BlogController]', () => {
       expect(controller.insertPost).toBeDefined();
     });
 
-    it('should call blogService->insertOne', () => {
-      controller.insertPost(new BlogPostDto());
+    it('should call blogService->insertOne', async () => {
+      await controller.insertPost(new BlogPostDto());
 
       expect(service.insertOne).toHaveBeenCalled();
     });
@@ -78,9 +92,10 @@ describe('[CONTROLLER: BlogController]', () => {
   describe('[METHOD]: publishPost', () => {
     const validID = new ObjectID().toHexString();
     const invalidID = 'invalid_id';
-    it('should call blogService->findOneAndUpdate', () => {
-      controller.publishPost(validID);
-      service.findOne = jest.fn().mockReturnValue(new BlogPostDto());
+    it('should call blogService->findOneAndUpdate', async () => {
+      service.findOne = jest.fn().mockResolvedValue(new BlogPostDto());
+
+      await controller.publishPost(validID);
       expect(service.findOneAndUpdate).toHaveBeenCalled();
     });
 

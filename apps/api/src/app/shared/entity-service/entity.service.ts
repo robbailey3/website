@@ -3,30 +3,18 @@ import {
   ClientSession,
   Collection,
   CollectionAggregationOptions,
-  CollectionInsertManyOptions,
   CollectionInsertOneOptions,
-  CollectionMapFunction,
-  CollectionReduceFunction,
-  CommonOptions,
-  DeleteWriteOpResultObject,
   FilterQuery,
-  FindAndModifyWriteOpResultObject,
   FindOneAndDeleteOption,
-  FindOneAndReplaceOption,
   FindOneAndUpdateOption,
   FindOneOptions,
   IndexOptions,
   IndexSpecification,
-  MapReduceOptions,
   MongoCountPreferences,
-  ObjectId,
   UpdateManyOptions,
-  UpdateOneOptions,
-  UpdateQuery,
-  UpdateWriteOpResult
+  UpdateQuery
 } from 'mongodb';
-import { from, Observable, throwError } from 'rxjs';
-import { map, switchMap, tap } from 'rxjs/operators';
+import { from } from 'rxjs';
 import { BaseEntity } from '../base-entity/base-entity';
 import { DatabaseService } from '../database/database.service';
 
@@ -58,7 +46,7 @@ export abstract class EntityService {
   ): Promise<T[]> {
     const result = await this.collection.find(query, options).toArray();
 
-    if (!result) {
+    if (!result || result.length === 0) {
       throw new NotFoundException('No documents found');
     }
 

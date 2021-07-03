@@ -26,7 +26,9 @@ export class DatabaseService implements OnModuleInit {
 
   private async connect(): Promise<void> {
     try {
-      this.client = await MongoClient.connect(this.DB_URL);
+      this.client = await MongoClient.connect(this.DB_URL, {
+        useUnifiedTopology: true
+      });
       this.db = this.client.db();
       this.isLoaded.next();
     } catch ($e) {

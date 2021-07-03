@@ -1,6 +1,5 @@
 /* eslint-disable no-param-reassign */
 import { Injectable } from '@nestjs/common';
-import { IndexSpecification } from 'mongodb';
 import { DatabaseService } from '../shared/database/database.service';
 import { EntityService } from '../shared/entity-service/entity.service';
 
