@@ -30,4 +30,21 @@ describe('BlogService', () => {
   it('should be defined', () => {
     expect(service).toBeDefined();
   });
+
+  describe('[METHOD]: slugifyTitle', () => {
+    test.each([
+      { title: 'Some Title', expected: 'some-title' },
+      { title: 'Once upon a time', expected: 'once-upon-a-time' },
+      {
+        title: 'Something & some, punctuatioN!',
+        expected: 'something-some-punctuation'
+      },
+      {
+        title: 'SoMETHInG, WITH <> WEIR_D CAPITALiSATION',
+        expected: 'something-with-weir-d-capitalisation'
+      }
+    ])('should correctly slugify %o', (testCase) => {
+      expect(service.slugifyTitle(testCase.title)).toEqual(testCase.expected);
+    });
+  });
 });
