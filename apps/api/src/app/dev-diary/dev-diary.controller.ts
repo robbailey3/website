@@ -30,7 +30,7 @@ export class DevDiaryController {
   })
   public getEntries(
     @Query() query: EntityQuery<DiaryEntryDto>
-  ): Observable<DiaryEntryDto[]> {
+  ): Promise<DiaryEntryDto[]> {
     const { filter, ...options } = query;
     return this.devDiaryService.find<DiaryEntryDto>(filter, options);
   }
@@ -55,7 +55,7 @@ export class DevDiaryController {
     summary: 'Insert diary entry'
   })
   @ApiBearerAuth()
-  @UseGuards(AuthGuard('jwt'))
+  // @UseGuards(AuthGuard('jwt'))
   public createEntry(@Body() newEntry: DiaryEntryDto) {
     return this.devDiaryService.insertOne(newEntry);
   }
@@ -67,7 +67,7 @@ export class DevDiaryController {
     summary: 'Update diary entry'
   })
   @ApiBearerAuth()
-  @UseGuards(AuthGuard('jwt'))
+  // @UseGuards(AuthGuard('jwt'))
   public updateEntry(
     @Param('id') id: string,
     @Body() updatedEntry: Partial<DiaryEntryDto>
@@ -87,12 +87,12 @@ export class DevDiaryController {
     summary: 'Delete diary entry'
   })
   @ApiBearerAuth()
-  @UseGuards(AuthGuard('jwt'))
+  // @UseGuards(AuthGuard('jwt'))
   public deleteEntry(@Param('id') id: string) {
     if (!ObjectID.isValid(id)) {
       throw new BadRequestException('Provided id must be a valid id');
     }
-    return this.devDiaryService.deleteOne({
+    return this.devDiaryService.findOneAndDelete({
       _id: ObjectID.createFromHexString(id)
     });
   }

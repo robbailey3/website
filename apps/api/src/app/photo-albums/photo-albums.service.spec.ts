@@ -1,15 +1,22 @@
 import { Test, TestingModule } from '@nestjs/testing';
+import { Subject } from 'rxjs';
 import { DatabaseService } from '../shared/database/database.service';
 import { PhotoAlbumsService } from './photo-albums.service';
-
-jest.mock('../shared/database/database.service.ts');
 
 describe('PhotoAlbumsService', () => {
   let service: PhotoAlbumsService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [PhotoAlbumsService, DatabaseService]
+      providers: [
+        PhotoAlbumsService,
+        {
+          provide: DatabaseService,
+          useClass: class MockDB {
+            isLoaded = new Subject();
+          }
+        }
+      ]
     }).compile();
 
     service = module.get<PhotoAlbumsService>(PhotoAlbumsService);

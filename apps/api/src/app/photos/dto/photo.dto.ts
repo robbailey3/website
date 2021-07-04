@@ -1,4 +1,5 @@
 import { ObjectId } from 'mongodb';
+import { BaseEntity } from '../../shared/base-entity/base-entity';
 
 interface Dimensions {
   width: number;
@@ -89,9 +90,7 @@ export interface Meta {
   gps: Gps;
 }
 
-export class PhotoDto {
-  public _id: ObjectId;
-
+export class PhotoDto extends BaseEntity {
   public albumId: ObjectId;
 
   public src: string;

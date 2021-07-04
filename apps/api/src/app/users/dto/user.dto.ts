@@ -2,16 +2,15 @@ import { ApiProperty } from '@nestjs/swagger';
 import { ObjectID } from 'mongodb';
 import { Exclude, Type } from 'class-transformer';
 import {
-  IsArray,
-  IsDate,
   IsEmail,
   IsEmpty,
   IsNotEmpty,
   IsString,
   MinLength
 } from 'class-validator';
+import { BaseEntity } from '../../shared/base-entity/base-entity';
 
-export class UserDto {
+export class UserDto extends BaseEntity {
   @ApiProperty()
   @IsEmpty()
   @Type(() => String)
