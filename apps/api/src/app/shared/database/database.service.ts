@@ -13,7 +13,10 @@ export class DatabaseService implements OnModuleInit {
 
   private DB_URL: string;
 
-  constructor(private readonly configService: ConfigService) {
+  constructor(
+    private readonly configService: ConfigService,
+    private readonly log: Logger
+  ) {
     this.DB_URL = this.configService.get<string>('DB_URL');
   }
 
@@ -21,25 +24,16 @@ export class DatabaseService implements OnModuleInit {
     this.connect();
   }
 
-  private connect(): Promise<void> {
-    return new Promise<void>((resolve, reject) => {
-      MongoClient.connect(this.DB_URL, {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-        connectTimeoutMS: 10000
-      })
-        .then((client: MongoClient) => {
-          Logger.log('Connected to database', DatabaseService.name);
-          this.client = client;
-          this.db = this.client.db();
-          // this.setupInitialUser();
-          this.isLoaded.next();
-          resolve();
-        })
-        .catch((err: Error) => {
-          reject(err);
-        });
-    });
+  private async connect(): Promise<void> {
+    try {
+      this.client = await MongoClient.connect(this.DB_URL, {
+        useUnifiedTopology: true
+      });
+      this.db = this.client.db();
+      this.isLoaded.next();
+    } catch ($e) {
+      this.log.error($e);
+    }
   }
 
   public setDB(dbName: string): this {

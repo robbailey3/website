@@ -1,5 +1,4 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { Observable } from 'rxjs';
 import { UsersController } from './users.controller';
 import { UsersService } from './users.service';
 
@@ -17,7 +16,6 @@ describe('UsersController', () => {
 
     controller = module.get<UsersController>(UsersController);
     service = module.get<UsersService>(UsersService);
-    service.find = () => new Observable();
   });
 
   it('should be defined', () => {

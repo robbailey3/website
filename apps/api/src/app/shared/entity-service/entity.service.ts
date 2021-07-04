@@ -1,31 +1,20 @@
+import { NotFoundException } from '@nestjs/common';
 import {
   ClientSession,
   Collection,
   CollectionAggregationOptions,
-  CollectionInsertManyOptions,
   CollectionInsertOneOptions,
-  CollectionMapFunction,
-  CollectionReduceFunction,
-  CommonOptions,
-  DeleteWriteOpResultObject,
   FilterQuery,
-  FindAndModifyWriteOpResultObject,
   FindOneAndDeleteOption,
-  FindOneAndReplaceOption,
   FindOneAndUpdateOption,
   FindOneOptions,
   IndexOptions,
   IndexSpecification,
-  MapReduceOptions,
-  MatchKeysAndValues,
   MongoCountPreferences,
   UpdateManyOptions,
-  UpdateOneOptions,
-  UpdateQuery,
-  UpdateWriteOpResult
+  UpdateQuery
 } from 'mongodb';
-import { from, Observable } from 'rxjs';
-import { map, switchMap, tap } from 'rxjs/operators';
+import { from } from 'rxjs';
 import { BaseEntity } from '../base-entity/base-entity';
 import { DatabaseService } from '../database/database.service';
 
@@ -51,186 +40,105 @@ export abstract class EntityService {
     return from(this.collection.options(options));
   }
 
-  public find<T extends BaseEntity>(
+  public async find<T extends BaseEntity>(
     query: FilterQuery<T> = {},
     options: FindOneOptions<T extends any ? any : T> = {}
-  ): Observable<T[]> {
-    return from(this.collection.find<T>(query, options).toArray());
+  ): Promise<T[]> {
+    const result = await this.collection.find(query, options).toArray();
+
+    if (!result || result.length === 0) {
+      throw new NotFoundException('No documents found');
+    }
+
+    return result;
   }
 
-  public findOne<T extends BaseEntity>(
+  public async findOne<T extends BaseEntity>(
     query: FilterQuery<T> = {},
     options: FindOneOptions<T extends any ? any : T> = {}
-  ): Observable<T> {
-    return from(this.collection.findOne<T>(query, options));
-  }
+  ): Promise<T> {
+    const result = await this.collection.findOne(query, options);
 
-  public findDistinct<T extends BaseEntity>(
-    key: string,
-    filter: FilterQuery<T> = {},
-    options: CommonOptions = {}
-  ): Observable<T[]> {
-    return from(this.collection.distinct(key, filter, options));
+    if (!result) {
+      throw new NotFoundException('No documents found');
+    }
+
+    return result;
   }
 
   public countDocuments<T extends BaseEntity>(
     filter: FilterQuery<T> = {},
     options: MongoCountPreferences = {}
-  ): Observable<number> {
-    return from(this.collection.countDocuments(filter, options));
+  ): Promise<number> {
+    return this.collection.countDocuments(filter, options);
   }
 
-  public getEstimatedDocumentCount<T extends BaseEntity>(
-    query: FilterQuery<T>,
-    options: MongoCountPreferences = {}
-  ): Observable<number> {
-    return from(this.collection.estimatedDocumentCount(query, options));
-  }
-
-  public findOneAndUpdate<T extends BaseEntity>(
+  public async findOneAndUpdate<T extends BaseEntity>(
     filter: FilterQuery<T>,
     update: UpdateQuery<T>,
     options: FindOneAndUpdateOption<T> = {}
-  ): Observable<T> {
-    return from(this.collection.findOneAndUpdate(filter, update, options)).pipe(
-      switchMap(() =>
-        this.findOneAndUpdate<T>(filter, {
-          $set: {
-            dateModified: new Date()
-          } as any
-        })
-      ),
-      map((result) => result)
-    );
+  ): Promise<T> {
+    if (!options.upsert) {
+      await this.checkIfDocumentExists(filter);
+    }
+    await this.collection.findOneAndUpdate(filter, update, options);
+
+    const result = await this.collection.findOneAndUpdate(filter, {
+      $set: { dateModified: new Date() }
+    });
+
+    return result.value;
   }
 
-  public findOneAndReplace<T extends BaseEntity>(
-    filter: FilterQuery<T>,
-    replacement: Record<string, unknown>,
-    options: FindOneAndReplaceOption<T> = {}
-  ): Observable<FindAndModifyWriteOpResultObject<T>> {
-    return from(
-      this.collection.findOneAndReplace(filter, replacement, options)
-    ).pipe(
-      tap(() =>
-        this.findOneAndUpdate<BaseEntity>(filter, {
-          $set: { dateModified: new Date() }
-        })
-      ),
-      map((result) => result.value)
-    );
-  }
-
-  public findOneAndDelete<T extends BaseEntity>(
+  public async findOneAndDelete<T extends BaseEntity>(
     filter: FilterQuery<T>,
     options: FindOneAndDeleteOption<T> = {}
-  ): Observable<FindAndModifyWriteOpResultObject<T>> {
-    return from(this.collection.findOneAndDelete(filter, options));
+  ): Promise<T> {
+    await this.checkIfDocumentExists(filter);
+
+    const result = await this.collection.findOneAndDelete(filter, options);
+
+    return result.value;
   }
 
-  public updateOne<T extends BaseEntity>(
-    filter: FilterQuery<T>,
-    update: UpdateQuery<T>,
-    options: UpdateOneOptions = {}
-  ): Observable<UpdateWriteOpResult> {
-    return from(this.collection.updateOne(filter, update, options)).pipe(
-      tap(() =>
-        this.updateOne<BaseEntity>(filter, {
-          $set: { dateModified: new Date() }
-        })
-      )
-    );
-  }
-
-  public updateMany<T extends BaseEntity>(
-    filter: FilterQuery<T>,
-    update: UpdateQuery<T>,
-    options: UpdateManyOptions = {}
-  ): Observable<UpdateWriteOpResult> {
-    return from(this.collection.updateMany(filter, update, options)).pipe(
-      switchMap(() =>
-        this.updateMany<BaseEntity>(filter, {
-          $set: { dateModified: new Date() }
-        })
-      )
-    );
-  }
-
-  public insertOne<T extends BaseEntity>(
+  public async insertOne<T extends BaseEntity>(
     document: T,
     options: CollectionInsertOneOptions = {}
-  ): Observable<T> {
-    return from(this.collection.insertOne(document, options)).pipe(
-      tap((result) => {
-        this.updateMany<BaseEntity>(
-          { _id: result.insertedId },
-          {
-            $set: { dateModified: new Date(), dateAdded: new Date() }
-          }
-        );
-      }),
-      map((result) => result.ops[0])
-    );
+  ): Promise<T> {
+    const documentToInsert = document;
+    documentToInsert.dateModified = new Date();
+    documentToInsert.dateAdded = new Date();
+    const result = await this.collection.insertOne(documentToInsert, options);
+
+    return this.collection.findOne({ _id: result.insertedId });
   }
 
-  public insertMany<T extends BaseEntity>(
-    documents: T[],
-    options: CollectionInsertManyOptions = {}
-  ): Observable<T[]> {
-    return from(this.collection.insertMany(documents, options)).pipe(
-      tap((result) =>
-        this.updateMany(
-          { _id: { $in: result.insertedIds } },
-          {
-            $set: { dateModified: new Date(), dateAdded: new Date() }
-          }
-        )
-      ),
-      map((result) => result.ops)
-    );
-  }
-
-  public deleteOne<T extends BaseEntity>(
+  public updateMany<T>(
     filter: FilterQuery<T>,
-    options: CommonOptions = {}
-  ): Observable<DeleteWriteOpResultObject> {
-    return from(this.collection.deleteOne(filter, options));
-  }
-
-  public deleteMany<T extends BaseEntity>(
-    filter: FilterQuery<T>,
-    options: CommonOptions = {}
-  ): Observable<DeleteWriteOpResultObject> {
-    return from(this.collection.deleteMany(filter, options));
-  }
-
-  public mapReduce<TSchema, Tkey, TValue>(
-    // eslint-disable-next-line no-shadow
-    map: string | CollectionMapFunction<TSchema>,
-    reduce: string | CollectionReduceFunction<Tkey, TValue>,
-    options: MapReduceOptions = {}
+    updateQuery: UpdateQuery<T>,
+    options: UpdateManyOptions = {}
   ) {
-    return from(this.collection.mapReduce(map, reduce, options));
+    return this.collection.updateMany(filter, updateQuery, options);
   }
 
   public aggregate<T>(
     pipeline: any[] = [],
     options: CollectionAggregationOptions = {}
-  ): Observable<T[]> {
-    return from(this.collection.aggregate(pipeline, options).toArray());
+  ): Promise<T[]> {
+    return this.collection.aggregate(pipeline, options).toArray();
   }
 
   public createIndex(
     fieldOrSpec: IndexSpecification,
     options: IndexOptions = {}
   ) {
-    return from(this.collection.createIndex(fieldOrSpec, options));
+    return this.collection.createIndex(fieldOrSpec, options);
   }
 
-  public createIndexes(
-    indexSpecs: IndexSpecification[],
-    options: IndexOptions = {}
-  ) {
-    return from(this.collection.createIndexes(indexSpecs, options));
+  private async checkIfDocumentExists(filter): Promise<void> {
+    const document = await this.collection.findOne(filter);
+    if (!document) {
+      throw new NotFoundException('Document not found');
+    }
   }
 }

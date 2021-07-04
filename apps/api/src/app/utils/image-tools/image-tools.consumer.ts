@@ -57,25 +57,23 @@ export class ImageToolsConsumer {
 
       const meta = await this.imageToolsService.getMeta(file.path);
 
-      const dbResult = await this.photosService
-        .insertOne<any>({
-          mimeType: file.mimetype,
-          src: `${fileNameSansExt}.${ext}`,
-          thumbnailSrc: `${fileNameSansExt}_thumb.${ext}`,
-          imageDimensions: {
-            width: largeImage.width,
-            height: largeImage.height
-          },
-          thumbnailDimensions: {
-            width: thumb.width,
-            height: thumb.height
-          },
-          encoding: file.encoding,
-          size: largeImage.size,
-          thumbnailSize: thumb.size,
-          meta
-        })
-        .toPromise();
+      const dbResult = await this.photosService.insertOne<any>({
+        mimeType: file.mimetype,
+        src: `${fileNameSansExt}.${ext}`,
+        thumbnailSrc: `${fileNameSansExt}_thumb.${ext}`,
+        imageDimensions: {
+          width: largeImage.width,
+          height: largeImage.height
+        },
+        thumbnailDimensions: {
+          width: thumb.width,
+          height: thumb.height
+        },
+        encoding: file.encoding,
+        size: largeImage.size,
+        thumbnailSize: thumb.size,
+        meta
+      });
 
       console.log({ dbResult });
     } catch ($e) {

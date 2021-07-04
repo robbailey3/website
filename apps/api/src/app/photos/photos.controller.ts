@@ -58,9 +58,7 @@ export class PhotosController {
   constructor(private readonly photosService: PhotosService) {}
 
   @Get('')
-  public getPhotos(
-    @Query() query: EntityQuery<PhotoDto>
-  ): Observable<PhotoDto[]> {
+  public getPhotos(@Query() query: EntityQuery<PhotoDto>): Promise<PhotoDto[]> {
     const { filter, ...options } = query;
 
     return this.photosService.find<PhotoDto>(filter, options);

@@ -33,14 +33,20 @@
         "no-useless-constructor": [0],
         "class-methods-use-this": [0],
         "@typescript-eslint/explicit-function-return-type": "error",
-        "@typescript-eslint/no-var-requires": [0]
+        "@typescript-eslint/no-var-requires": [0],
+        "no-underscore-dangle": [0],
+        "no-shadow": "off",
+        "@typescript-eslint/no-shadow": ["error"]
       }
     },
     {
       "files": ["*.ts", "*.tsx"],
       "extends": ["plugin:@nrwl/nx/typescript"],
       "parserOptions": { "project": "./tsconfig.*?.json" },
-      "rules": {}
+      "rules": {
+        "no-shadow": "off",
+        "@typescript-eslint/no-shadow": ["error"]
+      }
     },
     {
       "files": ["*.js", "*.jsx"],

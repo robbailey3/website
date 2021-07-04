@@ -14,6 +14,7 @@ import * as rateLimit from 'express-rate-limit';
 import { AppModule } from './app/app.module';
 import { QueryParserInterceptor } from './app/shared/query-parser/query-parser.interceptor';
 import { TransformInterceptor } from './app/shared/transform/transform.interceptor';
+import { LoggingInterceptor } from './app/shared/logging/logging.interceptor';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -39,6 +40,7 @@ async function bootstrap() {
     })
   );
   app.useGlobalInterceptors(
+    new LoggingInterceptor(),
     new TransformInterceptor(),
     new ClassSerializerInterceptor(app.get(Reflector))
   );

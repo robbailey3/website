@@ -34,11 +34,11 @@ export class UsersController {
   @ApiOkResponse({ type: [UserDto] })
   @UseInterceptors(QueryParserInterceptor)
   @ApiOperation({ description: 'Finds users', summary: 'Find Users' })
-  public find(@Query() query: EntityQuery<UserDto>): Observable<UserDto[]> {
+  public async find(@Query() query: EntityQuery<UserDto>): Promise<UserDto[]> {
     const { filter, ...options } = query;
-    return this.userService
-      .find<UserDto>(filter, options)
-      .pipe(map((users) => users.map((user) => plainToClass(UserDto, user))));
+    const users = await this.userService.find<UserDto>(filter, options);
+
+    return users.map((user) => plainToClass(UserDto, user));
   }
 
   @Post('')
@@ -47,9 +47,9 @@ export class UsersController {
     description: 'Inserts a user into the database',
     summary: 'Insert User'
   })
-  public insertUser(@Body() user: UserDto) {
-    return this.userService
-      .insertUser(user)
-      .pipe(map((newUser) => plainToClass(UserDto, newUser)));
+  public async insertUser(@Body() user: UserDto) {
+    const newUser = await this.userService.insertUser(user);
+
+    return plainToClass(UserDto, newUser);
   }
 }
