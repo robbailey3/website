@@ -15,7 +15,7 @@ describe('CvSkillItemComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(CvSkillItemComponent);
     component = fixture.componentInstance;
-    component.skill = { name: 'Something', rating: 50 };
+    component.skill = { name: 'Something' };
     fixture.detectChanges();
   });
 

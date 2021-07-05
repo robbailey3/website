@@ -20,10 +20,6 @@ export class CvSkillItemComponent {
 
   private timeout: any;
 
-  public get ratingPercentage(): string {
-    return `${this.skill.rating}%`;
-  }
-
   public activateTooltip() {
     clearInterval(this.timeout);
     this.tooltipState = 'active';
