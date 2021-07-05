@@ -3,18 +3,5 @@
 }
 
 .cv-skill-item {
-  @apply flex-1 mr-4 mt-4;
-  .skill-rating {
-    @apply relative;
-    .skill-tooltip {
-      @apply absolute -bottom-6 bg-dark-900 text-light text-sm shadow-2xl rounded-lg duration-300 px-2;
-      transform: translate(-50%, 0);
-    }
-  }
-  .skill-bar {
-    @apply h-4 bg-light-900 rounded-md overflow-hidden my-4 shadow-inner;
-    .skill-bar-inner {
-      @apply h-full bg-secondary-500 shadow-inner;
-    }
-  }
+  @apply flex-1 mr-4 mt-4 py-2;
 }

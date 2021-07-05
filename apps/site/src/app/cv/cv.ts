@@ -47,7 +47,6 @@ export interface CVEducation {
 
 export interface CVSkill {
   name: string;
-  rating: number;
 }
 export interface CVSkillCategories {
   title: string;
@@ -157,7 +156,9 @@ export const CV: CVModel = {
       company: 'Oleeo',
       dateFrom: new Date(2018, 0),
       dateTo: new Date(2021, 2),
-      summary: 'Summary goes here',
+      summary:
+        // eslint-disable-next-line max-len
+        `In my role as a Quality Control Branding Specialist, I was fully responsible for all branding across all clients. This involved using HTML and SCSS to style our product according to the client's requirements.`,
       highlights: [
         'Built accessible React components to display data retrieved from an RSS feed and integrated with a site created using Webflow',
         'Built microsites for sales demos using Angular 9 which display jobs retrieved from a REST API',
@@ -184,63 +185,56 @@ export const CV: CVModel = {
     {
       title: 'Programming Languages',
       skills: [
-        { name: 'TypeScript', rating: 88 },
+        { name: 'TypeScript' },
         {
-          name: 'C#',
-          rating: 55
+          name: 'C#'
         },
-        { name: 'JavaScript', rating: 90 },
-        { name: 'PHP', rating: 45 },
-        { name: 'Java', rating: 30 },
-        { name: 'Go', rating: 50 },
-        { name: 'Python', rating: 50 }
+        { name: 'JavaScript' },
+        { name: 'PHP' },
+        { name: 'Java' },
+        { name: 'Go' },
+        { name: 'Python' }
       ]
     },
     {
       title: 'Frameworks and Libraries',
       skills: [
-        { name: 'Angular', rating: 90 },
-        { name: 'React', rating: 80 },
-        { name: 'Vue', rating: 75 },
-        { name: 'NodeJS', rating: 80 },
-        { name: 'NestJS', rating: 85 },
-        { name: 'Express', rating: 70 },
-        { name: 'RxJS', rating: 75 },
-        { name: 'Akita', rating: 62 },
+        { name: 'Angular' },
+        { name: 'React' },
+        { name: 'Vue' },
+        { name: 'NodeJS' },
+        { name: 'NestJS' },
+        { name: 'Express' },
+        { name: 'RxJS' },
+        { name: 'Akita' },
         {
-          name: 'Redux',
-          rating: 50
+          name: 'Redux'
         }
       ]
     },
     {
       title: 'Testing',
-      skills: [
-        { name: 'Jest', rating: 80 },
-        { name: 'Cypress', rating: 65 }
-      ]
+      skills: [{ name: 'Jest' }, { name: 'Cypress' }]
     },
     {
       title: 'Tools',
       skills: [
-        { name: 'Docker', rating: 70 },
-        { name: 'Git', rating: 80 },
-        { name: 'Webpack', rating: 75 },
-        { name: 'GitHub Actions', rating: 40 },
-        { name: 'Nx', rating: 68 },
-        { name: 'CircleCI', rating: 52 }
+        { name: 'Docker' },
+        { name: 'Git' },
+        { name: 'Webpack' },
+        { name: 'GitHub Actions' },
+        { name: 'Nx' },
+        { name: 'CircleCI' }
       ]
     },
     {
       title: 'Databases',
       skills: [
         {
-          name: 'MongoDB',
-          rating: 75
+          name: 'MongoDB'
         },
         {
-          name: 'SQL',
-          rating: 45
+          name: 'SQL'
         }
       ]
     },
@@ -248,12 +242,10 @@ export const CV: CVModel = {
       title: 'Miscellaneous',
       skills: [
         {
-          name: 'Accessibility',
-          rating: 80
+          name: 'Accessibility'
         },
         {
-          name: 'SEO',
-          rating: 60
+          name: 'SEO'
         }
       ]
     }
