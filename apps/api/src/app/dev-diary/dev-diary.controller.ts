@@ -13,13 +13,14 @@ import {
 import { AuthGuard } from '@nestjs/passport';
 import { ApiBearerAuth, ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { ObjectID } from 'mongodb';
-import { Observable } from 'rxjs';
 import { EntityQuery } from '../shared/entity-query/entity-query';
 import { DevDiaryService } from './dev-diary.service';
 import { DiaryEntryDto } from './dto/diary-entry.dto';
 
 @Controller('dev-diary')
 @ApiTags('Dev Diary')
+@ApiBearerAuth()
+@UseGuards(AuthGuard('jwt'))
 export class DevDiaryController {
   constructor(private readonly devDiaryService: DevDiaryService) {}
 
@@ -54,8 +55,6 @@ export class DevDiaryController {
     description: 'Inserts a new diary entry document into the database',
     summary: 'Insert diary entry'
   })
-  @ApiBearerAuth()
-  // @UseGuards(AuthGuard('jwt'))
   public createEntry(@Body() newEntry: DiaryEntryDto) {
     return this.devDiaryService.insertOne(newEntry);
   }
@@ -66,8 +65,6 @@ export class DevDiaryController {
     description: 'Updates an existing diary entry in the database',
     summary: 'Update diary entry'
   })
-  @ApiBearerAuth()
-  // @UseGuards(AuthGuard('jwt'))
   public updateEntry(
     @Param('id') id: string,
     @Body() updatedEntry: Partial<DiaryEntryDto>
@@ -86,8 +83,6 @@ export class DevDiaryController {
     description: 'Deletes a diary entry from the database',
     summary: 'Delete diary entry'
   })
-  @ApiBearerAuth()
-  // @UseGuards(AuthGuard('jwt'))
   public deleteEntry(@Param('id') id: string) {
     if (!ObjectID.isValid(id)) {
       throw new BadRequestException('Provided id must be a valid id');

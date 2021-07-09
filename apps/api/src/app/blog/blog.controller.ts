@@ -8,10 +8,13 @@ import {
   Param,
   Patch,
   Post,
-  Query
+  Query,
+  UseGuards
 } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 import {
   ApiBadRequestResponse,
+  ApiBearerAuth,
   ApiBody,
   ApiCreatedResponse,
   ApiNotFoundResponse,
@@ -84,6 +87,8 @@ export class BlogController {
     description: 'Insert a new blog post into the database',
     summary: 'Insert blog post'
   })
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard('jwt'))
   public async insertPost(@Body() body: BlogPostDto) {
     const newPost = {
       slug: this.blogService.slugifyTitle(body.title),
@@ -112,6 +117,8 @@ export class BlogController {
     description:
       'A 404 response is returned when no document is found with the provided ID'
   })
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard('jwt'))
   public async publishPost(@Param('id') id: string) {
     if (!ObjectID.isValid(id)) {
       throw new BadRequestException('Provided id must be a valid id');
@@ -144,6 +151,8 @@ export class BlogController {
     description: 'A 400 bad response is returned when an invalid ID is provided'
   })
   @ApiBody({ type: BlogPostDto, description: 'The updated blog post' })
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard('jwt'))
   public async updatePost(
     @Param('id') id: string,
     @Body() body: UpdateBlogPostDto
@@ -177,6 +186,8 @@ export class BlogController {
   @ApiBadRequestResponse({
     description: 'A 400 bad response is returned when an invalid ID is provided'
   })
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard('jwt'))
   public deletePost(@Param('id') id: string) {
     if (!ObjectID.isValid(id)) {
       throw new BadRequestException('Provided id must be a valid id');

@@ -12,7 +12,8 @@ import {
   UseInterceptors,
   UploadedFiles,
   Param,
-  BadRequestException
+  BadRequestException,
+  UseGuards
 } from '@nestjs/common';
 import {
   ApiTags,
@@ -26,6 +27,7 @@ import { PhotoUploadDto } from './dto/photo-upload.dto';
 import { PhotosService } from './photos.service';
 import { PhotoDto } from './dto/photo.dto';
 import { EntityQuery } from '../shared/entity-query/entity-query';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('photos')
 @ApiTags('Photos')
@@ -81,6 +83,7 @@ export class PhotosController {
   @ApiConsumes('multipart/form-data')
   @Post(':albumId/upload')
   @ApiBearerAuth()
+  @UseGuards(AuthGuard('jwt'))
   @UseInterceptors(
     FilesInterceptor('files', PhotosController.maxPhotosPerUpload, {
       limits: {

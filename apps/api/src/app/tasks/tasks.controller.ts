@@ -7,10 +7,13 @@ import {
   Param,
   Patch,
   Post,
-  Query
+  Query,
+  UseGuards
 } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 import {
   ApiBadRequestResponse,
+  ApiBearerAuth,
   ApiBody,
   ApiOkResponse,
   ApiOperation,
@@ -25,6 +28,8 @@ import { TasksService } from './tasks.service';
 
 @Controller('tasks')
 @ApiTags('Tasks')
+@ApiBearerAuth()
+@UseGuards(AuthGuard('jwt'))
 export class TasksController {
   constructor(private readonly tasksService: TasksService) {}
 

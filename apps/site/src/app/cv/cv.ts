@@ -92,15 +92,12 @@ export const CV: CVModel = {
       }
     ],
     profile:
-      'A Software Engineer with skills in front-end and back-end development.'
+      'A Software Engineer with skills in front-end and back-end development. '
   },
   education: [
     {
       institution: 'Udacity',
       qualification: 'Full-Stack Developer NanoDegree',
-      summary:
-        // eslint-disable-next-line max-len
-        'The goal of the Full Stack Web Developer Nanodegree program is to equip learners with the unique skills they need to build database-backed APIs and web applications. A graduate of this program will be able to design and build databases for software applications, create and deploy database-backed web APIs, and secure and manage user authentication and access control for an application backend. Students will also learn how to deploy a Flask-based web application to the cloud using Docker and Kubernetes.',
       highlights: [
         'Built an API using Python and Flask to perform CRUD operations on a PostgreSQL database',
         'Used Auth0 for Authentication to secure API endpoints',
@@ -112,19 +109,13 @@ export const CV: CVModel = {
     {
       institution: 'Udacity',
       qualification: 'Front-End Developer NanoDegree',
-      summary:
-        // eslint-disable-next-line max-len
-        'The goal of the Front End Web Developer Nanodegree program is to equip learners with the unique skills they need to build and develop a variety of websites and applications. Graduates of this Nanodegree program will be able to construct responsive websites using CSS, Flexbox and CSS Grid, develop interactive websites and UI (User Interface) applications using JavaScript and HTML, and connect a web application to backend server data using JavaScript. Students will also build competency automating application build and deployment using Webpack and improving offline performance of websites using Service Worker.',
-      highlights: [],
+      highlights: ['Created an Object Oriented JavaScript game'],
       dateFrom: new Date(2018, 11),
       dateTo: new Date(2019, 1)
     },
     {
       institution: 'Keele University',
       qualification: 'BSc Physics with Philosophy',
-      summary:
-        // eslint-disable-next-line max-len
-        'Study Physics at Keele and you’ll learn to apply mathematics and computing to formulate and solve a wide range of physical problems. Physics is a fundamental, curiosity-driven science that has applications in many other areas of science and a vast range of industries, from telecommunications and power generation through to medicine.',
       highlights: [],
       dateFrom: new Date(2012, 10),
       dateTo: new Date(2015, 7)
@@ -136,7 +127,8 @@ export const CV: CVModel = {
       company: 'Netcall',
       dateFrom: new Date(2021, 2),
       dateTo: new Date(),
-      summary: 'Summary goes here',
+      // eslint-disable-next-line max-len
+      summary: `My role as a software engineer at Netcall involves contributing to an omni-channel microservice application in both C# and Vue.js.`,
       highlights: [
         'Built a reusable component library with Vue2 and storybook',
         'Added Azure Application Insights Telemetry to an Azure Functions App built in C# .NET'
@@ -158,7 +150,7 @@ export const CV: CVModel = {
       dateTo: new Date(2021, 2),
       summary:
         // eslint-disable-next-line max-len
-        `In my role as a Quality Control Branding Specialist, I was fully responsible for all branding across all clients. This involved using HTML and SCSS to style our product according to the client's requirements.`,
+        `In my role as a Quality Control Branding Specialist, I was fully responsible for all branding across all clients. This involved using HTML and SCSS to style our product according to the client's requirements. I was also the lead developer on a project working directly with the CEO to build careers sites using React components embedded into Webflow.`,
       highlights: [
         'Built accessible React components to display data retrieved from an RSS feed and integrated with a site created using Webflow',
         'Built microsites for sales demos using Angular 9 which display jobs retrieved from a REST API',

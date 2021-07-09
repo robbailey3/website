@@ -4,7 +4,7 @@
     @apply my-1 block text-sm;
   }
   .form-control {
-    @apply block py-1 px-1 text-dark-900 w-full bg-light-400 border border-light-800;
+    @apply block py-1 px-2 text-dark-900 w-full bg-light-400 border border-light-800;
     option {
       @apply text-dark-900 border-none;
     }

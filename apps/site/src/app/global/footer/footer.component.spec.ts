@@ -26,10 +26,10 @@ describe('FooterComponent', () => {
 
   test.each([
     { text: 'Home', url: '/', index: 0 },
-    { text: 'About', url: '/about', index: 1 },
-    { text: 'GitHub Profile', url: '/github', index: 2 },
-    { text: 'CV', url: '/cv', index: 3 },
-    { text: 'Login', url: '/login', index: 4 }
+    // { text: 'About', url: '/about', index: 1 },
+    { text: 'GitHub Profile', url: '/github', index: 1 },
+    { text: 'CV', url: '/cv', index: 2 }
+    // { text: 'Login', url: '/login', index: 4 }
   ])('should render the link %o', (expectedLink) => {
     expect(
       spectator.queryAll('.footer-navigation a')[expectedLink.index].textContent
