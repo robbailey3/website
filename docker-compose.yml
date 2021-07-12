@@ -8,6 +8,7 @@ services:
       - '3000:3000'
     depends_on:
       - mongo
+      - redis
     volumes:
       - node-modules:/usr/src/app/node_modules
     networks:
