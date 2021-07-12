@@ -5,9 +5,8 @@ WORKDIR /usr/src/app
 COPY package.json .
 COPY decorate-angular-cli.js .
 
-RUN npm install -g nx
-RUN npm install pm2 -g
 RUN npm install --legacy-peer-deps
+RUN npm install pm2 -g
 
 # Copy app source code
 COPY . .
@@ -18,6 +17,5 @@ ENV NODE_ENV=${NODE_ENV}
 
 #Expose port and start application
 EXPOSE 4000
-RUN npm run build:ssr
-RUN npm run prerender
+RUN npm run build:site:docker
 CMD pm2-runtime ./dist/site/server/main.js

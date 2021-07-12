@@ -31,6 +31,8 @@
     "help": "nx help",
     "dev:ssr": "ng run site:serve-ssr",
     "serve:ssr": "node dist/site/server/main.js",
+    "build:site:docker": "ng build --prod && ng run site:server:production && ng run site:prerender",
+    "build:api:docker": "nx run api:build --production",
     "build:ssr": "ng build --prod && ng run site:server:production",
     "prerender": "ng run site:prerender",
     "build-storybook": "nx run ui-components:build-storybook",
