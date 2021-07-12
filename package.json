@@ -31,6 +31,8 @@
     "help": "nx help",
     "dev:ssr": "ng run site:serve-ssr",
     "serve:ssr": "node dist/site/server/main.js",
+    "build:site:docker": "ng build --prod && ng run site:server:production && ng run site:prerender",
+    "build:api:docker": "nx run api:build --production",
     "build:ssr": "ng build --prod && ng run site:server:production",
     "prerender": "ng run site:prerender",
     "build-storybook": "nx run ui-components:build-storybook",
@@ -70,6 +72,7 @@
     "@sentry/angular": "^6.2.5",
     "@sentry/tracing": "^6.2.5",
     "@tinymce/tinymce-angular": "^4.2.2",
+    "angular-animations": "^0.11.0",
     "bcrypt": "^5.0.1",
     "bson": "^4.2.3",
     "bull": "^3.22.1",
@@ -156,6 +159,6 @@
     "ts-jest": "26.4.0",
     "ts-node": "~9.1.1",
     "tslint": "~6.1.0",
-    "typescript": "^4.1.5"
+    "typescript": "4.1.5"
   }
 }

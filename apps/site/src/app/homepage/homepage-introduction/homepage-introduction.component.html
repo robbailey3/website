@@ -1,6 +1,6 @@
 <section class="bg-primary-900">
   <div class="container mx-auto flex flex-wrap items-end">
-    <div class="w-full md:w-1/2">
+    <div class="w-full md:w-1/2 order-2 md:order-first">
       <div class="w-full mx-auto max-w-xs">
         <rob-lazy-image
           data-cy="selfie-image"
@@ -11,8 +11,21 @@
         ></rob-lazy-image>
       </div>
     </div>
-    <div class="w-full md:w-1/2 py-16 text-light-50">
-      <p class="my-16" data-cy="intro-text">TODO: More intro text</p>
+    <div
+      class="w-full md:w-1/2 py-16 px-4 text-light-50 text-center md:text-left"
+    >
+      <div class="my-16" data-cy="intro-text">
+        <p>I am a Software Engineer working for a company called Netcall.</p>
+        <p>I mainly work with Vue.js but I also do some work in C#.</p>
+        <p>
+          My favourite front-end framework is Angular but I've also used React.
+          I also like to build apps with Node.js.
+        </p>
+        <p>
+          I'm always wanting to learn something new and I&apos;m currently
+          learning Go.
+        </p>
+      </div>
       <rob-button
         variant="secondary"
         [routerLink]="['about']"

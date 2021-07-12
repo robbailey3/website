@@ -1,8 +1,13 @@
+import { DOCUMENT } from '@angular/common';
 import { Component, Inject, Input, OnInit, ViewChild } from '@angular/core';
 import { WINDOW } from '@ng-toolkit/universal';
 import { Subject } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { IntersectionObserverDirective } from '../intersection-observer/intersection-observer.directive';
+
+interface Window {
+  Image: typeof Image;
+}
 
 @Component({
   selector: 'rob-lazy-image',
@@ -27,7 +32,7 @@ export class LazyImageComponent implements OnInit {
 
   private isInViewport: Subject<boolean> = new Subject();
 
-  constructor(@Inject(WINDOW) private readonly window: Window) {}
+  constructor(@Inject(DOCUMENT) private readonly document: Document) {}
 
   public ngOnInit(): void {
     this.imageSource = this.thumbnailSrc;
@@ -35,10 +40,7 @@ export class LazyImageComponent implements OnInit {
   }
 
   private loadFullsizeImage() {
-    if (!window.Image) {
-      this.handleImageLoad();
-    }
-    const img = new window.Image();
+    const img = this.document.createElement('img');
     img.src = this.src;
     img.onload = () => this.handleImageLoad();
   }

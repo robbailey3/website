@@ -1,10 +1,86 @@
 <section class="py-24">
-  <div class="container mx-auto max-w-screen-lg">
-    <rob-carousel>
-      <rob-carousel-item><h2>Rob</h2></rob-carousel-item>
-      <rob-carousel-item><h2>Rob</h2></rob-carousel-item>
-      <rob-carousel-item><h2>Rob</h2></rob-carousel-item>
-      <rob-carousel-item><h2>Rob</h2></rob-carousel-item>
+  <div class="container mx-auto max-w-screen-lg text-center">
+    <h2>FAQ</h2>
+    <rob-carousel [interval]="15000">
+      <rob-carousel-item>
+        <div class="faq-item">
+          <div class="faq-item-question">
+            <h3>Am I open to work?</h3>
+          </div>
+          <div class="faq-item-answer">
+            <p>
+              I&apos;m pretty happy where I am right now but, as with anyone, if
+              the right offer came along I&apos;d consider it. Get in touch if
+              you have something interesting.
+            </p>
+          </div>
+        </div>
+      </rob-carousel-item>
+      <rob-carousel-item>
+        <div class="faq-item">
+          <div class="faq-item-question">
+            <h3>What technologies do I work with?</h3>
+          </div>
+          <div class="faq-item-answer">
+            <p>
+              In my current role, I work mainly with Vue.js and C#. Outside of
+              work, I play around with a wide variety of things. Take a look at
+              my <a [routerLink]="['/github']">GitHub</a> to see what I&apos;ve
+              been up to.
+            </p>
+          </div>
+        </div>
+      </rob-carousel-item>
+      <rob-carousel-item>
+        <div class="faq-item">
+          <div class="faq-item-question">
+            <h3>Do I do freelance work?</h3>
+          </div>
+          <div class="faq-item-answer">
+            <p>Depends what it is. Get in contact and find out.</p>
+          </div>
+        </div>
+      </rob-carousel-item>
+      <rob-carousel-item>
+        <div class="faq-item">
+          <div class="faq-item-question">
+            <h3>What am I passionate about?</h3>
+          </div>
+          <div class="faq-item-answer">
+            <p>Wildlife, the environment, technology. That sort of thing.</p>
+          </div>
+        </div>
+      </rob-carousel-item>
+      <rob-carousel-item>
+        <div class="faq-item">
+          <div class="faq-item-question">
+            <h3>Is there any tech I don&apos;t want to work with?</h3>
+          </div>
+          <div class="faq-item-answer">
+            <p>Yes</p>
+          </div>
+        </div>
+      </rob-carousel-item>
+      <rob-carousel-item>
+        <div class="faq-item">
+          <div class="faq-item-question">
+            <h3>Is there any tech I don&apos;t want to work with?</h3>
+          </div>
+          <div class="faq-item-answer">
+            <p>Yes</p>
+          </div>
+        </div>
+      </rob-carousel-item>
+      <rob-carousel-item>
+        <div class="faq-item">
+          <div class="faq-item-question">
+            <h3>Do I do talks or anything like that?</h3>
+          </div>
+          <div class="faq-item-answer">
+            <p>I haven&apos;t yet.</p>
+          </div>
+        </div>
+      </rob-carousel-item>
     </rob-carousel>
   </div>
 </section>

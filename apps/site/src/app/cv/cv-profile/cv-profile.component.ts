@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { faMapMarker } from '@fortawesome/free-solid-svg-icons';
 import { CV, CVProfile } from '../cv';
 
 @Component({
@@ -8,4 +9,8 @@ import { CV, CVProfile } from '../cv';
 })
 export class CvProfileComponent {
   public profile: CVProfile = CV.profile;
+
+  public icons = {
+    location: faMapMarker
+  };
 }

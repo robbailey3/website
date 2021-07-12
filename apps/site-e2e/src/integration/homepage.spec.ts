@@ -37,7 +37,7 @@ describe('[PAGE]: Homepage', () => {
     it('should contain some introductory text', () => {
       cy.get('[data-cy="introduction-text"]')
         .should('exist')
-        .and('contain.text', 'TODO: introduction-text');
+        .and('contain.text', 'Hi there!I make things with code.');
     });
   });
 
@@ -53,7 +53,10 @@ describe('[PAGE]: Homepage', () => {
     it('should contain some more introductory text', () => {
       cy.get('[data-cy="intro-text"]')
         .should('exist')
-        .and('contain.text', 'TODO: More intro text');
+        .and(
+          'contain.text',
+          "I am a Software Engineer working for a company called Netcall.I mainly work with Vue.js but I also do some work in C#. My favourite front-end framework is Angular but I've also used React. I also like to build apps with Node.js.  I'm always wanting to learn something new and I'm currently learning Go. "
+        );
     });
 
     it('should contain a link to the about page', () => {
@@ -69,7 +72,7 @@ describe('[PAGE]: Homepage', () => {
     });
 
     it('should contain 4 "slides"', () => {
-      cy.get('rob-carousel').find('rob-carousel-item').should('have.length', 4);
+      cy.get('rob-carousel').find('rob-carousel-item').should('have.length', 7);
     });
 
     it('should progress to the next slide when the next button is pressed', () => {

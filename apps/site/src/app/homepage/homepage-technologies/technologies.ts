@@ -27,11 +27,13 @@ export const technologies = [
   {
     name: 'C#',
     logoSrc: '/assets/images/homepage/technology-logos/CSharp.svg',
-    description: 'I am currently learning C#'
+    description:
+      'My current role involves using C# to create Azure Functions for a complex realtime messaging application.'
   },
   {
     name: 'Go',
     logoSrc: '/assets/images/homepage/technology-logos/gopher.svg',
-    description: 'I am also learning Go'
+    description:
+      'I am learning Go. I completed the Sololearn Golang course within 24 hours of it being released. Currently playing around with building REST APIs using fiber.'
   }
 ];

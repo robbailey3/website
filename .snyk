@@ -6369,12 +6369,21 @@ ignore:
     - '@nrwl/angular > @nrwl/jest > jest-resolve > resolve > path-parse':
         reason: None given
         expires: '2021-06-05T19:09:58.934Z'
+      '@datorama/akita > schematics-utilities > npm-registry-client > normalize-package-data > resolve > path-parse':
+        reason: None given
+        expires: '2021-07-08T20:10:02.434Z'
     - '@nrwl/angular > @nrwl/cypress > @nrwl/workspace > resolve > path-parse':
         reason: None given
         expires: '2021-06-05T19:09:58.934Z'
+      '@nrwl/angular > @nrwl/jest > jest-resolve > resolve > path-parse':
+        reason: None given
+        expires: '2021-07-08T20:10:02.434Z'
     - '@datorama/akita > schematics-utilities > npm-registry-client > normalize-package-data > resolve > path-parse':
         reason: None given
         expires: '2021-06-05T19:09:58.934Z'
+      '@nrwl/angular > @nrwl/cypress > @nrwl/workspace > resolve > path-parse':
+        reason: None given
+        expires: '2021-07-08T20:10:02.434Z'
     - '@nrwl/angular > @nrwl/cypress > @nrwl/workspace > @nrwl/jest > jest-resolve > resolve > path-parse':
         reason: None given
         expires: '2021-07-24T09:53:59.599Z'
