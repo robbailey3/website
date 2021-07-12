@@ -101,7 +101,7 @@ module.exports = (isProd) => ({
       transparent: 'transparent'
     },
     fontFamily: {
-      mono: ['Roboto Mono', 'Courier New', 'Courier', 'monospace'],
+      sans: ['Lexend', 'Roboto', 'Arial', 'sans-serif'],
       serif: ['Roboto Slab', 'Times New Roman', 'Times', 'serif']
     }
   },

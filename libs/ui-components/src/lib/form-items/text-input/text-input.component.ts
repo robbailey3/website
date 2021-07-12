@@ -21,7 +21,7 @@ export class TextInputComponent implements ControlValueAccessor {
 
   @Input() name: string;
 
-  @Input() placeholder: string;
+  @Input() placeholder = '';
 
   @Input() helperText: string;
 

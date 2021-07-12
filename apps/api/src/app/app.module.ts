@@ -6,6 +6,10 @@ import { UsersModule } from './users/users.module';
 import { PhotosModule } from './photos/photos.module';
 import { UtilsModule } from './utils/utils.module';
 import { PhotoAlbumsModule } from './photo-albums/photo-albums.module';
+import { DevDiaryModule } from './dev-diary/dev-diary.module';
+import { BlogModule } from './blog/blog.module';
+import { TasksModule } from './tasks/tasks.module';
+import { RunsModule } from './runs/runs.module';
 
 @Module({
   imports: [
@@ -22,7 +26,11 @@ import { PhotoAlbumsModule } from './photo-albums/photo-albums.module';
     UsersModule,
     PhotosModule,
     UtilsModule,
-    PhotoAlbumsModule
+    PhotoAlbumsModule,
+    DevDiaryModule,
+    BlogModule,
+    TasksModule,
+    RunsModule
   ]
 })
 export class AppModule {}

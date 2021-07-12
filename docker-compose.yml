@@ -1,4 +1,4 @@
-version: '2'
+version: '3'
 services:
   api:
     build:
@@ -8,10 +8,11 @@ services:
       - '3000:3000'
     depends_on:
       - mongo
+      - redis
     volumes:
       - node-modules:/usr/src/app/node_modules
     networks:
-      - whisky-network
+      - robbailey3-network
 
   ui:
     build:
@@ -24,7 +25,7 @@ services:
     volumes:
       - node-modules:/usr/src/app/node_modules
     networks:
-      - whisky-network
+      - robbailey3-network
 
   mongo:
     image: mongo
@@ -34,7 +35,7 @@ services:
       - ./init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js:ro
       - data-volume:/data/db
     networks:
-      - whisky-network
+      - robbailey3-network
     env_file:
       - ./mongo.env
 
@@ -43,7 +44,7 @@ services:
     ports:
       - '6379:6379'
     networks:
-      - whisky-network
+      - robbailey3-network
     volumes:
       - redis-volume:/data
 
@@ -54,7 +55,7 @@ services:
       - '443:443'
     restart: 'unless-stopped'
     networks:
-      - whisky-network
+      - robbailey3-network
     volumes:
       - ./.nginx.conf:/etc/nginx/conf.d
       - ./data/certbot/conf:/etc/letsencrypt
@@ -72,7 +73,7 @@ services:
     entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
 
 networks:
-  whisky-network:
+  robbailey3-network:
 
 volumes:
   data-volume:

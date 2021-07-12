@@ -12,7 +12,8 @@ import {
   UseInterceptors,
   UploadedFiles,
   Param,
-  BadRequestException
+  BadRequestException,
+  UseGuards
 } from '@nestjs/common';
 import {
   ApiTags,
@@ -26,6 +27,7 @@ import { PhotoUploadDto } from './dto/photo-upload.dto';
 import { PhotosService } from './photos.service';
 import { PhotoDto } from './dto/photo.dto';
 import { EntityQuery } from '../shared/entity-query/entity-query';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('photos')
 @ApiTags('Photos')
@@ -58,12 +60,10 @@ export class PhotosController {
   constructor(private readonly photosService: PhotosService) {}
 
   @Get('')
-  public getPhotos(
-    @Query() query: EntityQuery<PhotoDto>
-  ): Observable<PhotoDto[]> {
+  public getPhotos(@Query() query: EntityQuery<PhotoDto>): Promise<PhotoDto[]> {
     const { filter, ...options } = query;
 
-    return this.photosService.find(filter, options);
+    return this.photosService.find<PhotoDto>(filter, options);
   }
 
   // TODO: Look into how the below method can be cleaned up
@@ -83,6 +83,7 @@ export class PhotosController {
   @ApiConsumes('multipart/form-data')
   @Post(':albumId/upload')
   @ApiBearerAuth()
+  @UseGuards(AuthGuard('jwt'))
   @UseInterceptors(
     FilesInterceptor('files', PhotosController.maxPhotosPerUpload, {
       limits: {

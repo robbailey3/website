@@ -34,6 +34,8 @@ export class ButtonComponent {
 
   @Input() routerLink: string | any[];
 
+  @Input() type: 'button' | 'submit' | 'reset';
+
   @Output() public buttonClick: EventEmitter<MouseEvent> = new EventEmitter();
 
   public handleButtonClick($event: MouseEvent) {

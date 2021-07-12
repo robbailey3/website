@@ -3,6 +3,6 @@
     <div class="logo-container">
       <a class="logo" [routerLink]="['/']">Rob Bailey: Software Engineer</a>
     </div>
-    <rob-navigation></rob-navigation>
+    <rob-navigation [isLoggedIn]="isLoggedIn | async"></rob-navigation>
   </div>
 </header>

@@ -15,14 +15,14 @@ export const Alert = (args: AlertComponent) => ({
   props: {
     ...args
   },
-  template: `<rob-alert [content]="content" [variant]="variant" [dismissable]="dismissable">Chip</rob-alert>`
+  template: `<rob-alert [variant]="variant" [dismissable]="dismissable">{{ content }}</rob-alert>`
 });
 
 Alert.args = {
   content: 'Alert Content',
   variant: 'info',
   dismissable: true
-} as AlertComponent;
+} as Partial<AlertComponent>;
 
 Alert.argTypes = {
   variant: {

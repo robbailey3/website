@@ -1,0 +1,9 @@
+.faq-item {
+  @apply bg-accent-900 text-light rounded-md flex p-8 shadow;
+  .faq-item-question {
+    @apply flex-1 flex items-center justify-center text-center p-4;
+  }
+  .faq-item-answer {
+    @apply flex-1 flex items-center justify-center text-center p-4;
+  }
+}

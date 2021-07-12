@@ -1,1 +1,46 @@
-<p>cv-education works!</p>
+<div class="cv-education">
+  <h2>Education</h2>
+  <div
+    *ngFor="let education of educationItems; let i = index"
+    class="education-item"
+  >
+    <div
+      class="animation-wrapper"
+      *ngIf="education"
+      [@fadeInDownOnEnter]="{ value: '', params: { delay: i * 250 } }"
+    >
+      <h3>
+        <span class="education-qualification">
+          {{ education.qualification }}</span
+        ><span class="separator"> // </span
+        ><span class="education-institution">{{ education.institution }}</span>
+      </h3>
+      <div class="experience-dates">
+        <span class="from-date">{{
+          education.dateFrom | date: 'MMMM YYYY'
+        }}</span>
+        <span class="date-separator"> &ndash; </span>
+        <span *ngIf="dateIsPresent(education.dateTo); else endDate"
+          >Present</span
+        >
+        <ng-template class="to-date" #endDate>{{
+          education.dateTo | date: 'MMMM YYYY'
+        }}</ng-template>
+      </div>
+      <div class="education-summary" *ngIf="education.summary">
+        {{ education.summary }}
+      </div>
+      <div
+        class="education-highlights"
+        *ngIf="education.highlights && education.highlights.length"
+      >
+        <h4>Highlights</h4>
+        <ul>
+          <li *ngFor="let education of education.highlights">
+            {{ education }}
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>

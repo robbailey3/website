@@ -1,0 +1,23 @@
+.cv-experience {
+  .experience-item {
+    @apply my-8;
+  }
+  .separator {
+    @apply text-light-900;
+  }
+  .experience-company {
+    @apply text-accent-200;
+  }
+  .experience-dates {
+    @apply font-light italic text-light-900 text-xs;
+  }
+  .experience-summary {
+    @apply my-4;
+  }
+  .experience-highlights {
+    @apply mb-4;
+    ul {
+      @apply list-disc ml-4;
+    }
+  }
+}

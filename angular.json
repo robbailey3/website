@@ -50,8 +50,7 @@
                   "maximumError": "10kb"
                 }
               ],
-              "serviceWorker": true,
-              "ngswConfigPath": "apps/site/ngsw-config.json"
+              "serviceWorker": false
             }
           }
         },
@@ -129,9 +128,7 @@
           "options": {
             "browserTarget": "site:build:production",
             "serverTarget": "site:server:production",
-            "routes": [
-              "/"
-            ]
+            "routes": ["/"]
           },
           "configurations": {
             "production": {}
@@ -273,7 +270,7 @@
     }
   },
   "cli": {
-    "defaultCollection": "@nrwl/angular",
+    "defaultCollection": "@datorama/akita",
     "analytics": "f2042bab-679f-44b1-b6e2-b23f9a1a2a9e"
   },
   "schematics": {
