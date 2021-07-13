@@ -31,5 +31,5 @@ jobs:
           image: robbailey3.azurecr.io/website:${{ github.sha }}
           registry-username: ${{ secrets.REGISTRY_USERNAME }}
           registry-password: ${{ secrets.REGISTRY_PASSWORD }}
-          name: api-container
+          name: website-container
           location: 'UK West'
