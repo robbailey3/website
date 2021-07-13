@@ -5,6 +5,8 @@ jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     steps:
+      - name: 'Checkout GitHub Action'
+        uses: actions/checkout@master
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
@@ -22,6 +24,5 @@ jobs:
           ECR_REPOSITORY: robbailey3
           IMAGE_TAG: ${{ github.sha }}
         run: |
-          ls
           docker build . -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG -f Dockerfile.site
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
