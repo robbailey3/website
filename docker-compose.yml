@@ -8,7 +8,6 @@ services:
       - '3000:3000'
     depends_on:
       - mongo
-      - redis
     volumes:
       - node-modules:/usr/src/app/node_modules
     networks:
@@ -39,15 +38,6 @@ services:
     env_file:
       - ./mongo.env
 
-  redis:
-    image: redis
-    ports:
-      - '6379:6379'
-    networks:
-      - robbailey3-network
-    volumes:
-      - redis-volume:/data
-
   nginx:
     image: nginx:1.15-alpine
     ports:
@@ -77,5 +67,4 @@ networks:
 
 volumes:
   data-volume:
-  redis-volume:
   node-modules:

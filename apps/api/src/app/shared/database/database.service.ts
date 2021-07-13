@@ -5,6 +5,8 @@ import { Collection, Db, MongoClient } from 'mongodb';
 
 @Injectable()
 export class DatabaseService implements OnModuleInit {
+  private readonly log = new Logger(DatabaseService.name);
+
   public isLoaded: Subject<void> = new Subject();
 
   private client: MongoClient;
@@ -13,10 +15,7 @@ export class DatabaseService implements OnModuleInit {
 
   private DB_URL: string;
 
-  constructor(
-    private readonly configService: ConfigService,
-    private readonly log: Logger
-  ) {
+  constructor(private readonly configService: ConfigService) {
     this.DB_URL = this.configService.get<string>('DB_URL');
   }
 
@@ -30,6 +29,7 @@ export class DatabaseService implements OnModuleInit {
         useUnifiedTopology: true
       });
       this.db = this.client.db();
+      this.log.log('connected to database');
       this.isLoaded.next();
     } catch ($e) {
       this.log.error($e);
