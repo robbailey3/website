@@ -1,9 +1,9 @@
 .faq-item {
-  @apply bg-accent-900 text-light rounded-md flex p-8 shadow;
+  @apply bg-accent-900 text-light rounded-md flex flex-wrap p-8 shadow;
   .faq-item-question {
-    @apply flex-1 flex items-center justify-center text-center p-4;
+    @apply md:flex-1 flex w-full md:w-auto items-center justify-center text-center p-4;
   }
   .faq-item-answer {
-    @apply flex-1 flex items-center justify-center text-center p-4;
+    @apply md:flex-1 flex w-full md:w-auto items-center justify-center text-center p-4;
   }
 }
