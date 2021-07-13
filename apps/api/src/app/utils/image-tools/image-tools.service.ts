@@ -1,16 +1,11 @@
 import * as sharp from 'sharp';
-import { InjectQueue } from '@nestjs/bull';
-import { Injectable } from '@nestjs/common';
-import { Queue, Job } from 'bull';
+import { Injectable, NotImplementedException } from '@nestjs/common';
 import * as exif from 'exif-reader';
 import { FileToolsService } from '../file-tools/file-tools.service';
 
 @Injectable()
 export class ImageToolsService {
-  constructor(
-    @InjectQueue('image-resizer') private readonly imageResizeQueue: Queue,
-    private readonly fileToolsService: FileToolsService
-  ) {}
+  constructor(private readonly fileToolsService: FileToolsService) {}
 
   public async resizeToFile(
     source: string,
@@ -37,6 +32,6 @@ export class ImageToolsService {
   }
 
   public addToQueue(file: any) {
-    this.imageResizeQueue.add('resize', file);
+    throw new NotImplementedException();
   }
 }
