@@ -1,19 +1,19 @@
 nav.cv-navigation {
   ul {
-    @apply mt-12;
+    @apply md:block md:mt-12 flex flex-wrap justify-center;
   }
   li {
-    @apply block text-center;
+    @apply inline-block md:block text-center;
 
     a {
-      @apply block px-4 py-2 relative mb-8;
+      @apply block px-4 py-2 relative md:mb-8;
       &.active {
         @apply text-accent-500;
       }
       &::after {
         content: '';
         width: 1px;
-        @apply bg-accent-500 absolute h-8 -bottom-8 left-1/2 block;
+        @apply hidden md:block bg-accent-500 absolute h-8 -bottom-8 left-1/2;
       }
     }
     &:last-child {
