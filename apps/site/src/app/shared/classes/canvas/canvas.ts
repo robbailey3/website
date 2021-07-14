@@ -81,7 +81,13 @@ export class Canvas {
     this.ctx.restore();
   }
 
-  public drawImage(image: HTMLImageElement, x: number, y: number) {
-    this.ctx.drawImage(image, x, y);
+  public drawImage(
+    image: CanvasImageSource,
+    x: number,
+    y: number,
+    width?: number,
+    height?: number
+  ) {
+    this.ctx.drawImage(image, x, y, width, height);
   }
 }
