@@ -128,7 +128,7 @@
           "options": {
             "browserTarget": "site:build:production",
             "serverTarget": "site:server:production",
-            "routes": ["/"]
+            "routes": ["/", "/about", "/github", "/cv"]
           },
           "configurations": {
             "production": {}
