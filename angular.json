@@ -16,7 +16,11 @@
             "polyfills": "apps/site/src/polyfills.ts",
             "tsConfig": "apps/site/tsconfig.app.json",
             "aot": true,
-            "assets": ["apps/site/src/favicon.ico", "apps/site/src/assets"],
+            "assets": [
+              "apps/site/src/favicon.ico",
+              "apps/site/src/assets",
+              "apps/site/src/robots.txt"
+            ],
             "styles": ["apps/site/src/styles.scss"],
             "scripts": [],
             "customWebpackConfig": {
@@ -128,7 +132,7 @@
           "options": {
             "browserTarget": "site:build:production",
             "serverTarget": "site:server:production",
-            "routes": ["/"]
+            "routes": ["/", "/about", "/github", "/cv"]
           },
           "configurations": {
             "production": {}
