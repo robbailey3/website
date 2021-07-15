@@ -25,6 +25,14 @@ export class Vector {
     return v.magnitude();
   }
 
+  public static rotate(v: Vector, rad: number): Vector {
+    return v.rotate(rad);
+  }
+
+  public static rotateDeg(v: Vector, deg: number): Vector {
+    return v.rotateDeg(deg);
+  }
+
   public add(v: Vector): Vector {
     this.x += v.x;
     this.y += v.y;

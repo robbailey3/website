@@ -19,6 +19,11 @@ const routes: Routes = [
       import('./about/about.module').then((res) => res.AboutModule)
   },
   {
+    path: 'projects',
+    loadChildren: () =>
+      import('./projects/projects.module').then((res) => res.ProjectsModule)
+  },
+  {
     path: 'github',
     loadChildren: () =>
       import('./github/github.module').then((res) => res.GithubModule)
