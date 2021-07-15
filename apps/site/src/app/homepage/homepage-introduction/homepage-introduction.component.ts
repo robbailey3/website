@@ -5,7 +5,7 @@ import { fadeInRightAnimation } from 'angular-animations';
   selector: 'rob-homepage-introduction',
   templateUrl: './homepage-introduction.component.html',
   styleUrls: ['./homepage-introduction.component.scss'],
-  animations: [fadeInRightAnimation({ duration: 300 })]
+  animations: [fadeInRightAnimation({ duration: 800, delay: 200 })]
 })
 export class HomepageIntroductionComponent {
   public textIsInView = false;

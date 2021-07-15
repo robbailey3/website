@@ -4,6 +4,7 @@ import {
   EventEmitter,
   Inject,
   Input,
+  OnInit,
   Output
 } from '@angular/core';
 import { WINDOW } from '@ng-toolkit/universal';
@@ -11,17 +12,18 @@ import { WINDOW } from '@ng-toolkit/universal';
 @Directive({
   selector: '[robIntersectionObserver]'
 })
-export class IntersectionObserverDirective {
+export class IntersectionObserverDirective implements OnInit {
   @Output() public isInViewport: EventEmitter<boolean> = new EventEmitter();
 
   @Input('robIntersectionObserver') public threshold = 0;
 
-  constructor(private el: ElementRef, @Inject(WINDOW) public window: Window) {
+  constructor(private el: ElementRef, @Inject(WINDOW) public window: Window) {}
+
+  public ngOnInit() {
     this.setUpObserver();
   }
 
   private setUpObserver() {
-    console.log(this.threshold);
     if ('IntersectionObserver' in this.window) {
       const observer = new (this.window as any).IntersectionObserver(
         (entries) => {
