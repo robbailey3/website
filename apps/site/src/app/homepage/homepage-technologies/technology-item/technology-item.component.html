@@ -1,6 +1,6 @@
 <div
   class="item-wrapper"
-  robIntersectionObserver
+  [robIntersectionObserver]
   (isInViewport)="viewPortListener()"
   [ngClass]="{ 'is-visible': hasEnteredScreen }"
 >

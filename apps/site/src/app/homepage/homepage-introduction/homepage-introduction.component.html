@@ -14,7 +14,13 @@
     <div
       class="w-full md:w-1/2 py-16 px-4 text-light-50 text-center md:text-left"
     >
-      <div class="my-16" data-cy="intro-text">
+      <div
+        class="my-16"
+        data-cy="intro-text"
+        [robIntersectionObserver]="1"
+        (isInViewport)="handleViewportListener()"
+        [@fadeInRight]="textIsInView"
+      >
         <p>I am a Software Engineer working for a company called Netcall.</p>
         <p>I mainly work with Vue.js but I also do some work in C#.</p>
         <p>
