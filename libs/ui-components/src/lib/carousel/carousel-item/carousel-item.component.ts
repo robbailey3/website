@@ -10,7 +10,7 @@ import {
   styleUrls: ['./carousel-item.component.scss'],
   animations: [
     fadeInRightOnEnterAnimation({
-      delay: 1000,
+      delay: 200,
       duration: 200,
       translate: '10%'
     }),
