@@ -1,1 +1,10 @@
-<ng-container *ngIf="isActive"><ng-content></ng-content></ng-container>
+<div
+  *ngIf="isActive"
+  class="carousel-item"
+  [@fadeInRightOnEnter]
+  [@fadeOutLeftOnLeave]
+>
+  <div [hidden]="!isActive">
+    <ng-content></ng-content>
+  </div>
+</div>
