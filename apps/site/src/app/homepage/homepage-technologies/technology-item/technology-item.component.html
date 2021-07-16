@@ -1,12 +1,17 @@
 <div
   class="item-wrapper"
-  robIntersectionObserver
+  [robIntersectionObserver]
   (isInViewport)="viewPortListener()"
-  [ngClass]="{ 'is-visible': hasEnteredScreen }"
 >
-  <rob-card class="technology-item">
-    <img [src]="item.logoSrc" [alt]="item.name + ' logo'" />
-    <h3 class="tech-name">{{ item.name }}</h3>
-    <span class="tech-description">{{ item.description }}</span>
-  </rob-card>
+  <div
+    class="item-animation"
+    *ngIf="hasEnteredScreen"
+    [@fadeInUpOnEnter]="{ value: '', params: { delay: animationDelay } }"
+  >
+    <rob-card class="technology-item">
+      <img [src]="item.logoSrc" [alt]="item.name + ' logo'" />
+      <h3 class="tech-name">{{ item.name }}</h3>
+      <span class="tech-description">{{ item.description }}</span>
+    </rob-card>
+  </div>
 </div>

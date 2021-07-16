@@ -1,4 +1,5 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { Spectator, createComponentFactory } from '@ngneat/spectator';
 
 import { HomepageBannerComponent } from './homepage-banner.component';
@@ -7,6 +8,7 @@ describe('HomepageBannerComponent', () => {
   let spectator: Spectator<HomepageBannerComponent>;
   const createComponent = createComponentFactory({
     component: HomepageBannerComponent,
+    imports: [BrowserAnimationsModule],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
   });
 

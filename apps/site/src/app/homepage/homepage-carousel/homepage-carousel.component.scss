@@ -1,9 +1,12 @@
+#frequently-asked-questions {
+  @apply bg-secondary-900 block max-w-full overflow-x-hidden;
+}
 .faq-item {
-  @apply bg-accent-900 text-light rounded-md flex flex-wrap p-8 shadow;
+  @apply text-light rounded-md flex flex-wrap p-8;
   .faq-item-question {
-    @apply md:flex-1 flex w-full md:w-auto items-center justify-center text-center p-4;
+    @apply flex w-full items-center justify-center text-center p-4;
   }
   .faq-item-answer {
-    @apply md:flex-1 flex w-full md:w-auto items-center justify-center text-center p-4;
+    @apply flex w-full items-center justify-center text-center p-4;
   }
 }
