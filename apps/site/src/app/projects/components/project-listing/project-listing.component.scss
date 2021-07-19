@@ -1,0 +1,7 @@
+#project-listing-page {
+  @apply container mx-auto max-w-5xl py-8;
+}
+
+#project-listing {
+  @apply flex flex-wrap items-center my-8 justify-between;
+}

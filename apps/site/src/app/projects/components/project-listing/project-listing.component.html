@@ -1,1 +1,8 @@
-<p>project-listing works!</p>
+<section id="project-listing-page">
+  <h1>Projects</h1>
+  <div id="project-listing">
+    <ng-container *ngFor="let project of projects">
+      <rob-project-item [project]="project"></rob-project-item>
+    </ng-container>
+  </div>
+</section>

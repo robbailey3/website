@@ -1,1 +1,19 @@
-<p>project-item works!</p>
+<rob-card class="project-item-card" *ngIf="project" [@fadeInDownOnEnter]>
+  <h2>
+    <ng-container *ngIf="project.url; else projectRouterLink">
+      <a [href]="project.url">{{ project.name }}</a>
+    </ng-container>
+    <ng-template #projectRouterLink>
+      <ng-container *ngIf="project.routerLink; else projectNoLink">
+        <a [routerLink]="project.routerLink">{{ project.name }}</a>
+      </ng-container>
+    </ng-template>
+    <ng-template #projectNoLink>
+      {{ project.name }}
+    </ng-template>
+  </h2>
+  <p>{{ project.description }}</p>
+  <div class="project-item-keywords">
+    <rob-chip *ngFor="let keyword of project.keywords">{{ keyword }}</rob-chip>
+  </div>
+</rob-card>

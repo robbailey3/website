@@ -1,5 +1,5 @@
 .chip {
-  @apply rounded-full px-2 inline-block text-sm shadow-sm mr-2;
+  @apply rounded-full px-2 inline-block text-sm shadow-sm mr-2 select-none;
   &.chip-primary {
     @apply bg-primary text-light-50;
   }

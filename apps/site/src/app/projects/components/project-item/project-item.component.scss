@@ -1,0 +1,7 @@
+:host {
+  @apply flex-auto mt-4 max-w-md;
+}
+
+.project-item-card ::ng-deep .card {
+  @apply p-8;
+}
