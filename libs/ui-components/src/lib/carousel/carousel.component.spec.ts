@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SpectatorHost } from '@ngneat/spectator';
 import { ButtonsModule } from '../buttons/buttons.module';
 import { CarouselItemComponent } from './carousel-item/carousel-item.component';
@@ -32,7 +33,7 @@ describe('CarouselComponent', () => {
         CarouselComponent,
         CarouselItemComponent
       ],
-      imports: [ButtonsModule]
+      imports: [ButtonsModule, BrowserAnimationsModule]
     }).compileComponents();
   });
 

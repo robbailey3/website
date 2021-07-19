@@ -1,4 +1,5 @@
 import { Component, Input, NO_ERRORS_SCHEMA } from '@angular/core';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 import { createComponentFactory, Spectator } from '@ngneat/spectator';
 
@@ -21,7 +22,7 @@ describe('HomepageIntroductionComponent', () => {
   const componentFactory = createComponentFactory({
     component: HomepageIntroductionComponent,
     declarations: [ButtonStubComponent],
-    imports: [RouterTestingModule],
+    imports: [RouterTestingModule, BrowserAnimationsModule],
     schemas: [NO_ERRORS_SCHEMA]
   });
 
