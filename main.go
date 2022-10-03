@@ -1,27 +1,31 @@
 package main
 
 import (
-	"fmt"
-	"log"
-	"os"
+  "fmt"
+  "log"
+  "os"
 
-	"github.com/gofiber/fiber/v2"
+  "github.com/gofiber/fiber/v2"
 )
 
 func getPort() string {
-	port := os.Getenv("PORT")
-	if port == "" {
-		port = "8080"
-	}
-	return fmt.Sprintf(":%s", port)
+  port := os.Getenv("PORT")
+  if port == "" {
+    port = "8080"
+  }
+  return fmt.Sprintf(":%s", port)
 }
 
 func main() {
-	app := fiber.New()
+  app := fiber.New()
 
-	app.Get("/", func(c *fiber.Ctx) error {
-		return c.SendString("Hello, World!")
-	})
+  app.Get("/", func(c *fiber.Ctx) error {
+    name := c.Query("name")
+    if name != "" {
+      return c.SendString(name)
+    }
+    return c.SendString("Hello, World!")
+  })
 
-	log.Fatal(app.Listen(getPort()))
+  log.Fatal(app.Listen(getPort()))
 }
