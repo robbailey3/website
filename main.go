@@ -19,6 +19,9 @@ func getPort() string {
 func main() {
   app := fiber.New()
 
+  app.Static("/", "./public")
+  app.Static("/assets", "./public/assets")
+
   app.Get("/", func(c *fiber.Ctx) error {
     name := c.Query("name")
     if name != "" {
