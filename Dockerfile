@@ -20,7 +20,7 @@ WORKDIR /usr/api
 COPY go.mod ./
 COPY go.sum ./
 COPY --from=uibuild ./usr/ui/dist ./public
-RUN go mod download
+RUN go mod tidy
 
 COPY *.go ./
 
