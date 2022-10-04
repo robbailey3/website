@@ -1,4 +1,4 @@
-module github.com/robbailey3/websiteApi
+module github.com/robbailey3/website-api
 
 go 1.19
 
