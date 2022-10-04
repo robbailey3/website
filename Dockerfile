@@ -22,7 +22,7 @@ COPY go.sum ./
 COPY --from=uibuild ./usr/ui/dist ./public
 RUN go mod tidy
 
-COPY *.go ./
+COPY . ./
 
 RUN go build -o /server
 
