@@ -10,6 +10,7 @@ COPY ./ui/vite.config.ts ./
 COPY ./ui/index.html ./
 RUN npm install
 COPY ./ui/src ./src
+COPY ./ui/public ./public
 RUN npm run build
 
 FROM golang:1.19-alpine AS apibuild
