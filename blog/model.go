@@ -1,5 +1,5 @@
 package blog
 
-type Blog struct {
+type Post struct {
 	Title string `json:"title"`
 }

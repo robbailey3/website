@@ -5,7 +5,6 @@ import (
 	"context"
 	"fmt"
 	"github.com/joho/godotenv"
-	"log"
 	"os"
 )
 
@@ -16,11 +15,11 @@ func InitEnv() {
 	}
 }
 
-func InitDb() {
-	ctx := context.Background()
-	_, err := firestore.NewClient(ctx, os.Getenv("GOOGLE_PROJECT_ID"))
+func InitDb() (*firestore.Client, error) {
+	client, err := firestore.NewClient(context.Background(), os.Getenv("GOOGLE_PROJECT_ID"))
 	if err != nil {
-		// TODO: Handle error.
-		log.Fatal(err)
+		return nil, err
 	}
+
+	return client, err
 }
