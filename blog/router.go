@@ -13,4 +13,5 @@ func SetupBlogRoutes(db *firestore.Client, router fiber.Router) {
 	group := router.Group("blog")
 
 	group.Get("", c.GetPosts)
+	group.Post("", c.AddPost)
 }

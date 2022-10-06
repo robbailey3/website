@@ -8,6 +8,7 @@ import (
 
 type Controller interface {
 	GetPosts(ctx *fiber.Ctx) error
+	AddPost(ctx *fiber.Ctx) error
 }
 
 type controller struct {
@@ -29,4 +30,12 @@ func (c *controller) GetPosts(ctx *fiber.Ctx) error {
 	}
 
 	return response.Ok(ctx, posts)
+}
+
+func (c *controller) AddPost(ctx *fiber.Ctx) error {
+	if err := c.service.InsertPost(ctx); err != nil {
+		return err
+	}
+
+	return response.Accepted(ctx)
 }
