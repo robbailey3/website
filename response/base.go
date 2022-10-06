@@ -1,9 +1,5 @@
 package response
 
-import (
-	"time"
-)
-
 type Pagination struct {
 	CurrentPage  int `json:"currentPage"`
 	ItemsPerPage int `json:"itemsPerPage"`
@@ -18,7 +14,7 @@ type ErrorResponse struct {
 
 type BaseResponse struct {
 	Result    interface{}    `json:"result,omitempty"`
-	Timestamp time.Time      `json:"timestamp"`
+	Timestamp int64          `json:"timestamp"`
 	Success   bool           `json:"success"`
 	Error     *ErrorResponse `json:"error,omitempty"`
 	*Pagination

@@ -1,8 +1,9 @@
 package response
 
 import (
-	"github.com/gofiber/fiber/v2"
 	"time"
+
+	"github.com/gofiber/fiber/v2"
 )
 
 func Ok(ctx *fiber.Ctx, data interface{}) error {
@@ -11,7 +12,7 @@ func Ok(ctx *fiber.Ctx, data interface{}) error {
 	}{
 		BaseResponse: BaseResponse{
 			Success:   true,
-			Timestamp: time.Now(),
+			Timestamp: time.Now().Unix(),
 			Result:    &data,
 		},
 	})
@@ -24,7 +25,7 @@ func OkWithPagination(ctx *fiber.Ctx, data interface{}, currentPage, itemsPerPag
 		BaseResponse{
 			Success:   true,
 			Result:    data,
-			Timestamp: time.Now(),
+			Timestamp: time.Now().Unix(),
 			Pagination: &Pagination{
 				currentPage,
 				itemsPerPage,

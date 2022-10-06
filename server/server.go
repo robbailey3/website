@@ -1,7 +1,9 @@
 package server
 
 import (
+	"cloud.google.com/go/firestore"
 	"fmt"
+	"github.com/robbailey3/website-api/blog"
 	"log"
 	"os"
 
@@ -30,9 +32,11 @@ func setupMiddleware(app *fiber.App) {
 	app.Use(recover.New())
 }
 
-func setupRoutes(app fiber.Router) {}
+func setupRoutes(db *firestore.Client, app fiber.Router) {
+	blog.SetupBlogRoutes(db, app)
+}
 
-func Init() {
+func Init(db *firestore.Client) {
 	app := fiber.New()
 
 	setupMiddleware(app)
@@ -40,7 +44,7 @@ func Init() {
 	app.Static("/", "./public")
 	app.Static("/assets", "./public/assets")
 
-	setupRoutes(app.Group("api"))
+	setupRoutes(db, app.Group("api"))
 
 	log.Fatal(app.Listen(getPort()))
 }

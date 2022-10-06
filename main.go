@@ -1,9 +1,20 @@
 package main
 
 import (
+	"github.com/robbailey3/website-api/config"
+	"github.com/robbailey3/website-api/database"
 	"github.com/robbailey3/website-api/server"
+	"log"
 )
 
 func main() {
-	server.Init()
+	config.InitEnv()
+
+	client, err := database.Init()
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	server.Init(client)
 }
