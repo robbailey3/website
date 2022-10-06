@@ -2,17 +2,19 @@ module github.com/robbailey3/website-api
 
 go 1.19
 
-require github.com/gofiber/fiber/v2 v2.38.1
+require (
+	cloud.google.com/go/firestore v1.6.1
+	github.com/gofiber/fiber/v2 v2.38.1
+	github.com/joho/godotenv v1.4.0
+)
 
 require (
 	cloud.google.com/go v0.97.0 // indirect
-	cloud.google.com/go/firestore v1.6.1 // indirect
 	github.com/andybalholm/brotli v1.0.4 // indirect
 	github.com/golang/groupcache v0.0.0-20200121045136-8c9f03a8e57e // indirect
 	github.com/golang/protobuf v1.5.2 // indirect
 	github.com/google/go-cmp v0.5.6 // indirect
 	github.com/googleapis/gax-go/v2 v2.1.1 // indirect
-	github.com/joho/godotenv v1.4.0 // indirect
 	github.com/klauspost/compress v1.15.0 // indirect
 	github.com/valyala/bytebufferpool v1.0.0 // indirect
 	github.com/valyala/fasthttp v1.40.0 // indirect

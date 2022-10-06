@@ -1,8 +1,9 @@
 package response
 
 import (
-	"github.com/gofiber/fiber/v2"
 	"time"
+
+	"github.com/gofiber/fiber/v2"
 )
 
 func Accepted(ctx *fiber.Ctx) error {
@@ -11,7 +12,7 @@ func Accepted(ctx *fiber.Ctx) error {
 	}{
 		BaseResponse{
 			Success:   true,
-			Timestamp: time.Now(),
+			Timestamp: time.Now().Unix(),
 		},
 	})
 }

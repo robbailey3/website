@@ -1,8 +1,10 @@
 package blog
 
 import (
-	"cloud.google.com/go/firestore"
 	"context"
+
+	"cloud.google.com/go/firestore"
+	"google.golang.org/api/iterator"
 )
 
 type Repository interface {
@@ -24,19 +26,27 @@ func NewRepository(db *firestore.Client) Repository {
 func (r *repository) GetMany(ctx context.Context) ([]Post, error) {
 	iter := r.db.Collection("posts").Documents(ctx)
 
-	docs, err := iter.GetAll()
-
-	if err != nil {
-		return nil, err
-	}
-
 	var posts []Post
 
-	for _, doc := range docs {
-		var post Post
-		if err := doc.DataTo(&post); err != nil {
+	for {
+		doc, err := iter.Next()
+
+		if err == iterator.Done {
+			break
+		}
+
+		if err != nil {
 			return nil, err
 		}
+
+		var post Post
+
+		err = doc.DataTo(&post)
+
+		if err != nil {
+			return nil, err
+		}
+
 		posts = append(posts, post)
 	}
 
