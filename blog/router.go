@@ -3,6 +3,7 @@ package blog
 import (
 	"cloud.google.com/go/firestore"
 	"github.com/gofiber/fiber/v2"
+	"github.com/robbailey3/website-api/middleware"
 )
 
 func SetupBlogRoutes(db *firestore.Client, router fiber.Router) {
@@ -13,5 +14,8 @@ func SetupBlogRoutes(db *firestore.Client, router fiber.Router) {
 	group := router.Group("blog")
 
 	group.Get("", c.GetPosts)
-	group.Post("", c.AddPost)
+	group.Post("", middleware.WithFirebaseAuth, c.AddPost)
+	group.Get("/:id", c.GetPost)
+	group.Patch("/:id", middleware.WithFirebaseAuth, c.UpdatePost)
+	group.Delete("/:id", middleware.WithFirebaseAuth, c.DeletePost)
 }
