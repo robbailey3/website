@@ -1,5 +1,7 @@
 package response
 
+import "github.com/robbailey3/website-api/exception"
+
 type Pagination struct {
 	CurrentPage  int `json:"currentPage"`
 	ItemsPerPage int `json:"itemsPerPage"`
@@ -8,8 +10,8 @@ type Pagination struct {
 }
 
 type ErrorResponse struct {
-	Code    int    `json:"code"`
-	Message string `json:"message"`
+	Code    exception.ErrorCode `json:"code"`
+	Message string              `json:"message"`
 }
 
 type BaseResponse struct {

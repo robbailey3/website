@@ -16,7 +16,7 @@ func Init() (*firestore.Client, error) {
 	var err error
 
 	once.Do(func() {
-		client, err = firestore.NewClient(context.Background(), os.Getenv("GOOGLE_PROJECT_ID"))
+		client, err = firestore.NewClient(context.Background(), os.Getenv("GOOGLE_CLOUD_PROJECT"))
 	})
 
 	return client, err
