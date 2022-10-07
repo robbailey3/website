@@ -49,7 +49,7 @@ func (c *controller) UploadPhoto(ctx *fiber.Ctx) error {
 		return response.ServerError(ctx, err)
 	}
 
-	if err := client.Upload(ctx.Context(), "SOMETHING", file); err != nil {
+	if err := client.Upload(ctx.Context(), fileHeader.Filename, file); err != nil {
 		return response.ServerError(ctx, err)
 	}
 
