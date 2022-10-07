@@ -16,5 +16,6 @@ func SetupBlogRoutes(db *firestore.Client, router fiber.Router) {
 	group.Get("", c.GetPosts)
 	group.Post("", middleware.WithFirebaseAuth, c.AddPost)
 	group.Get("/:id", c.GetPost)
-	group.Patch("/:id", c.UpdatePost)
+	group.Patch("/:id", middleware.WithFirebaseAuth, c.UpdatePost)
+	group.Delete("/:id", middleware.WithFirebaseAuth, c.DeletePost)
 }

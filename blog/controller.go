@@ -13,6 +13,7 @@ type Controller interface {
 	GetPost(ctx *fiber.Ctx) error
 	AddPost(ctx *fiber.Ctx) error
 	UpdatePost(ctx *fiber.Ctx) error
+	DeletePost(ctx *fiber.Ctx) error
 }
 
 type controller struct {
@@ -70,4 +71,14 @@ func (c *controller) UpdatePost(ctx *fiber.Ctx) error {
 	}
 
 	return nil
+}
+
+func (c *controller) DeletePost(ctx *fiber.Ctx) error {
+	id := ctx.Params("id")
+
+	if err := c.service.DeletePost(ctx.Context(), id); err != nil {
+		return response.ServerError(ctx, err)
+	}
+
+	return response.Accepted(ctx)
 }

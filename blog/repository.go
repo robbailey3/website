@@ -17,7 +17,7 @@ type Repository interface {
 	GetOne(ctx context.Context, id string) (*Post, error)
 	UpdateOne(ctx context.Context, id string, update UpdatePostRequest) error
 	Insert(ctx context.Context, post Post) error
-	Delete() error
+	Delete(ctc context.Context, id string) error
 }
 
 type repository struct {
@@ -97,7 +97,8 @@ func (r *repository) Insert(ctx context.Context, post Post) error {
 	return nil
 }
 
-func (r *repository) Delete() error {
-	// TODO implement me
-	panic("implement me")
+func (r *repository) Delete(ctx context.Context, id string) error {
+	_, err := r.collection.Doc(id).Delete(ctx)
+
+	return err
 }

@@ -13,6 +13,7 @@ type Service interface {
 	GetPost(ctx *fiber.Ctx) (*Post, error)
 	InsertPost(ctx *fiber.Ctx) error
 	UpdatePost(ctx context.Context, id string, request UpdatePostRequest) error
+	DeletePost(ctx context.Context, id string) error
 }
 
 type service struct {
@@ -74,4 +75,8 @@ func (s service) UpdatePost(ctx context.Context, id string, req UpdatePostReques
 	}
 
 	return nil
+}
+
+func (s service) DeletePost(ctx context.Context, id string) error {
+	return s.repo.Delete(ctx, id)
 }
