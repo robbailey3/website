@@ -2,6 +2,7 @@ package server
 
 import (
 	"fmt"
+	"github.com/robbailey3/website-api/photos"
 	"log"
 	"os"
 
@@ -42,6 +43,7 @@ func setupMiddleware(app *fiber.App) {
 
 func setupRoutes(db *firestore.Client, app fiber.Router) {
 	blog.SetupBlogRoutes(db, app)
+	photos.InitPhotoRoutes(db, app)
 }
 
 func Init(db *firestore.Client) {

@@ -1,6 +1,7 @@
 package middleware
 
 import (
+	"errors"
 	"log"
 	"strings"
 
@@ -19,16 +20,21 @@ func WithFirebaseAuth(ctx *fiber.Ctx) error {
 
 	client, err := app.Auth(ctx.Context())
 
-	authHeader := ctx.Get("Authorization")
-
-	idToken := strings.Split(authHeader, " ")[1]
-
 	if err != nil {
 		log.Printf("error getting Auth client: %v\n", err)
 		return response.ServerError(ctx, err)
 	}
 
+	authHeader := ctx.Get("Authorization")
+
+	if authHeader == "" {
+		return response.Unauthorized(ctx, errors.New("no auth header"))
+	}
+
+	idToken := strings.Split(authHeader, " ")[1]
+
 	token, err := client.VerifyIDToken(ctx.Context(), idToken)
+
 	if err != nil {
 		log.Printf("error verifying ID token: %v\n", err)
 		return err

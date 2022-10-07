@@ -9,7 +9,7 @@ import (
 )
 
 func ServerError(ctx *fiber.Ctx, err error) error {
-	log.Fatalf("internal server error: %v\n", err)
+	log.Printf("internal server error: %v\n", err)
 	return ctx.Status(fiber.StatusInternalServerError).JSON(struct {
 		BaseResponse
 	}{

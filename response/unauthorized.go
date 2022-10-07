@@ -9,7 +9,7 @@ import (
 )
 
 func Unauthorized(ctx *fiber.Ctx, err error) error {
-	log.Fatalf("unauthorized: %v\n", err)
+	log.Printf("unauthorized: %v\n", err)
 	return ctx.Status(fiber.StatusUnauthorized).JSON(struct {
 		BaseResponse
 	}{

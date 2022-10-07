@@ -13,9 +13,9 @@ type Pagination struct {
 }
 
 type ErrorResponse struct {
-	Code             exception.ErrorCode `json:"code"`
-	Message          string              `json:"message"`
-	ValidationErrors []*validation.ValidationError
+	Code             exception.ErrorCode           `json:"code"`
+	Message          string                        `json:"message"`
+	ValidationErrors []*validation.ValidationError `json:"validationErrors,omitempty"`
 }
 
 type BaseResponse struct {
