@@ -5,8 +5,8 @@ go 1.19
 require (
 	cloud.google.com/go/firestore v1.6.1
 	firebase.google.com/go v3.13.0+incompatible
+	github.com/go-playground/validator/v10 v10.11.1
 	github.com/gofiber/fiber/v2 v2.38.1
-	github.com/google/martian/v3 v3.2.1
 	github.com/joho/godotenv v1.4.0
 	google.golang.org/api v0.96.0
 	google.golang.org/grpc v1.48.0
@@ -20,7 +20,6 @@ require (
 	github.com/andybalholm/brotli v1.0.4 // indirect
 	github.com/go-playground/locales v0.14.0 // indirect
 	github.com/go-playground/universal-translator v0.18.0 // indirect
-	github.com/go-playground/validator/v10 v10.11.1 // indirect
 	github.com/golang/groupcache v0.0.0-20200121045136-8c9f03a8e57e // indirect
 	github.com/golang/protobuf v1.5.2 // indirect
 	github.com/google/go-cmp v0.5.8 // indirect

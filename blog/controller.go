@@ -5,6 +5,7 @@ import (
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/robbailey3/website-api/response"
+	"github.com/robbailey3/website-api/validation"
 )
 
 type Controller interface {
@@ -55,5 +56,18 @@ func (c *controller) AddPost(ctx *fiber.Ctx) error {
 }
 
 func (c *controller) UpdatePost(ctx *fiber.Ctx) error {
+	var updateRequest UpdatePostRequest
+	err := ctx.BodyParser(&updateRequest)
 
+	if err != nil {
+		return response.BadRequest(ctx, []*validation.ValidationError{})
+	}
+
+	validationErrors := validation.Validate(updateRequest)
+
+	if len(validationErrors) > 0 {
+		return response.BadRequest(ctx, validationErrors)
+	}
+
+	return nil
 }

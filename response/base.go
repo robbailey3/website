@@ -1,6 +1,9 @@
 package response
 
-import "github.com/robbailey3/website-api/exception"
+import (
+	"github.com/robbailey3/website-api/exception"
+	"github.com/robbailey3/website-api/validation"
+)
 
 type Pagination struct {
 	CurrentPage  int `json:"currentPage"`
@@ -10,8 +13,9 @@ type Pagination struct {
 }
 
 type ErrorResponse struct {
-	Code    exception.ErrorCode `json:"code"`
-	Message string              `json:"message"`
+	Code             exception.ErrorCode `json:"code"`
+	Message          string              `json:"message"`
+	ValidationErrors []*validation.ValidationError
 }
 
 type BaseResponse struct {
