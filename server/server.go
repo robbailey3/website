@@ -2,8 +2,8 @@ package server
 
 import (
 	"fmt"
-	"github.com/gofiber/fiber/v2/middleware/cache"
 	"github.com/gofiber/fiber/v2/middleware/limiter"
+	"github.com/robbailey3/website-api/config"
 	"github.com/robbailey3/website-api/photos"
 	"log"
 	"os"
@@ -31,10 +31,10 @@ func getPort() string {
 
 func setupMiddleware(app *fiber.App) {
 	app.Get("/metrics", monitor.New(monitor.Config{Title: "Monitoring"}))
-	app.Use(cache.New())
+	// app.Use(cache.New())
 	app.Use(limiter.New(limiter.Config{Max: 20, Expiration: time.Minute}))
 	app.Use(compress.New())
-	app.Use(cors.New())
+	app.Use(cors.New(cors.Config{AllowOrigins: "*"}))
 	app.Use(requestid.New())
 	app.Use(logger.New(
 		logger.Config{
@@ -48,6 +48,7 @@ func setupMiddleware(app *fiber.App) {
 func setupRoutes(db *firestore.Client, app fiber.Router) {
 	blog.SetupBlogRoutes(db, app)
 	photos.InitPhotoRoutes(db, app)
+	config.SetupConfigRoutes(app)
 }
 
 func Init(db *firestore.Client) {
