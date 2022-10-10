@@ -1,5 +1,5 @@
 <template>
-	<component :is="is" class="container mx-auto"></component>
+	<component :is="is" class="container mx-auto"><slot></slot></component>
 </template>
 
 <script setup lang="ts">
