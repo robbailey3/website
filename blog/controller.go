@@ -61,13 +61,13 @@ func (c *controller) UpdatePost(ctx *fiber.Ctx) error {
 	err := ctx.BodyParser(&updateRequest)
 
 	if err != nil {
-		return response.BadRequest(ctx, []*validation.ValidationError{})
+		return response.BadRequest(ctx, "Failed to parse request")
 	}
 
 	validationErrors := validation.Validate(updateRequest)
 
 	if len(validationErrors) > 0 {
-		return response.BadRequest(ctx, validationErrors)
+		return response.ValidationError(ctx, validationErrors)
 	}
 
 	return nil

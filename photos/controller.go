@@ -3,12 +3,9 @@ package photos
 import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/robbailey3/website-api/response"
-	"github.com/robbailey3/website-api/slices"
 	"github.com/robbailey3/website-api/storage"
-	"github.com/robbailey3/website-api/validation"
+	"os"
 )
-
-var allowedFileTypes = []string{"image/jpeg"}
 
 type Controller interface {
 	UploadPhoto(ctx *fiber.Ctx) error
@@ -31,10 +28,12 @@ func (c *controller) UploadPhoto(ctx *fiber.Ctx) error {
 		return response.ServerError(ctx, err)
 	}
 
-	fileType := fileHeader.Header.Get("Content-Type")
+	if !c.service.IsValidType(fileHeader) {
+		return response.BadRequest(ctx, "Invalid file type")
+	}
 
-	if !slices.Contains[string](allowedFileTypes, fileType) {
-		return response.BadRequest(ctx, []*validation.ValidationError{})
+	if !c.service.IsValidSize(fileHeader) {
+		return response.BadRequest(ctx, "Invalid file size")
 	}
 
 	file, err := fileHeader.Open()
@@ -43,7 +42,7 @@ func (c *controller) UploadPhoto(ctx *fiber.Ctx) error {
 		return response.ServerError(ctx, err)
 	}
 
-	client, err := storage.NewClient(ctx.Context(), "rb-website-api-test")
+	client, err := storage.NewClient(ctx.Context(), os.Getenv("PHOTO_BUCKET_NAME"))
 
 	if err != nil {
 		return response.ServerError(ctx, err)
@@ -53,5 +52,5 @@ func (c *controller) UploadPhoto(ctx *fiber.Ctx) error {
 		return response.ServerError(ctx, err)
 	}
 
-	return response.Accepted(ctx)
+	return response.Created(ctx)
 }
