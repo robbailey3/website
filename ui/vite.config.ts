@@ -21,7 +21,7 @@ export default defineConfig({
 		}),
 		Components({
 			dts: 'src/components.d.ts',
-			dirs: ['src/app/components']
+			dirs: ['src/components']
 		})
 	],
 	resolve: {

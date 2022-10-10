@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import PageHeader from './components/global/pageHeader/PageHeader.vue';
+import AppHeader from './components/global/AppHeader/AppHeader.vue';
 import firebase from './services/firebase';
 
 onMounted(async () => {
@@ -8,7 +8,7 @@ onMounted(async () => {
 </script>
 
 <template>
-	<PageHeader />
+	<AppHeader />
 	<RouterView />
 </template>
 

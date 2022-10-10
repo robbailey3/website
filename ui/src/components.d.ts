@@ -5,8 +5,14 @@ import '@vue/runtime-core'
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
+    AppContainer: typeof import('./components/layout/AppContainer/AppContainer.vue')['default']
+    AppHeader: typeof import('./components/global/AppHeader/AppHeader.vue')['default']
+    AppNavigation: typeof import('./components/global/AppNavigation/AppNavigation.vue')['default']
+    AppNavigationLink: typeof import('./components/global/AppNavigation/AppNavigationLink/AppNavigationLink.vue')['default']
+    AppNavigationToggle: typeof import('./components/global/AppNavigation/AppNavigationToggle/AppNavigationToggle.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    TextInput: typeof import('./components/form/TextInput.vue')['default']
   }
 }
 
