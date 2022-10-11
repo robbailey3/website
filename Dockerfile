@@ -3,14 +3,10 @@
 FROM node:16.14.2-alpine AS uibuild
 
 WORKDIR /usr/ui
-COPY ./ui/package.json ./
-COPY ./ui/tsconfig.json ./
-COPY ./ui/tsconfig.node.json ./
-COPY ./ui/vite.config.ts ./
-COPY ./ui/index.html ./
+
+COPY ./ui ./
+
 RUN npm install
-COPY ./ui/src ./src
-COPY ./ui/public ./public
 RUN npm run build
 
 FROM golang:1.19-alpine AS apibuild
