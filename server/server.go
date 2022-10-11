@@ -5,6 +5,7 @@ import (
 	"github.com/gofiber/fiber/v2/middleware/limiter"
 	"github.com/robbailey3/website-api/config"
 	"github.com/robbailey3/website-api/photos"
+	"github.com/robbailey3/website-api/tasks"
 	"log"
 	"os"
 	"time"
@@ -49,6 +50,7 @@ func setupRoutes(db *firestore.Client, app fiber.Router) {
 	blog.SetupBlogRoutes(db, app)
 	photos.InitPhotoRoutes(db, app)
 	config.SetupConfigRoutes(app)
+	tasks.InitTasksRoutes(app, db)
 }
 
 func Init(db *firestore.Client) {

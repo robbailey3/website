@@ -46,6 +46,8 @@ func (r *repository) GetMany(ctx context.Context) ([]Post, error) {
 			return nil, err
 		}
 
+		currentDoc.Id = doc.Ref.ID
+
 		posts = append(posts, currentDoc)
 	}
 }
