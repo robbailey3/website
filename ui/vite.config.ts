@@ -1,4 +1,4 @@
-import { fileURLToPath, URL } from 'node:url';
+import path from 'path';
 
 import { defineConfig } from 'vite';
 import vue from '@vitejs/plugin-vue';
@@ -26,7 +26,11 @@ export default defineConfig({
 	],
 	resolve: {
 		alias: {
-			'@': fileURLToPath(new URL('src', import.meta.url))
+			'@shared': path.resolve(__dirname, './src/shared'),
+			'@pages': path.resolve(__dirname, './src/pages'),
+			'@components': path.resolve(__dirname, './src/components'),
+			'@services': path.resolve(__dirname, './src/services'),
+			'@stores': path.resolve(__dirname, './src/stores'),
 		}
 	}
 });

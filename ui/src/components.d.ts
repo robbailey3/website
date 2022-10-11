@@ -13,6 +13,6 @@ declare module '@vue/runtime-core' {
     AppNavigationLink: typeof import('./components/global/AppNavigation/AppNavigationLink/AppNavigationLink.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
-    TextInput: typeof import('./components/form/TextInput.vue')['default']
+    TextInput: typeof import('./components/form/TextInput/TextInput.vue')['default']
   }
 }
