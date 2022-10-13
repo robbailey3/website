@@ -1,5 +1,7 @@
 <template>
-	<button :class="[getButtonVariantClass()]"><slot></slot></button>
+	<button :class="[getButtonVariantClass(), getButtonSizeClass()]">
+		<slot></slot>
+	</button>
 </template>
 
 <script lang="ts" setup>
@@ -20,5 +22,9 @@ defineProps({
 
 const getButtonVariantClass = () => {
 	return 'bg-blue';
+};
+
+const getButtonSizeClass = () => {
+	return 'p-4';
 };
 </script>
