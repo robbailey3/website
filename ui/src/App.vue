@@ -10,6 +10,7 @@ onMounted(async () => {
 <template>
 	<AppHeader />
 	<RouterView />
+	<AppButton>FooBar</AppButton>
 </template>
 
 <style scoped></style>
