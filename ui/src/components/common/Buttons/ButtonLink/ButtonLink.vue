@@ -1,25 +1,26 @@
 <template>
-	<button
+	<a
+		class="duration-300"
 		:class="[getButtonVariantClass(), getButtonSizeClass(), getRoundedClass()]"
-		:type="type"
 		:disabled="disabled"
+		:href="href"
 	>
 		<template v-if="icon">
 			<font-awesome-icon :icon="icon"></font-awesome-icon>
 		</template>
 		<slot></slot>
-	</button>
+	</a>
 </template>
 
 <script lang="ts" setup>
 import { PropType } from 'vue';
-import { ButtonSize } from './buttonSize';
-import { ButtonVariant } from './buttonVariant';
+import { ButtonSize } from '../buttonSize';
+import { ButtonVariant } from '../buttonVariant';
 
 const props = defineProps({
-	type: {
-		type: String as PropType<'button' | 'submit' | 'reset'>,
-		default: 'button'
+	href: {
+		type: String,
+		required: true
 	},
 	variant: {
 		type: String as PropType<ButtonVariant>,
@@ -44,11 +45,25 @@ const props = defineProps({
 });
 
 const getButtonVariantClass = () => {
-	return 'bg-blue-500';
+	switch (props.variant) {
+		default:
+			return 'bg-teal-400 hover:bg-teal-500';
+	}
 };
 
 const getButtonSizeClass = () => {
-	return 'p-4';
+	switch (props.size) {
+		case 'xs':
+			return 'px-1 py-0.5';
+		case 'sm':
+			return 'px-2 py-1';
+		case 'md':
+			return 'px-4 py-2';
+		case 'lg':
+			return 'px-6 py-3';
+		case 'xl':
+			return 'px-8 py-4';
+	}
 };
 
 const getRoundedClass = () => {
