@@ -6,9 +6,9 @@
 		Skip to content
 	</a>
 	<header class="shadow-lg fixed left-0 top-0 w-full">
-		<div class="container mx-auto">
+		<Container>
 			<AppNavigation></AppNavigation>
-		</div>
+		</Container>
 	</header>
 </template>
 

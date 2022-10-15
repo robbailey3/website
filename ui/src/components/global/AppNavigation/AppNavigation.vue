@@ -1,5 +1,5 @@
 <template>
-	<div id="app-navigation" class="fixed z-50 top-0 left-0 w-full">
+	<div id="app-navigation" class="w-full">
 		<nav class="flex justify-end">
 			<ul class="flex justify-center md:justify-end items-center gap-4 grow">
 				<AppNavigationLink to="/">Home</AppNavigationLink>
