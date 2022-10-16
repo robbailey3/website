@@ -2,9 +2,8 @@ package photos
 
 import (
 	"github.com/gofiber/fiber/v2"
+	"github.com/robbailey3/website-api/image"
 	"github.com/robbailey3/website-api/response"
-	"github.com/robbailey3/website-api/storage"
-	"os"
 )
 
 type Controller interface {
@@ -42,15 +41,27 @@ func (c *controller) UploadPhoto(ctx *fiber.Ctx) error {
 		return response.ServerError(ctx, err)
 	}
 
-	client, err := storage.NewClient(ctx.Context(), os.Getenv("PHOTO_BUCKET_NAME"))
+	// client, err := storage.NewClient(ctx.Context(), os.Getenv("PHOTO_BUCKET_NAME"))
+	//
+	// if err != nil {
+	// 	return response.ServerError(ctx, err)
+	// }
+
+	aiClient, err := image.NewVisionClient(ctx.Context())
 
 	if err != nil {
 		return response.ServerError(ctx, err)
 	}
 
-	if err := client.Upload(ctx.Context(), fileHeader.Filename, file); err != nil {
+	res, err := aiClient.DetectImageProperties(ctx.Context(), file)
+
+	if err != nil {
 		return response.ServerError(ctx, err)
 	}
 
-	return response.Created(ctx)
+	// if err := client.Upload(ctx.Context(), fileHeader.Filename, file); err != nil {
+	// 	return response.ServerError(ctx, err)
+	// }
+
+	return response.Ok(ctx, res)
 }

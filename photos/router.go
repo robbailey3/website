@@ -4,7 +4,6 @@ import (
 	"cloud.google.com/go/firestore"
 	"fmt"
 	"github.com/gofiber/fiber/v2"
-	"github.com/robbailey3/website-api/middleware"
 )
 
 func InitPhotoRoutes(db *firestore.Client, router fiber.Router) {
@@ -15,5 +14,5 @@ func InitPhotoRoutes(db *firestore.Client, router fiber.Router) {
 
 	group := router.Group("photos")
 
-	group.Post("", middleware.WithFirebaseAuth, c.UploadPhoto)
+	group.Post("", c.UploadPhoto)
 }
