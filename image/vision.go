@@ -4,21 +4,21 @@ import (
 	vision "cloud.google.com/go/vision/apiv1"
 	"context"
 	pb "google.golang.org/genproto/googleapis/cloud/vision/v1"
-	"mime/multipart"
+	"io"
 )
 
 type VisionAiClient interface {
-	DetectLabels(ctx context.Context, file multipart.File, maxResults int) ([]*Label, error)
-	DetectFaces(ctx context.Context, file multipart.File, maxResults int) ([]*pb.FaceAnnotation, error)
-	DetectImageProperties(ctx context.Context, file multipart.File) (*pb.ImageProperties, error)
+	DetectLabels(ctx context.Context, file io.Reader, maxResults int) ([]*Label, error)
+	DetectFaces(ctx context.Context, file io.Reader, maxResults int) ([]*pb.FaceAnnotation, error)
+	DetectImageProperties(ctx context.Context, file io.Reader) (*pb.ImageProperties, error)
 }
 
 type visionAiClient struct {
 	c *vision.ImageAnnotatorClient
 }
 
-func NewVisionClient(ctx context.Context) (VisionAiClient, error) {
-	client, err := vision.NewImageAnnotatorClient(ctx)
+func NewVisionClient() (VisionAiClient, error) {
+	client, err := vision.NewImageAnnotatorClient(context.Background())
 
 	if err != nil {
 		return nil, err
@@ -29,7 +29,7 @@ func NewVisionClient(ctx context.Context) (VisionAiClient, error) {
 	}, nil
 }
 
-func (v *visionAiClient) DetectLabels(ctx context.Context, file multipart.File, maxResults int) ([]*Label, error) {
+func (v *visionAiClient) DetectLabels(ctx context.Context, file io.Reader, maxResults int) ([]*Label, error) {
 	image, err := vision.NewImageFromReader(file)
 	if err != nil {
 		return nil, err
@@ -49,7 +49,7 @@ func (v *visionAiClient) DetectLabels(ctx context.Context, file multipart.File, 
 	return labels, nil
 }
 
-func (v *visionAiClient) DetectFaces(ctx context.Context, file multipart.File, maxResults int) ([]*pb.FaceAnnotation, error) {
+func (v *visionAiClient) DetectFaces(ctx context.Context, file io.Reader, maxResults int) ([]*pb.FaceAnnotation, error) {
 	image, err := vision.NewImageFromReader(file)
 	if err != nil {
 		return nil, err
@@ -63,7 +63,7 @@ func (v *visionAiClient) DetectFaces(ctx context.Context, file multipart.File, m
 	return faces, nil
 }
 
-func (v *visionAiClient) DetectImageProperties(ctx context.Context, file multipart.File) (*pb.ImageProperties, error) {
+func (v *visionAiClient) DetectImageProperties(ctx context.Context, file io.Reader) (*pb.ImageProperties, error) {
 	image, err := vision.NewImageFromReader(file)
 	if err != nil {
 		return nil, err

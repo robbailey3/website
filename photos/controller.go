@@ -47,7 +47,7 @@ func (c *controller) UploadPhoto(ctx *fiber.Ctx) error {
 	// 	return response.ServerError(ctx, err)
 	// }
 
-	aiClient, err := image.NewVisionClient(ctx.Context())
+	aiClient, err := image.NewVisionClient()
 
 	if err != nil {
 		return response.ServerError(ctx, err)
