@@ -8,9 +8,10 @@ import (
 )
 
 type VisionAiClient interface {
-	DetectLabels(ctx context.Context, file io.Reader, maxResults int) ([]*Label, error)
 	DetectFaces(ctx context.Context, file io.Reader, maxResults int) ([]*pb.FaceAnnotation, error)
-	DetectImageProperties(ctx context.Context, file io.Reader) (*pb.ImageProperties, error)
+	DetectProperties(ctx context.Context, file io.Reader) (*pb.ImageProperties, error)
+	DetectLabels(ctx context.Context, file io.Reader, maxResults int) ([]*Label, error)
+	DetectLandmarks(ctx context.Context, file io.Reader, maxResults int) ([]*pb.EntityAnnotation, error)
 }
 
 type visionAiClient struct {
@@ -63,7 +64,7 @@ func (v *visionAiClient) DetectFaces(ctx context.Context, file io.Reader, maxRes
 	return faces, nil
 }
 
-func (v *visionAiClient) DetectImageProperties(ctx context.Context, file io.Reader) (*pb.ImageProperties, error) {
+func (v *visionAiClient) DetectProperties(ctx context.Context, file io.Reader) (*pb.ImageProperties, error) {
 	image, err := vision.NewImageFromReader(file)
 	if err != nil {
 		return nil, err
@@ -75,4 +76,18 @@ func (v *visionAiClient) DetectImageProperties(ctx context.Context, file io.Read
 	}
 
 	return faces, nil
+}
+
+func (v *visionAiClient) DetectLandmarks(ctx context.Context, file io.Reader, maxResults int) ([]*pb.EntityAnnotation, error) {
+	image, err := vision.NewImageFromReader(file)
+	if err != nil {
+		return nil, err
+	}
+	landmarks, err := v.c.DetectLandmarks(ctx, image, nil, maxResults)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return landmarks, nil
 }

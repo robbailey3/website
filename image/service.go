@@ -6,6 +6,8 @@ import (
 	"crypto/rand"
 	"errors"
 	"fmt"
+	"github.com/jellydator/ttlcache/v3"
+	"google.golang.org/genproto/googleapis/cloud/vision/v1"
 	"io"
 	"log"
 	"mime/multipart"
@@ -21,13 +23,15 @@ import (
 type Service interface {
 	CreateImage(ctx context.Context, fileHeader *multipart.FileHeader) (*string, error)
 	GetImageLabels(ctx context.Context, id string) ([]*Label, error)
+	GetImageProperties(ctx context.Context, id string) (*vision.ImageProperties, error)
+	GetImageLandmarks(ctx context.Context, id string) ([]*vision.EntityAnnotation, error)
 }
 
 type service struct {
 	repo    Repository
 	storage storage.Client
 	vision  VisionAiClient
-	cache   map[string][]byte
+	cache   *ttlcache.Cache[string, []byte]
 }
 
 func NewService(db *firestore.Client) Service {
@@ -40,11 +44,19 @@ func NewService(db *firestore.Client) Service {
 	if err != nil {
 		log.Fatal("Failed to initialise visionAi client")
 	}
+	cache := ttlcache.New(
+		ttlcache.WithTTL[string, []byte](2 * time.Minute))
+
+	cache.OnEviction(func(ctx context.Context, reason ttlcache.EvictionReason, item *ttlcache.Item[string, []byte]) {
+		fmt.Println(item.Key())
+		fmt.Println(reason)
+	})
+	go cache.Start()
 	return &service{
 		repo:    NewRepository(db),
 		storage: storageClient,
 		vision:  visionClient,
-		cache:   make(map[string][]byte),
+		cache:   cache,
 	}
 }
 
@@ -58,6 +70,26 @@ func (s *service) GetImageLabels(ctx context.Context, id string) ([]*Label, erro
 	return s.vision.DetectLabels(ctx, imageReader, 10)
 }
 
+func (s *service) GetImageProperties(ctx context.Context, id string) (*vision.ImageProperties, error) {
+	imageReader, err := s.getImageById(ctx, id)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return s.vision.DetectProperties(ctx, imageReader)
+}
+
+func (s *service) GetImageLandmarks(ctx context.Context, id string) ([]*vision.EntityAnnotation, error) {
+	imageReader, err := s.getImageById(ctx, id)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return s.vision.DetectLandmarks(ctx, imageReader, 10)
+}
+
 func (s *service) CreateImage(ctx context.Context, fileHeader *multipart.FileHeader) (*string, error) {
 	fileExt := strings.Split(fileHeader.Filename, ".")[1] // TODO: make this more robust
 
@@ -69,13 +101,13 @@ func (s *service) CreateImage(ctx context.Context, fileHeader *multipart.FileHea
 		return nil, err
 	}
 
-	fileBytes, err := io.ReadAll(file) // you may want to handle the error
+	fileBytes, err := io.ReadAll(file)
 
 	if err != nil {
 		return nil, err
 	}
 
-	if err = s.storage.Upload(ctx, fileName, file); err != nil {
+	if err = s.storage.Upload(ctx, fileName, bytes.NewReader(fileBytes)); err != nil {
 		return nil, err
 	}
 
@@ -85,7 +117,7 @@ func (s *service) CreateImage(ctx context.Context, fileHeader *multipart.FileHea
 		ExpiryTime: time.Now().Add(time.Hour * 24),
 	})
 
-	s.cache[*id] = fileBytes
+	s.cache.Set(*id, fileBytes, ttlcache.DefaultTTL)
 
 	if err != nil {
 		return nil, err
@@ -111,8 +143,9 @@ func (s *service) generateRandomFilename() string {
 }
 
 func (s *service) getImageById(ctx context.Context, id string) (io.Reader, error) {
-	if s.cache[id] != nil {
-		return bytes.NewReader(s.cache[id]), nil
+	cachedImg := s.cache.Get(id, ttlcache.WithDisableTouchOnHit[string, []byte]())
+	if cachedImg != nil {
+		return bytes.NewReader(cachedImg.Value()), nil
 	}
 	img, err := s.repo.GetById(ctx, id)
 

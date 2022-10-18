@@ -53,7 +53,7 @@ func (c *controller) UploadPhoto(ctx *fiber.Ctx) error {
 		return response.ServerError(ctx, err)
 	}
 
-	res, err := aiClient.DetectImageProperties(ctx.Context(), file)
+	res, err := aiClient.DetectProperties(ctx.Context(), file)
 
 	if err != nil {
 		return response.ServerError(ctx, err)

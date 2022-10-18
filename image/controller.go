@@ -9,6 +9,8 @@ import (
 type Controller interface {
 	Upload(ctx *fiber.Ctx) error
 	GetLabels(ctx *fiber.Ctx) error
+	GetProperties(ctx *fiber.Ctx) error
+	GetLandmarks(ctx *fiber.Ctx) error
 }
 
 type controller struct {
@@ -43,6 +45,38 @@ func (c *controller) GetLabels(ctx *fiber.Ctx) error {
 	}
 
 	labels, err := c.service.GetImageLabels(ctx.Context(), id)
+
+	if err != nil {
+		return response.ServerError(ctx, err)
+	}
+
+	return response.Ok(ctx, labels)
+}
+
+func (c *controller) GetProperties(ctx *fiber.Ctx) error {
+	id := ctx.Params("id")
+
+	if id == "" {
+		return response.BadRequest(ctx, "No id")
+	}
+
+	labels, err := c.service.GetImageProperties(ctx.Context(), id)
+
+	if err != nil {
+		return response.ServerError(ctx, err)
+	}
+
+	return response.Ok(ctx, labels)
+}
+
+func (c *controller) GetLandmarks(ctx *fiber.Ctx) error {
+	id := ctx.Params("id")
+
+	if id == "" {
+		return response.BadRequest(ctx, "No id")
+	}
+
+	labels, err := c.service.GetImageLandmarks(ctx.Context(), id)
 
 	if err != nil {
 		return response.ServerError(ctx, err)
