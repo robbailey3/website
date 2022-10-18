@@ -32,7 +32,7 @@ func NewService(repo Repository) Service {
 	return instance
 }
 
-func (s service) GetPosts(ctx *fiber.Ctx) ([]Post, error) {
+func (s *service) GetPosts(ctx *fiber.Ctx) ([]Post, error) {
 	posts, err := s.repo.GetMany(ctx.Context())
 
 	if err != nil {
@@ -42,7 +42,7 @@ func (s service) GetPosts(ctx *fiber.Ctx) ([]Post, error) {
 	return posts, err
 }
 
-func (s service) GetPost(ctx *fiber.Ctx) (*Post, error) {
+func (s *service) GetPost(ctx *fiber.Ctx) (*Post, error) {
 	post, err := s.repo.GetOne(ctx.Context(), ctx.Params("id"))
 
 	if err != nil {
@@ -52,7 +52,7 @@ func (s service) GetPost(ctx *fiber.Ctx) (*Post, error) {
 	return post, err
 }
 
-func (s service) InsertPost(ctx *fiber.Ctx) error {
+func (s *service) InsertPost(ctx *fiber.Ctx) error {
 	var post Post
 
 	if err := ctx.BodyParser(&post); err != nil {
@@ -69,7 +69,7 @@ func (s service) InsertPost(ctx *fiber.Ctx) error {
 	return nil
 }
 
-func (s service) UpdatePost(ctx context.Context, id string, req UpdatePostRequest) error {
+func (s *service) UpdatePost(ctx context.Context, id string, req UpdatePostRequest) error {
 	if err := s.repo.UpdateOne(ctx, id, req); err != nil {
 		return err
 	}
@@ -77,6 +77,6 @@ func (s service) UpdatePost(ctx context.Context, id string, req UpdatePostReques
 	return nil
 }
 
-func (s service) DeletePost(ctx context.Context, id string) error {
+func (s *service) DeletePost(ctx context.Context, id string) error {
 	return s.repo.Delete(ctx, id)
 }

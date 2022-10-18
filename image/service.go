@@ -1,12 +1,11 @@
 package image
 
 import (
-	"cloud.google.com/go/firestore"
+	"bytes"
 	"context"
 	"crypto/rand"
 	"errors"
 	"fmt"
-	"github.com/robbailey3/website-api/storage"
 	"io"
 	"log"
 	"mime/multipart"
@@ -14,6 +13,9 @@ import (
 	"strings"
 	"time"
 	"unsafe"
+
+	"cloud.google.com/go/firestore"
+	"github.com/robbailey3/website-api/storage"
 )
 
 type Service interface {
@@ -25,9 +27,11 @@ type service struct {
 	repo    Repository
 	storage storage.Client
 	vision  VisionAiClient
+	cache   map[string][]byte
 }
 
 func NewService(db *firestore.Client) Service {
+
 	storageClient, err := storage.NewClient(os.Getenv("IMAGE_AI_BUCKET_NAME"))
 	if err != nil {
 		log.Fatal("Failed to initialise storage client")
@@ -40,6 +44,7 @@ func NewService(db *firestore.Client) Service {
 		repo:    NewRepository(db),
 		storage: storageClient,
 		vision:  visionClient,
+		cache:   make(map[string][]byte),
 	}
 }
 
@@ -64,14 +69,23 @@ func (s *service) CreateImage(ctx context.Context, fileHeader *multipart.FileHea
 		return nil, err
 	}
 
+	fileBytes, err := io.ReadAll(file) // you may want to handle the error
+
+	if err != nil {
+		return nil, err
+	}
+
 	if err = s.storage.Upload(ctx, fileName, file); err != nil {
 		return nil, err
 	}
 
 	id, err := s.repo.Insert(ctx, &AiImage{
-		DateAdded: time.Now(),
-		Path:      fileName,
+		DateAdded:  time.Now(),
+		Path:       fileName,
+		ExpiryTime: time.Now().Add(time.Hour * 24),
 	})
+
+	s.cache[*id] = fileBytes
 
 	if err != nil {
 		return nil, err
@@ -97,6 +111,9 @@ func (s *service) generateRandomFilename() string {
 }
 
 func (s *service) getImageById(ctx context.Context, id string) (io.Reader, error) {
+	if s.cache[id] != nil {
+		return bytes.NewReader(s.cache[id]), nil
+	}
 	img, err := s.repo.GetById(ctx, id)
 
 	if err != nil {
