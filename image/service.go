@@ -7,6 +7,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/jellydator/ttlcache/v3"
+	"github.com/robbailey3/website-api/validation"
 	"google.golang.org/genproto/googleapis/cloud/vision/v1"
 	"io"
 	"log"
@@ -118,6 +119,13 @@ func (s *service) CreateImage(ctx context.Context, fileHeader *multipart.FileHea
 		return nil, err
 	}
 
+	if !(validation.NewImageValidator().
+		WithAllowedFileTypes([]string{"image/jpeg"}).
+		WithMaxFileSize(5*1024*1024).
+		IsValid(fileHeader, fileBytes)) {
+		return nil, errors.New("Invalid file")
+	}
+
 	if err = s.storage.Upload(ctx, fileName, bytes.NewReader(fileBytes)); err != nil {
 		return nil, err
 	}
@@ -146,7 +154,10 @@ func (s *service) generateRandomFilename() string {
 	var alphabet = []byte("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
 
 	b := make([]byte, 32)
-	rand.Read(b)
+	_, err := rand.Read(b)
+	if err != nil {
+		return ""
+	}
 	for i := 0; i < 32; i++ {
 		b[i] = alphabet[b[i]%byte(len(alphabet))]
 	}
