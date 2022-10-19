@@ -25,6 +25,7 @@ type Service interface {
 	GetImageLabels(ctx context.Context, id string) ([]*Label, error)
 	GetImageProperties(ctx context.Context, id string) (*vision.ImageProperties, error)
 	GetImageLandmarks(ctx context.Context, id string) ([]*vision.EntityAnnotation, error)
+	GetImageFaces(ctx context.Context, id string) ([]*vision.FaceAnnotation, error)
 }
 
 type service struct {
@@ -88,6 +89,16 @@ func (s *service) GetImageLandmarks(ctx context.Context, id string) ([]*vision.E
 	}
 
 	return s.vision.DetectLandmarks(ctx, imageReader, 10)
+}
+
+func (s *service) GetImageFaces(ctx context.Context, id string) ([]*vision.FaceAnnotation, error) {
+	imageReader, err := s.getImageById(ctx, id)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return s.vision.DetectFaces(ctx, imageReader, 10)
 }
 
 func (s *service) CreateImage(ctx context.Context, fileHeader *multipart.FileHeader) (*string, error) {
