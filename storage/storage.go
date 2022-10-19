@@ -4,19 +4,19 @@ import (
 	"cloud.google.com/go/storage"
 	"context"
 	"io"
-	"mime/multipart"
 )
 
 type Client interface {
-	Upload(ctx context.Context, name string, file multipart.File) error
+	Upload(ctx context.Context, name string, file io.Reader) error
+	GetFile(ctx context.Context, name string) (io.Reader, error)
 }
 
 type client struct {
 	bucket *storage.BucketHandle
 }
 
-func NewClient(ctx context.Context, bucketName string) (Client, error) {
-	storageClient, err := storage.NewClient(ctx)
+func NewClient(bucketName string) (Client, error) {
+	storageClient, err := storage.NewClient(context.Background())
 
 	if err != nil {
 		return nil, err
@@ -31,7 +31,7 @@ func NewClient(ctx context.Context, bucketName string) (Client, error) {
 	return c, nil
 }
 
-func (c *client) Upload(ctx context.Context, name string, file multipart.File) error {
+func (c *client) Upload(ctx context.Context, name string, file io.Reader) error {
 	wc := c.bucket.Object(name).NewWriter(ctx)
 
 	_, err := io.Copy(wc, file)
@@ -45,4 +45,21 @@ func (c *client) Upload(ctx context.Context, name string, file multipart.File) e
 	}
 
 	return nil
+}
+
+func (c *client) GetFile(ctx context.Context, name string) (io.Reader, error) {
+	rc, err := c.bucket.Object(name).NewReader(ctx)
+
+	if err != nil {
+		return nil, err
+	}
+
+	defer func(rc *storage.Reader) {
+		err := rc.Close()
+		if err != nil {
+
+		}
+	}(rc)
+
+	return rc, nil
 }
