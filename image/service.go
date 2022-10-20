@@ -6,9 +6,6 @@ import (
 	"crypto/rand"
 	"errors"
 	"fmt"
-	"github.com/jellydator/ttlcache/v3"
-	"github.com/robbailey3/website-api/validation"
-	"google.golang.org/genproto/googleapis/cloud/vision/v1"
 	"io"
 	"log"
 	"mime/multipart"
@@ -16,6 +13,13 @@ import (
 	"strings"
 	"time"
 	"unsafe"
+
+	"github.com/jellydator/ttlcache/v3"
+	"github.com/robbailey3/website-api/exception"
+	"github.com/robbailey3/website-api/validation"
+	"google.golang.org/genproto/googleapis/cloud/vision/v1"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 
 	"cloud.google.com/go/firestore"
 	"github.com/robbailey3/website-api/storage"
@@ -37,7 +41,6 @@ type service struct {
 }
 
 func NewService(db *firestore.Client) Service {
-
 	storageClient, err := storage.NewClient(os.Getenv("IMAGE_AI_BUCKET_NAME"))
 	if err != nil {
 		log.Fatal("Failed to initialise storage client")
@@ -172,7 +175,9 @@ func (s *service) getImageById(ctx context.Context, id string) (io.Reader, error
 	img, err := s.repo.GetById(ctx, id)
 
 	if err != nil {
-		return nil, err
+		if status.Code(err) == codes.NotFound {
+			return nil, exception.NotFound()
+		}
 	}
 
 	if img == nil {
