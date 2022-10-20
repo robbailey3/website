@@ -12,6 +12,7 @@ type Controller interface {
 	GetProperties(ctx *fiber.Ctx) error
 	GetLandmarks(ctx *fiber.Ctx) error
 	GetFaces(ctx *fiber.Ctx) error
+	GetImage(ctx *fiber.Ctx) error
 }
 
 type controller struct {
@@ -100,4 +101,20 @@ func (c *controller) GetFaces(ctx *fiber.Ctx) error {
 	}
 
 	return response.Ok(ctx, faces)
+}
+
+func (c *controller) GetImage(ctx *fiber.Ctx) error {
+	id := ctx.Params("id")
+
+	if id == "" {
+		return response.BadRequest(ctx, "No id")
+	}
+
+	img, err := c.service.GetImage(ctx.Context(), id)
+
+	if err != nil {
+		return response.ServerError(ctx, err)
+	}
+
+	return response.File(ctx, img)
 }

@@ -27,6 +27,7 @@ import (
 
 type Service interface {
 	CreateImage(ctx context.Context, fileHeader *multipart.FileHeader) (*string, error)
+	GetImage(xtx context.Context, id string) (io.Reader, error)
 	GetImageLabels(ctx context.Context, id string) ([]*Label, error)
 	GetImageProperties(ctx context.Context, id string) (*vision.ImageProperties, error)
 	GetImageLandmarks(ctx context.Context, id string) ([]*vision.EntityAnnotation, error)
@@ -63,6 +64,10 @@ func NewService(db *firestore.Client) Service {
 		vision:  visionClient,
 		cache:   cache,
 	}
+}
+
+func (s *service) GetImage(ctx context.Context, id string) (io.Reader, error) {
+	return s.getImageById(ctx, id)
 }
 
 func (s *service) GetImageLabels(ctx context.Context, id string) ([]*Label, error) {
