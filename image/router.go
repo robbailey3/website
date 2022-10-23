@@ -14,4 +14,5 @@ func InitImageRoutes(app fiber.Router, db *firestore.Client) {
 	group.Get("/:id/labels", controller.GetLabels)
 	group.Get("/:id/properties", controller.GetProperties)
 	group.Get("/:id/landmarks", controller.GetLandmarks)
+	group.Get("/:id/logos", controller.GetLogos)
 }
