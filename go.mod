@@ -9,6 +9,7 @@ require (
 	firebase.google.com/go v3.13.0+incompatible
 	github.com/go-playground/validator/v10 v10.11.1
 	github.com/gofiber/fiber/v2 v2.38.1
+	github.com/jellydator/ttlcache/v3 v3.0.0
 	github.com/joho/godotenv v1.4.0
 	google.golang.org/api v0.97.0
 	google.golang.org/genproto v0.0.0-20220920201722-2b89144ce006
@@ -28,7 +29,6 @@ require (
 	github.com/google/uuid v1.3.0 // indirect
 	github.com/googleapis/enterprise-certificate-proxy v0.1.0 // indirect
 	github.com/googleapis/gax-go/v2 v2.5.1 // indirect
-	github.com/jellydator/ttlcache/v3 v3.0.0 // indirect
 	github.com/klauspost/compress v1.15.0 // indirect
 	github.com/leodido/go-urn v1.2.1 // indirect
 	github.com/valyala/bytebufferpool v1.0.0 // indirect

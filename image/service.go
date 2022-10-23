@@ -6,9 +6,6 @@ import (
 	"crypto/rand"
 	"errors"
 	"fmt"
-	"github.com/jellydator/ttlcache/v3"
-	"github.com/robbailey3/website-api/validation"
-	"google.golang.org/genproto/googleapis/cloud/vision/v1"
 	"io"
 	"log"
 	"mime/multipart"
@@ -17,16 +14,25 @@ import (
 	"time"
 	"unsafe"
 
+	"github.com/jellydator/ttlcache/v3"
+	"github.com/robbailey3/website-api/exception"
+	"github.com/robbailey3/website-api/validation"
+	"google.golang.org/genproto/googleapis/cloud/vision/v1"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
+
 	"cloud.google.com/go/firestore"
 	"github.com/robbailey3/website-api/storage"
 )
 
 type Service interface {
 	CreateImage(ctx context.Context, fileHeader *multipart.FileHeader) (*string, error)
+	GetImage(xtx context.Context, id string) (io.Reader, error)
 	GetImageLabels(ctx context.Context, id string) ([]*Label, error)
 	GetImageProperties(ctx context.Context, id string) (*vision.ImageProperties, error)
 	GetImageLandmarks(ctx context.Context, id string) ([]*vision.EntityAnnotation, error)
 	GetImageFaces(ctx context.Context, id string) ([]*vision.FaceAnnotation, error)
+	GetImageLogos(ctx context.Context, id string) ([]*vision.EntityAnnotation, error)
 }
 
 type service struct {
@@ -37,7 +43,6 @@ type service struct {
 }
 
 func NewService(db *firestore.Client) Service {
-
 	storageClient, err := storage.NewClient(os.Getenv("IMAGE_AI_BUCKET_NAME"))
 	if err != nil {
 		log.Fatal("Failed to initialise storage client")
@@ -60,6 +65,10 @@ func NewService(db *firestore.Client) Service {
 		vision:  visionClient,
 		cache:   cache,
 	}
+}
+
+func (s *service) GetImage(ctx context.Context, id string) (io.Reader, error) {
+	return s.getImageById(ctx, id)
 }
 
 func (s *service) GetImageLabels(ctx context.Context, id string) ([]*Label, error) {
@@ -100,6 +109,16 @@ func (s *service) GetImageFaces(ctx context.Context, id string) ([]*vision.FaceA
 	}
 
 	return s.vision.DetectFaces(ctx, imageReader, 10)
+}
+
+func (s *service) GetImageLogos(ctx context.Context, id string) ([]*vision.EntityAnnotation, error) {
+	imageReader, err := s.getImageById(ctx, id)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return s.vision.DetectLogos(ctx, imageReader, 10)
 }
 
 func (s *service) CreateImage(ctx context.Context, fileHeader *multipart.FileHeader) (*string, error) {
@@ -172,7 +191,9 @@ func (s *service) getImageById(ctx context.Context, id string) (io.Reader, error
 	img, err := s.repo.GetById(ctx, id)
 
 	if err != nil {
-		return nil, err
+		if status.Code(err) == codes.NotFound {
+			return nil, exception.NotFound()
+		}
 	}
 
 	if img == nil {

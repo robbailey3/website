@@ -6,4 +6,5 @@ const (
 	SERVER_ERROR ErrorCode = 1
 	UNAUTHORIZED ErrorCode = 2
 	BAD_REQUEST  ErrorCode = 3
+	NOT_FOUND    ErrorCode = 4
 )

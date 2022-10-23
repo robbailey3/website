@@ -12,6 +12,7 @@ type VisionAiClient interface {
 	DetectProperties(ctx context.Context, file io.Reader) (*pb.ImageProperties, error)
 	DetectLabels(ctx context.Context, file io.Reader, maxResults int) ([]*Label, error)
 	DetectLandmarks(ctx context.Context, file io.Reader, maxResults int) ([]*pb.EntityAnnotation, error)
+	DetectLogos(ctx context.Context, file io.Reader, maxResults int) ([]*pb.EntityAnnotation, error)
 }
 
 type visionAiClient struct {
@@ -90,4 +91,18 @@ func (v *visionAiClient) DetectLandmarks(ctx context.Context, file io.Reader, ma
 	}
 
 	return landmarks, nil
+}
+
+func (v *visionAiClient) DetectLogos(ctx context.Context, file io.Reader, maxResults int) ([]*pb.EntityAnnotation, error) {
+	image, err := vision.NewImageFromReader(file)
+	if err != nil {
+		return nil, err
+	}
+	logos, err := v.c.DetectLogos(ctx, image, nil, maxResults)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return logos, nil
 }

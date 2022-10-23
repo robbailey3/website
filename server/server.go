@@ -2,7 +2,6 @@ package server
 
 import (
 	"fmt"
-	"github.com/gofiber/fiber/v2/middleware/cache"
 	"github.com/gofiber/fiber/v2/middleware/limiter"
 	"log"
 	"os"
@@ -28,7 +27,7 @@ func getPort() string {
 
 func setupMiddleware(app *fiber.App) {
 	app.Get("/metrics", monitor.New(monitor.Config{Title: "Monitoring"}))
-	app.Use(cache.New())
+	// app.Use(cache.New())
 	app.Use(limiter.New(limiter.Config{Max: 20, Expiration: time.Minute}))
 	app.Use(compress.New())
 	app.Use(cors.New(cors.Config{AllowOrigins: "*"}))
