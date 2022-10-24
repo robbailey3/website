@@ -1,6 +1,7 @@
 package validation
 
 import (
+	"errors"
 	"github.com/robbailey3/website-api/slices"
 	"mime/multipart"
 	"net/http"
@@ -9,7 +10,7 @@ import (
 type ImageValidator interface {
 	WithAllowedFileTypes(fileTypes []string) ImageValidator
 	WithMaxFileSize(maxSize int64) ImageValidator
-	IsValid(fileHeader *multipart.FileHeader, file []byte) bool
+	IsValid(fileHeader *multipart.FileHeader, file []byte) error
 }
 
 type imageValidator struct {
@@ -31,12 +32,16 @@ func (i *imageValidator) WithMaxFileSize(maxSize int64) ImageValidator {
 	return i
 }
 
-func (i *imageValidator) IsValid(fileHeader *multipart.FileHeader, file []byte) bool {
+func (i *imageValidator) IsValid(fileHeader *multipart.FileHeader, file []byte) error {
 	detectedContentType := http.DetectContentType(file)
 
 	if !slices.Contains(i.allowedFileTypes, detectedContentType) {
-		return false
+		return errors.New("invalid file type")
 	}
 
-	return fileHeader.Size < i.maxImageSize
+	if fileHeader.Size > i.maxImageSize {
+		return errors.New("invalid file size")
+	}
+
+	return nil
 }

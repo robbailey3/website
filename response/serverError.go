@@ -1,7 +1,7 @@
 package response
 
 import (
-	"log"
+	"github.com/getsentry/sentry-go"
 	"time"
 
 	"github.com/gofiber/fiber/v2"
@@ -9,7 +9,7 @@ import (
 )
 
 func ServerError(ctx *fiber.Ctx, err error) error {
-	log.Printf("internal server error: %v\n", err)
+	sentry.CaptureException(err)
 	return ctx.Status(fiber.StatusInternalServerError).JSON(struct {
 		BaseResponse
 	}{

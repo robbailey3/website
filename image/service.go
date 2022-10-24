@@ -138,11 +138,11 @@ func (s *service) CreateImage(ctx context.Context, fileHeader *multipart.FileHea
 		return nil, err
 	}
 
-	if !(validation.NewImageValidator().
+	if err := validation.NewImageValidator().
 		WithAllowedFileTypes([]string{"image/jpeg"}).
 		WithMaxFileSize(5*1024*1024).
-		IsValid(fileHeader, fileBytes)) {
-		return nil, errors.New("Invalid file")
+		IsValid(fileHeader, fileBytes); err != nil {
+		return nil, err
 	}
 
 	if err = s.storage.Upload(ctx, fileName, bytes.NewReader(fileBytes)); err != nil {
