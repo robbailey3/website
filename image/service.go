@@ -54,10 +54,6 @@ func NewService(db *firestore.Client) Service {
 	cache := ttlcache.New(
 		ttlcache.WithTTL[string, []byte](2 * time.Minute))
 
-	cache.OnEviction(func(ctx context.Context, reason ttlcache.EvictionReason, item *ttlcache.Item[string, []byte]) {
-		fmt.Println(item.Key())
-		fmt.Println(reason)
-	})
 	go cache.Start()
 	return &service{
 		repo:    NewRepository(db),
