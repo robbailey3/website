@@ -33,14 +33,12 @@ func WithFirebaseAuth(ctx *fiber.Ctx) error {
 
 	idToken := strings.Split(authHeader, " ")[1]
 
-	token, err := client.VerifyIDToken(ctx.Context(), idToken)
+	_, err = client.VerifyIDToken(ctx.Context(), idToken)
 
 	if err != nil {
 		log.Printf("error verifying ID token: %v\n", err)
 		return response.Unauthorized(ctx, errors.New("unable to verify token"))
 	}
-
-	log.Printf("Verified ID token: %v\n", token)
 
 	return ctx.Next()
 }
