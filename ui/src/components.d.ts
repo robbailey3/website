@@ -20,5 +20,6 @@ declare module '@vue/runtime-core' {
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     TextInput: typeof import('./components/form/TextInput/TextInput.vue')['default']
+    UnderConstruction: typeof import('./components/common/UnderConstruction/UnderConstruction.vue')['default']
   }
 }

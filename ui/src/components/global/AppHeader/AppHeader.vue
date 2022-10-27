@@ -5,7 +5,7 @@
 	>
 		Skip to content
 	</a>
-	<header class="shadow-lg fixed left-0 top-0 w-full">
+	<header class="shadow-lg fixed left-0 top-0 w-full z-50">
 		<Container>
 			<AppNavigation></AppNavigation>
 		</Container>
