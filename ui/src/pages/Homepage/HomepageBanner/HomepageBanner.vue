@@ -7,6 +7,7 @@
 				</div>
 				<div class="w-1/2 text-center grow">
 					<p>I am a Full-Stack developer.</p>
+					<RbLink href="https://google.com">Click me</RbLink>
 				</div>
 				<div
 					class="px-8 py-2 text-center text-3xl border border-cyan-400 rounded"

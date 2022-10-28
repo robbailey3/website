@@ -17,6 +17,7 @@ declare module '@vue/runtime-core' {
     Container: typeof import('./components/layout/Container/Container.vue')['default']
     Flex: typeof import('./components/layout/Flex/Flex.vue')['default']
     FlexItem: typeof import('./components/layout/FlexItem/FlexItem.vue')['default']
+    RbLink: typeof import('./components/common/RbLink/RbLink.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     TextInput: typeof import('./components/form/TextInput/TextInput.vue')['default']
