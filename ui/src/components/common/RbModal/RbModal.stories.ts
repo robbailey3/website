@@ -7,7 +7,6 @@ const actions = {
 };
 
 const Template = (args: { open: boolean; close: () => void }) => ({
-	title: 'Example/Modal',
 	components: { RbModal },
 	setup() {
 		return { args, ...actions };
