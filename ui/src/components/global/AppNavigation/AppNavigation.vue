@@ -13,5 +13,22 @@
 </template>
 
 <script setup lang="ts">
+import { useWindowSize } from '@vueuse/core';
 import AppNavigationLink from './AppNavigationLink/AppNavigationLink.vue';
+import { NavState } from './navState';
+
+const { width } = useWindowSize();
+
+const isOpen = ref<NavState>(NavState.OPEN);
+
+onMounted(() => {
+	isOpen.value = width.value > 768 ? NavState.OPEN : NavState.CLOSED;
+});
+
+watch(
+	() => width.value,
+	() => {
+		console.log(width.value);
+	}
+);
 </script>
