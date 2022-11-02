@@ -6,8 +6,9 @@ WORKDIR /usr/ui
 
 COPY ./ui ./
 
-RUN npm install
-RUN npm run build
+RUN npm install yarn -g
+RUN yarn install --production
+RUN yarn run build
 
 FROM golang:1.19-alpine AS apibuild
 
