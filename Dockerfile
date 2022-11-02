@@ -6,7 +6,6 @@ WORKDIR /usr/ui
 
 COPY ./ui ./
 
-RUN npm install yarn -g
 RUN yarn install --production
 RUN yarn run build
 
