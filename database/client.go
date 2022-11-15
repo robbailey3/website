@@ -31,11 +31,11 @@ func NewClient() Client {
 	}
 }
 
-func (c *client) UseCollection(name string) Client {
+func (c *client) Collection(name string) Client {
 	c.collection = c.firestore.Collection(name)
 	return c
 }
 
-func (c *client) GetMany(ctx context.Context, filter interface{}, limit, offset int) (interface{}, error) {
-	c.collection.Limit(limit).Offset(limit).Where()
+func (c *client) GetMany(ctx context.Context) (interface{}, error) {
+	c.collection.Query{}
 }
