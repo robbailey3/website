@@ -1,16 +1,19 @@
 <template>
 	<section>
-		<AppContainer>
-			<div class="flex h-screen w-full justify-center items-center flex-wrap">
-				<div class="w-1/2 text-center grow">
-					<h1 class="text-8xl">Rob Bailey</h1>
-				</div>
-				<div class="w-1/2 text-center grow">
-					<p>I am a Full-Stack developer.</p>
-					<RbLink href="https://google.com">Click me</RbLink>
+		<Container>
+			<div
+				class="flex flex-col h-screen w-full justify-center items-center flex-wrap"
+			>
+				<div class="w-full text-center max-w-screen-md mx-auto">
+					<h1 class="text-8xl">
+						<span class="text-teal-600">Hello</span>
+					</h1>
+					<p class="text-4xl mt-8">
+						My name is Rob and I am a software engineer
+					</p>
 				</div>
 				<div
-					class="px-8 py-2 text-center text-3xl border border-cyan-400 rounded"
+					class="px-8 py-2 text-center text-3xl border border-cyan-400 rounded mt-16"
 				>
 					<h2>Find me on</h2>
 					<ul class="flex my-2 gap-4 justify-center">
@@ -34,10 +37,20 @@
 								<font-awesome-icon icon="fa-brands fa-twitter" />
 							</a>
 						</li>
+						<li>
+							<a
+								class="block hover:text-cyan-400"
+								href="https://www.linkedin.com/in/robbailey3/"
+								rel="noopener noreferrer"
+								target="_blank"
+								><span class="sr-only">LinkedIn</span>
+								<font-awesome-icon icon="fa-brands fa-linkedin" />
+							</a>
+						</li>
 					</ul>
 				</div>
 			</div>
-		</AppContainer>
+		</Container>
 	</section>
 </template>
 
