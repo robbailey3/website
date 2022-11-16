@@ -3,10 +3,12 @@
 		:is="is"
 		class="flex"
 		:class="[
-			getFlowDirectionClass(),
-			getFlowWrapClass(),
 			getAlignClass(),
-			getJustifyClass()
+			getJustifyClass(),
+			{
+				'flex-wrap': wrap,
+				'flex-col': column
+			}
 		]"
 		><slot></slot
 	></component>
@@ -20,53 +22,27 @@ const props = defineProps({
 		type: String as PropType<'div' | 'section'>,
 		default: 'div'
 	},
-	direction: {
-		type: String as PropType<'row' | 'row-reverse' | 'col' | 'col-reverse'>,
-		default: undefined
+	column: {
+		type: Boolean,
+		default: false
 	},
 	wrap: {
-		type: String as PropType<'wrap' | 'nowrap' | 'wrap-reverse'>,
-		default: undefined
+		type: Boolean,
+		default: false
 	},
 	align: {
 		type: String as PropType<
-			'start' | 'end' | 'centre' | 'baseline' | 'stretch'
+			'start' | 'end' | 'center' | 'baseline' | 'stretch'
 		>,
 		default: ''
 	},
 	justify: {
 		type: String as PropType<
-			'start' | 'end' | 'centre' | 'between' | 'around' | 'evenly'
+			'start' | 'end' | 'center' | 'between' | 'around' | 'evenly'
 		>,
 		default: ''
 	}
 });
-
-const getFlowDirectionClass = () => {
-	switch (props.direction) {
-		case 'row':
-			return 'flex-row';
-		case 'row-reverse':
-			return 'flex-row-reverse';
-		case 'col':
-			return 'flex-col';
-		case 'col-reverse':
-			return 'flex-col-reverse';
-		default:
-			return '';
-	}
-};
-
-const getFlowWrapClass = () => {
-	switch (props.wrap) {
-		case 'wrap':
-			return 'flex-wrap';
-		case 'nowrap':
-			return 'flex-nowrap';
-		case 'wrap-reverse':
-			return 'flex-wrap-reverse';
-	}
-};
 
 const getAlignClass = () => {
 	switch (props.align) {
@@ -74,8 +50,8 @@ const getAlignClass = () => {
 			return 'items-start';
 		case 'end':
 			return 'items-end';
-		case 'centre':
-			return 'items-centre';
+		case 'center':
+			return 'items-center';
 		case 'baseline':
 			return 'items-baseline';
 		case 'stretch':
@@ -91,8 +67,8 @@ const getJustifyClass = () => {
 			return 'justify-start';
 		case 'end':
 			return 'justify-end';
-		case 'centre':
-			return 'justify-centre';
+		case 'center':
+			return 'justify-center';
 		case 'between':
 			return 'justify-between';
 		case 'around':

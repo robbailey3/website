@@ -24,6 +24,7 @@
 		"@fortawesome/vue-fontawesome": "^3.0.1",
 		"@vee-validate/rules": "^4.7.0",
 		"@vueuse/core": "^9.3.0",
+		"@vueuse/motion": "^2.0.0-beta.12",
 		"axios": "^1.1.2",
 		"firebase": "^9.11.0",
 		"firebaseui": "^6.0.1",

@@ -1,8 +1,8 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
-import Homepage from './pages/Homepage/Homepage.vue';
-import Login from './pages/auth/Login.vue';
-import Dashboard from './pages/admin/Dashboard.vue';
-import firebase from './services/firebase';
+import Homepage from '@pages/Home/HomePage/HomePage.vue';
+import Login from '@pages/auth/LoginPage/LoginPage.vue';
+import Dashboard from '@pages/admin/AdminDashboardPage/AdminDashboardPage.vue';
+import firebase from '@services/firebase';
 import BlogPage from '@pages/blog/BlogPage.vue';
 import PhotosPage from '@pages/photos/PhotosPage.vue';
 import CvPage from '@pages/cv/CvPage.vue';

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import AppHeader from './components/global/AppHeader/AppHeader.vue';
+import RbHeader from './components/global/RbHeader/RbHeader.vue';
 import firebase from './services/firebase';
 
 onMounted(async () => {
@@ -8,8 +8,10 @@ onMounted(async () => {
 </script>
 
 <template>
-	<AppHeader />
-	<RouterView />
+	<RbHeader />
+	<main id="main-content">
+		<RouterView />
+	</main>
 </template>
 
 <style scoped></style>
