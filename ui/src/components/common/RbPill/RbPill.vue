@@ -1,6 +1,6 @@
 <template>
 	<span
-		class="bg-blue-200 text-gray-800 px-2 py-1 text-sm rounded-3xl"
+		class="bg-blue-200 text-gray-800 px-2 py-1 text-sm rounded"
 		:class="{
 			block
 		}"

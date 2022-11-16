@@ -7,15 +7,11 @@ export {}
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
-    AppButton: typeof import('./components/common/Buttons/AppButton/AppButton.vue')['default']
     AppHeader: typeof import('./components/global/AppHeader/AppHeader.vue')['default']
     AppNavigation: typeof import('./components/global/AppNavigation/AppNavigation.vue')['default']
     AppNavigationLink: typeof import('./components/global/AppNavigation/AppNavigationLink/AppNavigationLink.vue')['default']
-    ButtonLink: typeof import('./components/common/Buttons/ButtonLink/ButtonLink.vue')['default']
-    Card: typeof import('./components/layout/RbCard/Card.vue')['default']
-    Container: typeof import('./components/layout/RbContainer/Container.vue')['default']
-    Flex: typeof import('./components/layout/RbFlex/Flex.vue')['default']
-    FlexItem: typeof import('./components/layout/RbFlexItem/FlexItem.vue')['default']
+    RbButton: typeof import('./components/common/Buttons/RbButton/RbButton.vue')['default']
+    RbButtonLink: typeof import('./components/common/Buttons/RbButtonLink/RbButtonLink.vue')['default']
     RbCard: typeof import('./components/layout/RbCard/RbCard.vue')['default']
     RbContainer: typeof import('./components/layout/RbContainer/RbContainer.vue')['default']
     RbFlex: typeof import('./components/layout/RbFlex/RbFlex.vue')['default']
@@ -24,9 +20,9 @@ declare module '@vue/runtime-core' {
     RbLink: typeof import('./components/common/RbLink/RbLink.vue')['default']
     RbModal: typeof import('./components/common/RbModal/RbModal.vue')['default']
     RbPill: typeof import('./components/common/RbPill/RbPill.vue')['default']
+    RbTextInput: typeof import('./components/form/RbTextInput/RbTextInput.vue')['default']
+    RbUnderConstruction: typeof import('./components/common/RbUnderConstruction/RbUnderConstruction.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
-    TextInput: typeof import('./components/form/TextInput/TextInput.vue')['default']
-    UnderConstruction: typeof import('./components/common/UnderConstruction/UnderConstruction.vue')['default']
   }
 }

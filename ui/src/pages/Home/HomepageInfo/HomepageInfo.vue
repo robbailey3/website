@@ -24,7 +24,7 @@
 				<RbFlexItem class="md:basis-1/3 basis-full p-4">
 					<RbCard class="bg-slate-800 p-4 rounded shadow-lg h-full">
 						<h2>Skills</h2>
-						<RbFlex wrap="wrap" class="mt-4">
+						<RbFlex wrap class="mt-4">
 							<RbPill v-for="skill of skills" class="mr-2 mb-2">{{
 								skill
 							}}</RbPill>

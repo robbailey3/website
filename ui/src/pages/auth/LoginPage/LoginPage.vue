@@ -26,8 +26,8 @@
 <script setup lang="ts">
 import * as yup from 'yup';
 import { useForm, Form } from 'vee-validate';
-import TextInput from '../../components/form/TextInput/TextInput.vue';
-import firebaseService from '../../services/firebase';
+import TextInput from '@components/form/RbTextInput/RbTextInput.vue';
+import firebaseService from '@services/firebase';
 import { useRouter } from 'vue-router';
 
 const schema = yup.object({
