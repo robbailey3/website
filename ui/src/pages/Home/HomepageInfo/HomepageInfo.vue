@@ -1,33 +1,51 @@
 <template>
 	<section>
 		<RbContainer class="py-8">
-			<RbFlex align="stretch" wrap="wrap">
+			<RbFlex align="stretch" wrap>
 				<RbFlexItem class="md:basis-2/3 basis-full p-4">
 					<RbCard class="bg-slate-800 p-4 rounded shadow-lg h-full">
 						<h2>All about me</h2>
 						<p class="my-4">
-							Lorem ipsum dolor sit amet consectetur adipisicing elit. Neque
-							ipsam dolorum fuga cupiditate? Provident sunt voluptas reiciendis
-							culpa similique velit maxime quas saepe reprehenderit voluptates
-							vitae quae exercitationem, aliquam numquam ratione, repellendus
-							repudiandae hic expedita autem? Accusantium, nemo libero est quos
-							explicabo magni culpa corrupti id enim, aliquid et nostrum alias
-							nam itaque omnis doloribus reiciendis eius ipsum minus ad eaque?
-							Nam amet perferendis magni pariatur eligendi accusamus ullam a
-							molestias officiis, dolor assumenda accusantium totam ex eos
-							veniam quam sit minima ipsam! Debitis dolor inventore eligendi
-							similique quod labore, neque vel saepe voluptates totam, ratione
-							asperiores expedita maxime. Minima!
+							I&apos;m a software engineer based in Nottingham, UK working with
+							a range of front-end and back-end technologies to make cool
+							things. Currently working at
+							<RbLink
+								href="https://www.netcall.com/"
+								target="_blank"
+								rel="noopener noreferrer"
+								>Netcall</RbLink
+							>
+							helping to build the latest contact centre solution with C# and
+							Vue.
 						</p>
 					</RbCard>
 				</RbFlexItem>
 				<RbFlexItem class="md:basis-1/3 basis-full p-4">
-					<RbCard class="bg-slate-800 p-4 rounded shadow-lg h-full">
+					<RbCard class="bg-slate-800 p-4 h-full">
 						<h2>Skills</h2>
 						<RbFlex wrap class="mt-4">
 							<RbPill v-for="skill of skills" class="mr-2 mb-2">{{
 								skill
 							}}</RbPill>
+						</RbFlex>
+					</RbCard>
+				</RbFlexItem>
+			</RbFlex>
+			<RbFlex justify="center" align="center" class="text-center">
+				<RbFlexItem class="md:basis-2/3 basis-full p-4">
+					<RbCard class="bg-slate-800 p-4 h-full">
+						<RbFlex align="center">
+							<RbFlexItem class="md:basis-1/2 basis-full p-4">
+								<h2>Currently learning</h2>
+								<p>Go</p>
+							</RbFlexItem>
+							<RbFlexItem class="md:basis-1/2 basis-full p-4">
+								<h2>Currently working on</h2>
+								<p>
+									This website with a backend built in Go and Vue on the
+									front-end
+								</p>
+							</RbFlexItem>
 						</RbFlex>
 					</RbCard>
 				</RbFlexItem>
@@ -50,4 +68,6 @@ const skills = [
 	'scss',
 	'html'
 ];
+
+// TODO: Probably store all the text in the database so I can fiddle with it when I want.
 </script>

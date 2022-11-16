@@ -16,25 +16,25 @@
 				class="md:flex md:justify-end w-full md:w-auto origin-top absolute md:relative left-0 top-full shadow-lg"
 			>
 				<nav
-					class="mx-4 md:mx-0 bg-slate-800 md:bg-transparent bg-opacity-90 rounded-b-lg backdrop-blur-lg"
+					class="mx-4 md:mx-0 bg-slate-800 md:bg-transparent bg-opacity-90 rounded-b-lg"
 				>
 					<ul
 						class="md:flex justify-center md:justify-end items-center gap-4 grow mb-4 md:mb-0"
 					>
-						<AppNavigationLink to="/" @click="toggleNavigation"
-							>Home</AppNavigationLink
+						<RbNavigationLink to="/" @click="toggleNavigation"
+							>Home</RbNavigationLink
 						>
-						<AppNavigationLink to="/blog" @click="toggleNavigation"
-							>Blog</AppNavigationLink
+						<RbNavigationLink to="/blog" @click="toggleNavigation"
+							>Blog</RbNavigationLink
 						>
-						<AppNavigationLink to="/photos" @click="toggleNavigation"
-							>Photos</AppNavigationLink
+						<RbNavigationLink to="/photos" @click="toggleNavigation"
+							>Photos</RbNavigationLink
 						>
-						<AppNavigationLink to="/cv" @click="toggleNavigation"
-							>CV</AppNavigationLink
+						<RbNavigationLink to="/cv" @click="toggleNavigation"
+							>CV</RbNavigationLink
 						>
-						<AppNavigationLink to="/projects" @click="toggleNavigation"
-							>Projects</AppNavigationLink
+						<RbNavigationLink to="/projects" @click="toggleNavigation"
+							>Projects</RbNavigationLink
 						>
 					</ul>
 				</nav>
@@ -45,7 +45,7 @@
 
 <script setup lang="ts">
 import { useWindowSize } from '@vueuse/core';
-import AppNavigationLink from './AppNavigationLink/AppNavigationLink.vue';
+import RbNavigationLink from './RbNavigationLink/RbNavigationLink.vue';
 import { NavState } from './navState';
 
 const { width } = useWindowSize();
@@ -57,6 +57,18 @@ const isMobile = computed(() => width.value <= 768);
 onMounted(() => {
 	navState.value = width.value > 768 ? NavState.OPEN : NavState.CLOSED;
 });
+
+watch(
+	() => width.value,
+	(value, prev) => {
+		if (prev > 768 && value < 768) {
+			navState.value = NavState.CLOSED;
+		}
+		if (value > 768 && prev < 768) {
+			navState.value = NavState.OPEN;
+		}
+	}
+);
 
 const toggleNavigation = () => {
 	if (width.value > 768) {
