@@ -1,5 +1,5 @@
 <template>
-	<component :is="is">
+	<component :is="is" class="rounded shadow">
 		<slot></slot>
 	</component>
 </template>

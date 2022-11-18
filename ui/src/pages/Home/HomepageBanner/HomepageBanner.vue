@@ -1,10 +1,10 @@
 <template>
 	<section>
 		<RbContainer>
-			<RbFlex class="h-screen" column justify="center" align="center">
+			<RbFlex class="h-screen" column justify="center">
 				<RbFlexItem>
-					<RbFlex col justify="center" align="center">
-						<div class="text-center">
+					<RbFlex col>
+						<div>
 							<h1 class="text-8xl">
 								<span class="text-teal-600">
 									<span>H</span>
@@ -20,7 +20,7 @@
 						</div>
 					</RbFlex>
 				</RbFlexItem>
-				<RbFlexItem>
+				<RbFlexItem class="self-start">
 					<div class="border border-teal-600 rounded px-8 py-4 mt-48">
 						<h2>Find me on</h2>
 						<ul class="flex my-2 gap-4 justify-center">

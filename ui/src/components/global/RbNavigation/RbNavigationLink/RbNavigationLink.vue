@@ -2,8 +2,8 @@
 	<li>
 		<router-link
 			:to="to"
-			active-class="text-cyan-300"
-			class="p-2 md:p-4 block hover:text-cyan-500 font-bold"
+			active-class="text-teal-300 "
+			class="p-2 md:p-4 block hover:text-teal-500"
 			><slot></slot
 		></router-link>
 	</li>
