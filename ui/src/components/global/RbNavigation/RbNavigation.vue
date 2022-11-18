@@ -19,7 +19,7 @@
 					class="mx-4 md:mx-0 bg-slate-800 md:bg-transparent bg-opacity-90 rounded-b-lg"
 				>
 					<ul
-						class="md:flex justify-center md:justify-end items-center gap-4 grow mb-4 md:mb-0"
+						class="md:flex justify-center md:justify-end items-center space-x-4 grow mb-4 md:mb-0"
 					>
 						<RbNavigationLink to="/" @click="toggleNavigation"
 							>Home</RbNavigationLink

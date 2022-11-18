@@ -7,9 +7,6 @@ export {}
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
-    AppHeader: typeof import('./components/global/AppHeader/AppHeader.vue')['default']
-    AppNavigation: typeof import('./components/global/AppNavigation/AppNavigation.vue')['default']
-    AppNavigationLink: typeof import('./components/global/AppNavigation/AppNavigationLink/AppNavigationLink.vue')['default']
     RbButton: typeof import('./components/common/Buttons/RbButton/RbButton.vue')['default']
     RbButtonLink: typeof import('./components/common/Buttons/RbButtonLink/RbButtonLink.vue')['default']
     RbCard: typeof import('./components/layout/RbCard/RbCard.vue')['default']
