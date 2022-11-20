@@ -13,7 +13,7 @@
 		<Transition name="bounce">
 			<div
 				v-if="navState === NavState.OPEN"
-				class="md:flex md:justify-end w-full md:w-auto origin-top absolute md:relative left-0 top-full shadow-lg"
+				class="md:flex md:justify-end w-full md:w-auto origin-top absolute md:relative left-0 top-full"
 			>
 				<nav
 					class="mx-4 md:mx-0 bg-neutral-800 md:bg-transparent bg-opacity-90 rounded-b-lg"
