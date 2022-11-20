@@ -3,7 +3,7 @@
 		:href="href"
 		:target="target"
 		:rel="rel"
-		class="text-teal-300 font-bold hover:underline"
+		class="text-blue-300 font-bold hover:underline"
 	>
 		<slot></slot>
 	</a>

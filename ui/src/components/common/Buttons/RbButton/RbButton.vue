@@ -47,7 +47,7 @@ const props = defineProps({
 const getButtonVariantClass = () => {
 	switch (props.variant) {
 		default:
-			return 'bg-teal-400 hover:bg-teal-500';
+			return 'bg-blue-400 hover:bg-blue-500';
 	}
 };
 

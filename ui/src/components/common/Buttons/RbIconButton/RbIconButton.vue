@@ -1,6 +1,6 @@
 <template>
 	<button
-		class="rounded-full border-none bg-transparent hover:bg-slate-50 hover:bg-opacity-30 p-2 leading-none"
+		class="rounded-full border-none bg-transparent hover:bg-neutral-50 hover:bg-opacity-30 p-2 leading-none"
 		@click="emit('click')"
 	>
 		<font-awesome-icon :icon="icon"></font-awesome-icon>

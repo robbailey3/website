@@ -46,7 +46,6 @@ class FirebaseService {
 	}
 
 	public isLoggedIn() {
-		console.log(this);
 		return !!this.credentials;
 	}
 

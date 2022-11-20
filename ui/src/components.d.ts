@@ -20,6 +20,7 @@ declare module '@vue/runtime-core' {
     RbNavigation: typeof import('./components/global/RbNavigation/RbNavigation.vue')['default']
     RbNavigationLink: typeof import('./components/global/RbNavigation/RbNavigationLink/RbNavigationLink.vue')['default']
     RbPill: typeof import('./components/common/RbPill/RbPill.vue')['default']
+    RbTechLogo: typeof import('./components/common/RbTechLogo/RbTechLogo.vue')['default']
     RbTextInput: typeof import('./components/form/RbTextInput/RbTextInput.vue')['default']
     RbUnderConstruction: typeof import('./components/common/RbUnderConstruction/RbUnderConstruction.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']

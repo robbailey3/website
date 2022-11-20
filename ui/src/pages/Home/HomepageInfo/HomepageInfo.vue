@@ -3,7 +3,7 @@
 		<RbContainer class="py-8">
 			<RbFlex align="stretch" wrap>
 				<RbFlexItem class="md:basis-2/3 basis-full">
-					<RbCard class="bg-slate-800 p-4 rounded shadow-lg h-full">
+					<RbCard class="bg-neutral-800 p-4 rounded shadow-lg h-full">
 						<h2>All about me</h2>
 						<p class="my-4">
 							I&apos;m a software engineer based in Nottingham, UK working with
@@ -21,7 +21,7 @@
 					</RbCard>
 				</RbFlexItem>
 				<RbFlexItem class="md:basis-1/3 basis-full p-4">
-					<RbCard class="bg-slate-700 p-4 h-full">
+					<RbCard class="bg-neutral-700 p-4 h-full">
 						<h2>Skills</h2>
 						<RbFlex wrap class="mt-4">
 							<RbPill v-for="skill of skills" class="mr-2 mb-2">{{
@@ -32,12 +32,15 @@
 				</RbFlexItem>
 			</RbFlex>
 			<RbFlex>
-				<RbFlexItem class="md:basis-2/3 basis-full my-8">
-					<RbCard class="bg-slate-800 p-4 h-full">
+				<RbFlexItem class="basis-full my-8">
+					<RbCard class="bg-neutral-800 p-4 h-full">
 						<RbFlex>
 							<RbFlexItem class="md:basis-1/2 basis-full p-4">
 								<h2>Currently learning</h2>
-								<p>Go</p>
+								<RbFlex align="center" class="mt-8">
+									<RbTechLogo tech="go" :height="96" :width="96" />
+									<p>Go</p>
+								</RbFlex>
 							</RbFlexItem>
 							<RbFlexItem class="md:basis-1/2 basis-full p-4">
 								<h2>Currently working on</h2>
