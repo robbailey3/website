@@ -6,7 +6,7 @@
 					<RbFlex col>
 						<div>
 							<h1 class="text-8xl">
-								<span class="text-teal-600">
+								<span class="text-blue-600">
 									<span>H</span>
 									<span>e</span>
 									<span>l</span>
@@ -21,7 +21,7 @@
 					</RbFlex>
 				</RbFlexItem>
 				<RbFlexItem class="self-start">
-					<div class="border border-teal-600 rounded px-8 py-4 mt-48">
+					<div class="border border-blue-600 rounded px-8 py-4 mt-48">
 						<h2>Find me on</h2>
 						<ul class="flex my-2 gap-4 justify-center">
 							<li>

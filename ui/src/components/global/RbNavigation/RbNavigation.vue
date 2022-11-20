@@ -16,7 +16,7 @@
 				class="md:flex md:justify-end w-full md:w-auto origin-top absolute md:relative left-0 top-full shadow-lg"
 			>
 				<nav
-					class="mx-4 md:mx-0 bg-slate-800 md:bg-transparent bg-opacity-90 rounded-b-lg"
+					class="mx-4 md:mx-0 bg-neutral-800 md:bg-transparent bg-opacity-90 rounded-b-lg"
 				>
 					<ul
 						class="md:flex justify-center md:justify-end items-center space-x-4 grow mb-4 md:mb-0"
@@ -33,8 +33,8 @@
 						<RbNavigationLink to="/cv" @click="toggleNavigation"
 							>CV</RbNavigationLink
 						>
-						<RbNavigationLink to="/projects" @click="toggleNavigation"
-							>Projects</RbNavigationLink
+						<RbNavigationLink to="/experiments" @click="toggleNavigation"
+							>Experiments</RbNavigationLink
 						>
 					</ul>
 				</nav>

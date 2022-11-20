@@ -3,7 +3,7 @@
 		class="w-full fixed h-full top-0 left-0 flex justify-center items-center"
 	>
 		<div
-			class="flex justify-center items-center flex-wrap shadow-xl p-8 bg-slate-800 rounded-xl"
+			class="flex justify-center items-center flex-wrap shadow-xl p-8 bg-neutral-800 rounded-xl"
 		>
 			<div class="w-full text-center">
 				<h1>Under Construction</h1>
