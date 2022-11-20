@@ -8,7 +8,10 @@
 		Skip to content
 	</a>
 	<header
-		class="shadow-lg fixed left-0 top-0 w-full z-40 bg-neutral-800 bg-opacity-25 backdrop-blur-sm"
+		class="fixed left-0 top-0 w-full z-40 duration-200 bg-transparent"
+		:class="{
+			'shadow-lg bg-neutral-800 bg-opacity-25 backdrop-blur-sm': y > 100
+		}"
 	>
 		<RbContainer>
 			<RbNavigation></RbNavigation>
@@ -17,5 +20,8 @@
 </template>
 
 <script setup lang="ts">
+import { useWindowScroll } from '@vueuse/core';
 import RbNavigation from '../RbNavigation/RbNavigation.vue';
+
+const { y } = useWindowScroll();
 </script>
