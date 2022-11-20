@@ -19,6 +19,7 @@ declare module '@vue/runtime-core' {
     RbModal: typeof import('./components/common/RbModal/RbModal.vue')['default']
     RbNavigation: typeof import('./components/global/RbNavigation/RbNavigation.vue')['default']
     RbNavigationLink: typeof import('./components/global/RbNavigation/RbNavigationLink/RbNavigationLink.vue')['default']
+    RbPageLoader: typeof import('./components/common/RbPageLoader/RbPageLoader.vue')['default']
     RbPill: typeof import('./components/common/RbPill/RbPill.vue')['default']
     RbTechLogo: typeof import('./components/common/RbTechLogo/RbTechLogo.vue')['default']
     RbTextInput: typeof import('./components/form/RbTextInput/RbTextInput.vue')['default']
