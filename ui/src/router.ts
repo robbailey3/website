@@ -1,4 +1,9 @@
-import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
+import {
+	createRouter,
+	createWebHistory,
+	RouteRecordRaw,
+	RouterView
+} from 'vue-router';
 import Homepage from '@pages/Home/HomePage/HomePage.vue';
 import Login from '@pages/auth/LoginPage/LoginPage.vue';
 import Dashboard from '@pages/admin/AdminDashboardPage/AdminDashboardPage.vue';
@@ -22,11 +27,6 @@ const routes: RouteRecordRaw[] = [
 			title: 'Login | Rob Bailey'
 		}
 	},
-	{
-		path: '/admin',
-		component: Dashboard,
-		meta: { title: 'Admin Dashboard | Rob Bailey' }
-	},
 	{ path: '/blog', component: BlogPage, meta: { title: 'Blog | Rob Bailey' } },
 	{
 		path: '/photos',
@@ -38,6 +38,24 @@ const routes: RouteRecordRaw[] = [
 		path: '/experiments',
 		component: () => import('@pages/experiments/ExperimentsPage.vue'),
 		meta: { title: 'Experiments | Rob Bailey' }
+	},
+	{
+		path: '/admin',
+		component: RouterView,
+		children: [
+			{
+				path: '',
+				meta: { title: 'Admin Dashboard | Rob Bailey' },
+				component: () =>
+					import('@pages/admin/AdminDashboardPage/AdminDashboardPage.vue')
+			},
+			{
+				path: 'photos',
+				meta: { title: 'Admin Photos | Rob Bailey' },
+				component: () =>
+					import('@pages/admin/AdminPhotosPage/AdminPhotosPage.vue')
+			}
+		]
 	}
 ];
 

@@ -8,26 +8,42 @@ import {
 import { FirebaseConfig } from '../types/FirebaseConfig';
 import config from './config';
 
-class FirebaseService {
-	private firebaseConfig?: FirebaseConfig;
+const injectionKey = Symbol('firebaseInjectionKey');
 
-	private auth?: Auth;
+export function initialiseFirebaseAuth() {
+	const firebaseConfig = ref<FirebaseConfig>();
 
-	private credentials?: UserCredential;
+	const auth = ref<Auth>();
 
-	public async init() {
+	const initialiseApp = async () => {
 		try {
-			await this.getConfig();
-			const app = await initializeApp(this.firebaseConfig as FirebaseOptions);
-			this.auth = await getAuth(app);
+			await getConfig();
+			const app = await initializeApp(firebaseConfig.value as FirebaseOptions);
+			auth.value = await getAuth(app);
 		} catch (e: any) {
 			// TODO: Show a toast or something
 			console.error(e);
 		}
+	};
+
+	const getConfig = async () => {
+		firebaseConfig.value = await config.getFirebaseConfig();
+	};
+
+	provide(injectionKey, {
+		auth: auth.value
+	});
+}
+
+export function useFirebaseAuth() {
+	const { auth } = inject(injectionKey);
+
+	if (!auth) {
+		throw new Error('Firebase auth not initialised');
 	}
 
-	public async login(email: string, password: string) {
-		if (!this.auth) {
+	const login = async (email: string, password: string) => {
+		if (!auth) {
 			throw new Error('Auth not initialised');
 		}
 
@@ -36,21 +52,23 @@ class FirebaseService {
 			email,
 			password
 		);
-	}
+	};
+}
+
+class FirebaseService {
+	private firebaseConfig?: FirebaseConfig;
+
+	private auth?: Auth;
+
+	private credentials?: UserCredential;
+
+	public;
 
 	public async getToken(): Promise<string | undefined> {
 		if (!this.credentials) {
 			throw new Error('User is not logged in');
 		}
 		return await this.credentials.user.getIdToken();
-	}
-
-	public isLoggedIn() {
-		return !!this.credentials;
-	}
-
-	private async getConfig() {
-		this.firebaseConfig = await config.getFirebaseConfig();
 	}
 }
 

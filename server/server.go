@@ -28,7 +28,6 @@ func getPort() string {
 
 func setupMiddleware(app *fiber.App) {
 	app.Get("/metrics", monitor.New(monitor.Config{Title: "Monitoring"}))
-	app.Use(cache.New())
 	app.Use(limiter.New(limiter.Config{Max: 20, Expiration: time.Minute}))
 	app.Use(compress.New())
 	app.Use(cors.New(cors.Config{AllowOrigins: "*"}))
@@ -40,6 +39,7 @@ func setupMiddleware(app *fiber.App) {
 		},
 	))
 	app.Use(recover.New())
+	app.Use(cache.New(cache.Config{StoreResponseHeaders: true}))
 }
 
 func Init(db *firestore.Client) {
