@@ -27,8 +27,10 @@
 import * as yup from 'yup';
 import { useForm, Form } from 'vee-validate';
 import TextInput from '@components/form/RbTextInput/RbTextInput.vue';
-import firebaseService from '@services/firebase';
+import { useFirebaseAuth } from '@services/firebase';
 import { useRouter } from 'vue-router';
+
+const { login } = useFirebaseAuth();
 
 const schema = yup.object({
 	email: yup
@@ -55,7 +57,7 @@ const onSubmit = async () => {
 	}
 
 	try {
-		await firebaseService.login(model.email, model.password);
+		await login(model.email, model.password);
 		router.push('/');
 	} catch (e) {
 		console.error(e);

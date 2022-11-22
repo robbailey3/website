@@ -2,7 +2,7 @@
 	<div class="block">
 		<label :for="id" class="block">{{ label }}</label>
 		<input
-			class="border border-gray-200 px-2 py-1 rounded-sm shadow-sm block"
+			class="border border-gray-200 px-2 py-1 rounded-sm shadow-sm block text-gray-900"
 			@change="handleChange"
 			@blur="handleChange"
 			:type="type"

@@ -36,6 +36,7 @@
 						<RbNavigationLink to="/experiments" @click="toggleNavigation"
 							>Experiments</RbNavigationLink
 						>
+						<RbNavigationLink to="/login">Admin login</RbNavigationLink>
 						<RbNavigationLink to="/admin">Admin TODO:REMOVE</RbNavigationLink>
 						<RbNavigationLink v-if="isLoggedIn" to="/admin/photos"
 							>Admin Photos TODO:REMOVE</RbNavigationLink
@@ -51,7 +52,6 @@
 import { useWindowSize } from '@vueuse/core';
 import RbNavigationLink from './RbNavigationLink/RbNavigationLink.vue';
 import { NavState } from './navState';
-import firebase from '@services/firebase';
 
 const { width } = useWindowSize();
 
@@ -84,7 +84,7 @@ const toggleNavigation = () => {
 };
 
 const isLoggedIn = computed(() => {
-	return firebase.isLoggedIn();
+	return true;
 });
 </script>
 

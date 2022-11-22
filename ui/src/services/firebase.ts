@@ -3,73 +3,46 @@ import {
 	signInWithEmailAndPassword,
 	getAuth,
 	Auth,
-	UserCredential
+	setPersistence,
+	browserLocalPersistence,
+	onAuthStateChanged
 } from 'firebase/auth';
-import { FirebaseConfig } from '../types/FirebaseConfig';
 import config from './config';
 
-const injectionKey = Symbol('firebaseInjectionKey');
+interface FirebaseAuth {
+	auth: Auth;
+}
 
-export function initialiseFirebaseAuth() {
-	const firebaseConfig = ref<FirebaseConfig>();
+export function useFirebaseAuth() {
+	const auth = ref();
 
-	const auth = ref<Auth>();
+	const init = async () => {
+		const cfg = await config.getFirebaseConfig();
+		const app = await initializeApp(cfg);
+		auth.value = getAuth(app);
+	};
 
-	const initialiseApp = async () => {
+	onMounted(async () => {
+		await init();
+	});
+
+	const login = async (username: string, password: string) => {
 		try {
-			await getConfig();
-			const app = await initializeApp(firebaseConfig.value as FirebaseOptions);
-			auth.value = await getAuth(app);
-		} catch (e: any) {
-			// TODO: Show a toast or something
+			await setPersistence(auth.value, browserLocalPersistence);
+			const result = await signInWithEmailAndPassword(
+				auth.value,
+				username,
+				password
+			);
+			console.log({ result });
+		} catch (e) {
 			console.error(e);
 		}
 	};
 
-	const getConfig = async () => {
-		firebaseConfig.value = await config.getFirebaseConfig();
+	const getIdToken = async () => {
+		return await auth.value.currentUser?.getIdToken();
 	};
 
-	provide(injectionKey, {
-		auth: auth.value
-	});
+	return { login, getIdToken };
 }
-
-export function useFirebaseAuth() {
-	const { auth } = inject(injectionKey);
-
-	if (!auth) {
-		throw new Error('Firebase auth not initialised');
-	}
-
-	const login = async (email: string, password: string) => {
-		if (!auth) {
-			throw new Error('Auth not initialised');
-		}
-
-		this.credentials = await signInWithEmailAndPassword(
-			this.auth,
-			email,
-			password
-		);
-	};
-}
-
-class FirebaseService {
-	private firebaseConfig?: FirebaseConfig;
-
-	private auth?: Auth;
-
-	private credentials?: UserCredential;
-
-	public;
-
-	public async getToken(): Promise<string | undefined> {
-		if (!this.credentials) {
-			throw new Error('User is not logged in');
-		}
-		return await this.credentials.user.getIdToken();
-	}
-}
-
-export default new FirebaseService();
