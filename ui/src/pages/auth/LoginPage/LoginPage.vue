@@ -27,8 +27,8 @@
 import * as yup from 'yup';
 import { useForm, Form } from 'vee-validate';
 import TextInput from '@components/form/RbTextInput/RbTextInput.vue';
-import { useFirebaseAuth } from '@services/firebase';
 import { useRouter } from 'vue-router';
+import { useFirebaseAuth } from '../../../features/admin/photos/auth/useFirebaseAuth';
 
 const { login } = useFirebaseAuth();
 

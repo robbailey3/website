@@ -7,20 +7,40 @@ import {
 	browserLocalPersistence,
 	onAuthStateChanged
 } from 'firebase/auth';
-import config from './config';
+import { injectionKeys } from '../../../../injectionKeys';
+import { FirebaseWrapper } from './firebaseWrapper';
 
 interface FirebaseAuth {
 	auth: Auth;
 }
 
-export function useFirebaseAuth() {
+export function initialiseFirebaseAuth() {
 	const auth = ref();
 
-	const init = async () => {
-		const cfg = await config.getFirebaseConfig();
-		const app = await initializeApp(cfg);
-		auth.value = getAuth(app);
-	};
+	const firebase = new FirebaseWrapper();
+
+	provide(injectionKeys.FIREBASE_AUTH, {
+		firebase
+	});
+
+	firebase.init();
+}
+
+export function useFirebaseAuth() {
+	const api = inject(injectionKeys.FIREBASE_AUTH);
+
+	console.log({ api });
+
+	watch(
+		() => api,
+		() => {
+			console.log(api);
+		},
+		{ deep: true }
+	);
+	const auth = ref();
+
+	const init = async () => {};
 
 	onMounted(async () => {
 		await init();
