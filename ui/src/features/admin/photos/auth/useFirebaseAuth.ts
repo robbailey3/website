@@ -5,8 +5,10 @@ import {
 	Auth,
 	setPersistence,
 	browserLocalPersistence,
-	onAuthStateChanged
+	onAuthStateChanged,
+	User
 } from 'firebase/auth';
+import { InjectionKey } from 'vue';
 import { injectionKeys } from '../../../../injectionKeys';
 import { FirebaseWrapper } from './firebaseWrapper';
 
@@ -14,12 +16,13 @@ interface FirebaseAuth {
 	auth: Auth;
 }
 
-export function initialiseFirebaseAuth() {
-	const auth = ref();
+const injectionKey: InjectionKey<{ firebase: FirebaseWrapper }> =
+	Symbol('FIREBASE_AUTH');
 
+export function initialiseFirebaseAuth() {
 	const firebase = new FirebaseWrapper();
 
-	provide(injectionKeys.FIREBASE_AUTH, {
+	provide(injectionKey, {
 		firebase
 	});
 
@@ -27,42 +30,37 @@ export function initialiseFirebaseAuth() {
 }
 
 export function useFirebaseAuth() {
-	const api = inject(injectionKeys.FIREBASE_AUTH);
+	const api = inject(injectionKey);
 
-	console.log({ api });
+	if (!api) {
+		throw new Error('useFirebaseAuth() called outside of setup');
+	}
 
-	watch(
-		() => api,
-		() => {
-			console.log(api);
-		},
-		{ deep: true }
-	);
-	const auth = ref();
+	const { firebase } = api;
 
-	const init = async () => {};
+	const user = ref<User | null>();
 
-	onMounted(async () => {
-		await init();
+	const $userSubscription = firebase.$user.subscribe({
+		next: (u) => {
+			user.value = u;
+		}
 	});
 
-	const login = async (username: string, password: string) => {
-		try {
-			await setPersistence(auth.value, browserLocalPersistence);
-			const result = await signInWithEmailAndPassword(
-				auth.value,
-				username,
-				password
-			);
-			console.log({ result });
-		} catch (e) {
-			console.error(e);
-		}
+	onUnmounted(() => {
+		$userSubscription?.unsubscribe();
+	});
+
+	const login = async (email: string, password: string) => {
+		return await firebase.login(email, password);
 	};
 
 	const getIdToken = async () => {
-		return await auth.value.currentUser?.getIdToken();
+		return await firebase.getIdToken();
 	};
 
-	return { login, getIdToken };
+	const logout = async () => {
+		return await firebase.logout();
+	};
+
+	return { login, logout, getIdToken, user };
 }

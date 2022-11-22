@@ -2,16 +2,25 @@
 import RbHeader from './components/global/RbHeader/RbHeader.vue';
 import { initialiseFirebaseAuth } from './features/admin/photos/auth/useFirebaseAuth';
 
-onMounted(async () => {
-	await initialiseFirebaseAuth();
+const isLoaded = ref(false);
+
+onMounted(() => {
+	isLoaded.value = false;
+	initialiseFirebaseAuth();
+	nextTick(() => {
+		isLoaded.value = true;
+	});
 });
 </script>
 
 <template>
-	<RbHeader />
-	<main id="main-content">
-		<RouterView />
-	</main>
+	<RbPageLoader v-if="!isLoaded" />
+	<template v-else>
+		<RbHeader />
+		<main id="main-content">
+			<RouterView />
+		</main>
+	</template>
 </template>
 
 <style scoped></style>

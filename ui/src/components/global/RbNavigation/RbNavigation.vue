@@ -36,10 +36,11 @@
 						<RbNavigationLink to="/experiments" @click="toggleNavigation"
 							>Experiments</RbNavigationLink
 						>
-						<RbNavigationLink to="/login">Admin login</RbNavigationLink>
-						<RbNavigationLink to="/admin">Admin TODO:REMOVE</RbNavigationLink>
-						<RbNavigationLink v-if="isLoggedIn" to="/admin/photos"
-							>Admin Photos TODO:REMOVE</RbNavigationLink
+						<a
+							v-if="isLoggedIn"
+							@click="signOut"
+							class="p-2 md:p-4 block hover:text-blue-500"
+							>Sign Out</a
 						>
 					</ul>
 				</nav>
@@ -52,8 +53,12 @@
 import { useWindowSize } from '@vueuse/core';
 import RbNavigationLink from './RbNavigationLink/RbNavigationLink.vue';
 import { NavState } from './navState';
+import { useFirebaseAuth } from '../../../features/admin/photos/auth/useFirebaseAuth';
+import { sign } from 'crypto';
 
 const { width } = useWindowSize();
+
+const { user, logout } = useFirebaseAuth();
 
 const navState = ref<NavState>(NavState.OPEN);
 
@@ -84,8 +89,13 @@ const toggleNavigation = () => {
 };
 
 const isLoggedIn = computed(() => {
-	return true;
+	console.log({ user: user.value });
+	return user.value !== null && user.value !== undefined;
 });
+
+const signOut = async () => {
+	await logout();
+};
 </script>
 
 <style scoped>
