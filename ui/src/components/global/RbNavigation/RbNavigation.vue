@@ -36,6 +36,18 @@
 						<RbNavigationLink to="/experiments" @click="toggleNavigation"
 							>Experiments</RbNavigationLink
 						>
+						<RbNavigationLink
+							to="/admin/photos"
+							v-if="isLoggedIn"
+							@click="toggleNavigation"
+							>Admin Photos</RbNavigationLink
+						>
+						<RbNavigationLink
+							to="/login"
+							v-if="!isLoggedIn"
+							@click="toggleNavigation"
+							>Login</RbNavigationLink
+						>
 						<a
 							v-if="isLoggedIn"
 							@click="signOut"
@@ -53,7 +65,7 @@
 import { useWindowSize } from '@vueuse/core';
 import RbNavigationLink from './RbNavigationLink/RbNavigationLink.vue';
 import { NavState } from './navState';
-import { useFirebaseAuth } from '../../../features/admin/photos/auth/useFirebaseAuth';
+import { useFirebaseAuth } from '../../../features/admin/auth/useFirebaseAuth';
 import { sign } from 'crypto';
 
 const { width } = useWindowSize();

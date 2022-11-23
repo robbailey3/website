@@ -4,9 +4,11 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/robbailey3/website-api/image"
 	"github.com/robbailey3/website-api/response"
+	"github.com/robbailey3/website-api/validation"
 )
 
 type Controller interface {
+	GetPhotos(ctx *fiber.Ctx) error
 	UploadPhoto(ctx *fiber.Ctx) error
 }
 
@@ -18,6 +20,30 @@ func NewController(service Service) Controller {
 	return &controller{
 		service,
 	}
+}
+
+func (c *controller) GetPhotos(ctx *fiber.Ctx) error {
+	var req GetPhotosRequest
+
+	err := ctx.QueryParser(&req)
+
+	if err != nil {
+		return response.BadRequest(ctx, "Failed to parse query")
+	}
+
+	errs := validation.Validate(req)
+
+	if errs != nil {
+		return response.ValidationError(ctx, errs)
+	}
+
+	photos, err := c.service.GetPhotos(ctx.Context(), &req)
+
+	if err != nil {
+		return response.ServerError(ctx, err)
+	}
+
+	return response.Ok(ctx, photos)
 }
 
 func (c *controller) UploadPhoto(ctx *fiber.Ctx) error {

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import RbHeader from './components/global/RbHeader/RbHeader.vue';
-import { initialiseFirebaseAuth } from './features/admin/photos/auth/useFirebaseAuth';
+import { initialiseFirebaseAuth } from './features/admin/auth/useFirebaseAuth';
 
 const isLoaded = ref(false);
 

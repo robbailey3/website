@@ -9,7 +9,7 @@ import {
 	User
 } from 'firebase/auth';
 import { InjectionKey } from 'vue';
-import { injectionKeys } from '../../../../injectionKeys';
+import { injectionKeys } from '../../../injectionKeys';
 import { FirebaseWrapper } from './firebaseWrapper';
 
 interface FirebaseAuth {

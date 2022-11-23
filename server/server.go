@@ -2,7 +2,6 @@ package server
 
 import (
 	"fmt"
-	"github.com/gofiber/fiber/v2/middleware/cache"
 	"github.com/gofiber/fiber/v2/middleware/limiter"
 	"log"
 	"os"
@@ -39,7 +38,7 @@ func setupMiddleware(app *fiber.App) {
 		},
 	))
 	app.Use(recover.New())
-	app.Use(cache.New(cache.Config{StoreResponseHeaders: true}))
+	// app.Use(cache.New(cache.Config{StoreResponseHeaders: true}))
 }
 
 func Init(db *firestore.Client) {

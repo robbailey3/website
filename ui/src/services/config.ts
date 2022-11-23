@@ -1,6 +1,6 @@
 import axios, { AxiosInstance } from 'axios';
-import { ApiResponse } from '../types/ApiResponse';
-import { FirebaseConfig } from '../types/FirebaseConfig';
+import { ApiResponse } from '../models/ApiResponse';
+import { FirebaseConfig } from '../models/FirebaseConfig';
 
 class ConfigService {
 	private readonly API_BASE = 'http://localhost:8080/api/config';
