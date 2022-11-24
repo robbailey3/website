@@ -4,6 +4,7 @@ import (
 	"context"
 	"github.com/robbailey3/website-api/slices"
 	"github.com/robbailey3/website-api/storage"
+	"io"
 	"log"
 	"mime/multipart"
 	"os"
@@ -14,8 +15,8 @@ var allowedFileTypes = []string{"image/jpeg"}
 var maxFileSize = int64(10 * 1024 * 1024)
 
 type Service interface {
-	GetPhotos(ctx context.Context, request *GetPhotosRequest) ([]*Photo, error)
-	GetPhoto(ctx context.Context, id string) error
+	GetPhotos(ctx context.Context, request *GetPhotosRequest) ([]*PhotoViewModel, error)
+	GetPhoto(ctx context.Context, id string) (io.Reader, error)
 	IsValidType(file *multipart.FileHeader) bool
 	IsValidSize(file *multipart.FileHeader) bool
 }
@@ -29,30 +30,43 @@ func NewService(repo Repository) Service {
 	storageClient, err := storage.NewClient(os.Getenv("PHOTO_BUCKET_NAME"))
 
 	if err != nil {
-		// TOOD: Handle this error
+		// TODO: Handle this error
 		log.Fatal(err)
 	}
 
 	return &service{repository: repo, storageClient: storageClient}
 }
 
-func (s *service) GetPhotos(ctx context.Context, req *GetPhotosRequest) ([]*Photo, error) {
-	return s.repository.GetMany(ctx, req.Limit, req.Offset)
-}
-
-func (s *service) GetPhoto(ctx context.Context, id string) error {
+func (s *service) GetPhoto(ctx context.Context, id string) (io.Reader, error) {
 	photo, err := s.repository.GetPhoto(ctx, id)
 
 	if err != nil {
-		return err
+		return nil, err
 	}
 
 	file, err := s.storageClient.GetFile(ctx, photo.StoragePath)
 
 	if err != nil {
-		return err
+		return nil, err
 	}
 
+	return file, nil
+}
+
+func (s *service) GetPhotos(ctx context.Context, req *GetPhotosRequest) ([]*PhotoViewModel, error) {
+	photos, err := s.repository.GetMany(ctx, req.Limit, req.Offset)
+
+	if err != nil {
+		return nil, err
+	}
+
+	var photoViewModels []*PhotoViewModel
+
+	for _, photo := range photos {
+		photoViewModels = append(photoViewModels, photo.ToViewModel())
+	}
+
+	return photoViewModels, nil
 }
 
 func (s *service) IsValidType(file *multipart.FileHeader) bool {

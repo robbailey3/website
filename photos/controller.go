@@ -8,6 +8,7 @@ import (
 )
 
 type Controller interface {
+	GetPhoto(ctx *fiber.Ctx) error
 	GetPhotos(ctx *fiber.Ctx) error
 	UploadPhoto(ctx *fiber.Ctx) error
 }
@@ -20,6 +21,22 @@ func NewController(service Service) Controller {
 	return &controller{
 		service,
 	}
+}
+
+func (c *controller) GetPhoto(ctx *fiber.Ctx) error {
+	id := ctx.Params("id")
+
+	if id == "" {
+		return response.BadRequest(ctx, "Id not provided")
+	}
+
+	file, err := c.service.GetPhoto(ctx.Context(), id)
+
+	if err != nil {
+		return response.ServerError(ctx, err)
+	}
+
+	return response.File(ctx, file)
 }
 
 func (c *controller) GetPhotos(ctx *fiber.Ctx) error {

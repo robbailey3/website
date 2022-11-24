@@ -18,3 +18,11 @@ type PhotoViewModel struct {
 	Caption string `json:"caption"`
 	AltTag  string `json:"altTag"`
 }
+
+func (p *Photo) ToViewModel() *PhotoViewModel {
+	return &PhotoViewModel{
+		Id:      p.Id,
+		Caption: p.Caption,
+		AltTag:  p.AltTag,
+	}
+}

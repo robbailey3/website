@@ -35,5 +35,5 @@ export function useAdminPhotos() {
 		}
 	};
 
-	return { loadPhotos, loadingState };
+	return { loadPhotos, loadingState, photos };
 }

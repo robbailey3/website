@@ -54,7 +54,7 @@ func (r *repository) GetPhoto(ctx context.Context, id string) (*Photo, error) {
 		return nil, err
 	}
 
-	if err := doc.DataTo(photo); err != nil {
+	if err := doc.DataTo(&photo); err != nil {
 		return nil, err
 	}
 

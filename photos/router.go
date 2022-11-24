@@ -14,5 +14,6 @@ func InitPhotoRoutes(db *firestore.Client, router fiber.Router) {
 	group := router.Group("photos")
 
 	group.Get("", c.GetPhotos)
+	group.Get(":id", c.GetPhoto)
 	group.Post("", middleware.WithFirebaseAuth, c.UploadPhoto)
 }
