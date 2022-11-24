@@ -1,8 +1,8 @@
 <template>
 	<section>
 		<RbContainer class="py-8">
-			<RbFlex align="stretch" wrap>
-				<RbFlexItem class="md:basis-2/3 basis-full">
+			<RbFlex align="stretch" class="space-x-4">
+				<RbFlexItem>
 					<RbCard
 						class="bg-neutral-800 bg-opacity-50 p-4 rounded shadow-lg h-full"
 					>
@@ -22,7 +22,7 @@
 						</p>
 					</RbCard>
 				</RbFlexItem>
-				<RbFlexItem class="md:basis-1/3 basis-full p-4">
+				<RbFlexItem>
 					<RbCard class="bg-neutral-800 bg-opacity-50 p-4 h-full">
 						<h2>Skills</h2>
 						<RbFlex wrap class="mt-4">
@@ -33,25 +33,22 @@
 					</RbCard>
 				</RbFlexItem>
 			</RbFlex>
-			<RbFlex>
-				<RbFlexItem class="basis-full my-8">
+			<RbFlex class="space-x-4 my-8">
+				<RbFlexItem class="md:basis-1/2 basis-full">
 					<RbCard class="bg-neutral-800 bg-opacity-50 p-4 h-full">
-						<RbFlex>
-							<RbFlexItem class="md:basis-1/2 basis-full p-4">
-								<h2>Currently learning</h2>
-								<RbFlex align="center" class="mt-8">
-									<RbTechLogo tech="go" :height="96" :width="96" />
-									<p>Go</p>
-								</RbFlex>
-							</RbFlexItem>
-							<RbFlexItem class="md:basis-1/2 basis-full p-4">
-								<h2>Currently working on</h2>
-								<p>
-									This website with a backend built in Go and Vue on the
-									front-end
-								</p>
-							</RbFlexItem>
+						<h2>Currently learning</h2>
+						<RbFlex align="center" class="mt-8">
+							<RbTechLogo tech="go" :height="96" :width="96" />
+							<p class="text-2xl">Go</p>
 						</RbFlex>
+					</RbCard>
+				</RbFlexItem>
+				<RbFlexItem class="md:basis-1/2 basis-full">
+					<RbCard class="bg-neutral-800 bg-opacity-50 p-4 h-full">
+						<h2>Currently working on</h2>
+						<p>
+							This website with a backend built in Go and Vue on the front-end
+						</p>
 					</RbCard>
 				</RbFlexItem>
 			</RbFlex>

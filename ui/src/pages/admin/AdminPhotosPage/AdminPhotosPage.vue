@@ -2,7 +2,7 @@
 	<div v-if="loadingState === LoadingState.LOADED">
 		<template v-for="photo of photos">
 			<h1>{{ photo.caption }}</h1>
-			<img :src="getPhotoSrc(photo.id)" alt="" />
+			<img :src="getPhotoSrc(photo.id)" :alt="photo.altTag" />
 		</template>
 	</div>
 </template>
