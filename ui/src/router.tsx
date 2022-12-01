@@ -8,6 +8,4 @@ const router = createBrowserRouter([
 	}
 ]);
 
-router.subscribe((route) => {});
-
 export default router;
