@@ -1,1 +1,1 @@
-export type ButtonSizes = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
+export type ButtonSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
