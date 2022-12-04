@@ -11,5 +11,12 @@ export default defineConfig({
 		globals: true,
 		environment: 'jsdom',
 		setupFiles: './setupTests.js'
+	},
+	resolve: {
+		alias: {
+			'@components': '/src/components',
+			'@pages': '/src/pages',
+			'@features': '/src/features'
+		}
 	}
 });

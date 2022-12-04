@@ -4,6 +4,7 @@ export interface ContainerProps {
 
 const Container = (props: ContainerProps) => {
 	const { children } = props;
+
 	return <div className="container mx-auto">{children}</div>;
 };
 

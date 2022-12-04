@@ -18,11 +18,11 @@ const Button = (props: ButtonProps) => {
 	const getVariantClass = () => {
 		switch (variant) {
 			case 'primary':
-				return 'bg-primary text-white';
+				return 'bg-primary text-white border-transparent hover:bg-primary-600';
 			case 'accent':
-				return 'bg-accent text-white';
+				return 'bg-accent text-white border-transparent hover:bg-accent-700';
 			case 'outline':
-				return 'border border-primary text-primary';
+				return 'border-primary text-primary hover:bg-primary hover:bg-opacity-10';
 		}
 	};
 
@@ -52,7 +52,16 @@ const Button = (props: ButtonProps) => {
 
 	return (
 		<button
-			className={clsx(getVariantClass(), getSizeClass(), getRoundedClass())}
+			className={clsx(
+				'duration-200 border',
+				getVariantClass(),
+				getSizeClass(),
+				getRoundedClass(),
+				{
+					'bg-gray-700 text-gray-900 cursor-not-allowed hover:bg-gray-700':
+						disabled
+				}
+			)}
 			disabled={disabled || loading}
 			data-testid="button"
 		>
