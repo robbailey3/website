@@ -1,1 +1,1 @@
-export type ButtonVariant = 'primary' | 'secondary' | 'tertiary';
+export type ButtonVariant = 'primary' | 'accent' | 'outline';

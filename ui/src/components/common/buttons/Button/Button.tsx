@@ -15,7 +15,14 @@ const Button = (props: ButtonProps) => {
 	const { variant, size, rounded, disabled, loading, children } = props;
 
 	const getVariantClass = () => {
-		return '';
+		switch (variant) {
+			case 'primary':
+				return 'bg-primary text-white';
+			case 'accent':
+				return 'bg-accent text-white';
+			case 'outline':
+				return 'border border-primary text-primary';
+		}
 	};
 
 	const getSizeClass = () => {
