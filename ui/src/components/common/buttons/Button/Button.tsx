@@ -9,6 +9,7 @@ export interface ButtonProps {
 	disabled?: boolean;
 	loading?: boolean;
 	children: JSX.Element | string;
+	onClick: (e: MouseEvent) => any;
 }
 
 const Button = (props: ButtonProps) => {
