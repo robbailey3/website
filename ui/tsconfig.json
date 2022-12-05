@@ -16,9 +16,10 @@
 		"noEmit": true,
 		"jsx": "react-jsx",
 		"paths": {
-			"@components/*": ["/src/components"],
-			"@pages/*": ["/src/pages"],
-			"@features/*": ["/src/features"]
+			"@components/*": ["./src/components"],
+			"@pages/*": ["./src/pages"],
+			"@features/*": ["./src/features"],
+			"@utils/*": ["./src/utils"]
 		}
 	},
 	"include": ["src"],

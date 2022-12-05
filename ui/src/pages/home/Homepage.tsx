@@ -1,5 +1,7 @@
-const Homepage = () => {
-	return <div>Homepage</div>;
+import HomepageBanner from '../../features/homepage/HomepageBanner/HomepageBanner';
+
+const HomePage = () => {
+	return <HomepageBanner />;
 };
 
-export default Homepage;
+export default HomePage;

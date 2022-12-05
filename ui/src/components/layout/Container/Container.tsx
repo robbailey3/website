@@ -1,11 +1,15 @@
+import clsx from 'clsx';
+import { ReactNode } from 'react';
+
 export interface ContainerProps {
-	children: JSX.Element | JSX.Element[];
+	className?: string;
+	children: ReactNode;
 }
 
 const Container = (props: ContainerProps) => {
-	const { children } = props;
+	const { children, className } = props;
 
-	return <div className="container mx-auto">{children}</div>;
+	return <div className={clsx('container mx-auto', className)}>{children}</div>;
 };
 
 export default Container;

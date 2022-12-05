@@ -6,7 +6,10 @@ const HomepageBanner = () => {
 	return (
 		<Container>
 			<Flex>
-				<FlexItem>Rob</FlexItem>
+				<FlexItem className="my-4">
+					<h1 className="text-8xl">Rob Bailey</h1>
+					<h2 className="text-4xl">Software Engineer</h2>
+				</FlexItem>
 			</Flex>
 		</Container>
 	);
