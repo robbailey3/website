@@ -1,9 +1,26 @@
 import Container from '@components/layout/Container/Container';
+import { useScrollPosition } from '@utils/useScrollPosition';
+import clsx from 'clsx';
+import React from 'react';
 import HeaderNavigation from './HeaderNavigation/HeaderNavigation';
 
 const Header = () => {
+	const { y } = useScrollPosition();
+
+	const [bgBlur, setBgBlur] = React.useState(false);
+
+	React.useEffect(() => {
+		console.log(y);
+		setBgBlur(y > 100);
+	}, [y]);
+
 	return (
-		<header className="shadow bg-white bg-opacity-5">
+		<header
+			className={clsx('shadow fixed top-0 left-0 w-full duration-100', {
+				'backdrop-blur-sm': bgBlur,
+				'backdrop-blur-0': !bgBlur
+			})}
+		>
 			<div>
 				<a
 					id="skip-link"

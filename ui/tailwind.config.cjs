@@ -3,6 +3,10 @@
 module.exports = {
 	content: ['./src/**/*.{tsx,html}'],
 	theme: {
+		fontFamily: {
+			serif: ['Merriweather', 'serif'],
+			'sans-serif': ['"Noto Sans"', 'sans-serif']
+		},
 		extend: {
 			colors: {
 				dark: {

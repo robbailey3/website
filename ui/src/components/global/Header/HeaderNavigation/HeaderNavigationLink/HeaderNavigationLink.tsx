@@ -15,7 +15,7 @@ const HeaderNavigationLink = (props: HeaderNavigationLinkProps) => {
 			<NavLink
 				to={to}
 				onClick={onClick}
-				className="text-primary block px-4 py-2 hover:bg-white hover:bg-opacity-5 duration-200"
+				className="text-white block px-4 py-2 hover:bg-white hover:bg-opacity-5 duration-200"
 			>
 				{children}
 			</NavLink>
