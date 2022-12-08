@@ -27,17 +27,39 @@ const Flex = (props: FlexProps) => {
 	};
 
 	const getJustifyClass = (): string => {
-		if (justify) {
-			return `justify-${justify}`;
+		switch (justify) {
+			case 'around':
+				return 'justify-around';
+			case 'between':
+				return 'justify-between';
+			case 'center':
+				return 'justify-center';
+			case 'end':
+				return 'justify-around';
+			case 'evenly':
+				return 'justify-evenly';
+			case 'start':
+				return 'justify-start';
+			default:
+				return '';
 		}
-		return '';
 	};
 
 	const getAlignClass = (): string => {
-		if (align) {
-			return `items-${align}`;
+		switch (align) {
+			case 'baseline':
+				return 'items-baseline';
+			case 'center':
+				return 'items-center';
+			case 'end':
+				return 'items-end';
+			case 'start':
+				return 'items-start';
+			case 'stretch':
+				return 'items-stretch';
+			default:
+				return '';
 		}
-		return '';
 	};
 
 	return (
