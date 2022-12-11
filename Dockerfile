@@ -1,5 +1,4 @@
 # syntax=docker/dockerfile:1
-
 FROM node:16.14.2-alpine AS uibuild
 
 WORKDIR /usr/ui
