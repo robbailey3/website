@@ -1,4 +1,5 @@
 import Container from '@components/layout/Container/Container';
+import { useAuthContext } from '@features/auth/AuthContext';
 import { useScrollPosition } from '@utils/useScrollPosition';
 import clsx from 'clsx';
 import React from 'react';

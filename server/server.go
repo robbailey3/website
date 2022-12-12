@@ -3,6 +3,7 @@ package server
 import (
 	"fmt"
 	"github.com/gofiber/fiber/v2/middleware/cache"
+	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/gofiber/fiber/v2/middleware/limiter"
 	"log"
 	"os"
@@ -11,7 +12,6 @@ import (
 	"cloud.google.com/go/firestore"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/compress"
-	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/gofiber/fiber/v2/middleware/logger"
 	"github.com/gofiber/fiber/v2/middleware/monitor"
 	"github.com/gofiber/fiber/v2/middleware/recover"
@@ -28,10 +28,10 @@ func getPort() string {
 
 func setupMiddleware(app *fiber.App) {
 	app.Get("/metrics", monitor.New(monitor.Config{Title: "Monitoring"}))
+	app.Use(cors.New(cors.Config{AllowOrigins: "*"}))
 	app.Use(cache.New())
 	app.Use(limiter.New(limiter.Config{Max: 20, Expiration: time.Minute}))
 	app.Use(compress.New())
-	app.Use(cors.New(cors.Config{AllowOrigins: "*"}))
 	app.Use(requestid.New())
 	app.Use(logger.New(
 		logger.Config{
