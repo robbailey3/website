@@ -12,6 +12,7 @@ require (
 	github.com/gofiber/fiber/v2 v2.38.1
 	github.com/jellydator/ttlcache/v3 v3.0.0
 	github.com/joho/godotenv v1.4.0
+	github.com/pkg/errors v0.9.1
 	google.golang.org/api v0.97.0
 	google.golang.org/genproto v0.0.0-20220920201722-2b89144ce006
 	google.golang.org/grpc v1.49.0
