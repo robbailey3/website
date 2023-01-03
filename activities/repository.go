@@ -10,7 +10,7 @@ import (
 )
 
 type Repository interface {
-  GetActivities(ctx context.Context) ([]*Activity, error)
+  GetActivities(ctx context.Context, limit, offset int) ([]*Activity, error)
   GetActivityById(ctx context.Context, id string) (*Activity, error)
   InsertActivity(ctx context.Context, activity *Activity) error
   UpdateActivity(ctx context.Context, id string, activity *Activity) error
@@ -24,10 +24,13 @@ func NewRepository(db *firestore.Client) Repository {
   return &repository{collection: db.Collection("activities")}
 }
 
-func (r repository) GetActivities(ctx context.Context) ([]*Activity, error) {
+func (r repository) GetActivities(ctx context.Context, limit, offset int) ([]*Activity, error) {
   var activities []*Activity
 
-  docs := r.collection.Limit(10).OrderBy("DateModified", firestore.Desc).Documents(ctx)
+  docs := r.collection.Limit(10).OrderBy("DateModified", firestore.Desc).
+    Limit(limit).
+    Offset(offset).
+    Documents(ctx)
 
   for {
     var currentDoc Activity

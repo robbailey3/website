@@ -2,13 +2,13 @@ package activities
 
 import (
   "cloud.google.com/go/firestore"
-  "github.com/gofiber/fiber/v2"
+  "context"
   "github.com/pkg/errors"
-  "github.com/robbailey3/website-api/response"
 )
 
 type Service interface {
-  GetActivities(ctx *fiber.Ctx) error
+  GetActivities(ctx context.Context, request *GetActivitiesRequest) ([]*Activity, error)
+  GetActivityById(ctx context.Context, id string) (*Activity, error)
 }
 
 type service struct {
@@ -21,12 +21,16 @@ func NewService(db *firestore.Client) Service {
   }
 }
 
-func (s *service) GetActivities(ctx *fiber.Ctx) error {
-  activities, err := s.repo.GetActivities(ctx.Context())
+func (s *service) GetActivities(ctx context.Context, request *GetActivitiesRequest) ([]*Activity, error) {
+  activities, err := s.repo.GetActivities(ctx, request.Limit, request.Skip)
 
   if err != nil {
-    return errors.Wrap(err, "failed to get activities from DB")
+    return nil, errors.Wrap(err, "failed to get activities from DB")
   }
 
-  return response.Ok(ctx, activities)
+  return activities, nil
+}
+
+func (s *service) GetActivityById(ctx context.Context, id string) (*Activity, error) {
+  return s.repo.GetActivityById(ctx, id)
 }

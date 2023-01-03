@@ -3,6 +3,7 @@ package activities
 import (
   "cloud.google.com/go/firestore"
   "github.com/gofiber/fiber/v2"
+  "github.com/robbailey3/website-api/middleware"
 )
 
 func SetupActivityRoutes(router fiber.Router, db *firestore.Client) {
@@ -10,5 +11,5 @@ func SetupActivityRoutes(router fiber.Router, db *firestore.Client) {
 
   group := router.Group("activities")
 
-  group.Get("", c.HandleGet)
+  group.Get("", middleware.UseQueryValidation[GetActivitiesRequest], c.HandleGet)
 }
