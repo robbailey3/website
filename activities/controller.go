@@ -4,6 +4,7 @@ import (
   "cloud.google.com/go/firestore"
   "github.com/gofiber/fiber/v2"
   "github.com/robbailey3/website-api/response"
+  "log"
 )
 
 type Controller interface {
@@ -18,7 +19,12 @@ type controller struct {
 }
 
 func NewController(db *firestore.Client) Controller {
-  return &controller{service: NewService(db)}
+  service, err := NewService(db)
+  if err != nil {
+    // TODO: Handle this error better
+    log.Println(err)
+  }
+  return &controller{service}
 }
 
 func (c *controller) HandleGet(ctx *fiber.Ctx) error {
@@ -50,8 +56,18 @@ func (c *controller) HandleGetById(ctx *fiber.Ctx) error {
 }
 
 func (c *controller) HandleWebhookGet(ctx *fiber.Ctx) error {
-  // TODO implement me
-  panic("implement me")
+  webhookQuery := WebhookChallengeRequest{
+    HubChallenge: ctx.Query("hub.challenge"),
+    HubMode:      ctx.Query("hub.mode"),
+    HubVerify:    ctx.Query("hub.verify_token"),
+  }
+  if !c.service.VerifyWebhook(webhookQuery) {
+    return ctx.SendStatus(fiber.StatusBadRequest)
+  }
+
+  return ctx.JSON(VerifyWebhookResponse{
+    HubChallenge: webhookQuery.HubChallenge,
+  })
 }
 
 func (c *controller) HandleWebhookPost(ctx *fiber.Ctx) error {

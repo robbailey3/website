@@ -12,4 +12,5 @@ func SetupActivityRoutes(router fiber.Router, db *firestore.Client) {
   group := router.Group("activities")
 
   group.Get("", middleware.UseQueryValidation[GetActivitiesRequest], c.HandleGet)
+  group.Get("webhook", c.HandleWebhookGet)
 }

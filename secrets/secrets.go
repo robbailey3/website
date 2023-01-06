@@ -25,7 +25,7 @@ func Init() error {
       initErr = err
     }
 
-    projectId = os.Getenv("GOOGLE_PROJECT_ID")
+    projectId = os.Getenv("GOOGLE_CLOUD_PROJECT")
 
     client = c
   })
