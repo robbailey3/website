@@ -181,10 +181,32 @@ type StravaActivity struct {
   LeaderboardOptOut        bool   `json:"leaderboard_opt_out"`
 }
 
-func (s *StravaActivity) MapToActivity() *Activity {
-  return &Activity{
+func (s *StravaActivity) MapToDatabaseModel() *CreateActivityRequest {
+  var splits []Split
+  for _, split := range s.SplitsMetric {
+    splits = append(splits, Split{
+      Distance:            split.Distance,
+      ElapsedTime:         split.ElapsedTime,
+      MovingTime:          split.MovingTime,
+      ElevationDifference: split.ElevationDifference,
+      AverageSpeed:        split.AverageSpeed,
+    })
+  }
+  var segments []Segment
+  for _, segment := range s.SegmentEfforts {
+    segments = append(segments, Segment{
+      Name:        segment.Name,
+      ElapsedTime: segment.ElapsedTime,
+      MovingTime:  segment.MovingTime,
+      Distance:    segment.Distance,
+    })
+  }
+
+  return &CreateActivityRequest{
+    StravaId:           s.Id,
     Type:               s.SportType,
     Name:               s.Name,
+    Description:        s.Description,
     Distance:           s.Distance,
     MovingTime:         s.MovingTime,
     ElapsedTime:        s.ElapsedTime,
@@ -193,13 +215,41 @@ func (s *StravaActivity) MapToActivity() *Activity {
     StartDateLocal:     s.StartDateLocal,
     GearName:           s.Gear.Name,
     MapPolyline:        s.Map.SummaryPolyline,
+    Segments:           segments,
+    Splits:             splits,
+    Image: Image{
+      UrlSmall: s.Photos.Primary.Urls.Field1,
+      UrlLarge: s.Photos.Primary.Urls.Field2,
+    },
   }
+}
+
+type Split struct {
+  Distance            float64 `json:"distance"`
+  ElapsedTime         int     `json:"elapsedTime"`
+  MovingTime          int     `json:"movingTime"`
+  ElevationDifference float64 `json:"elevationDifference"`
+  AverageSpeed        float64 `json:"averageSpeed"`
+}
+
+type Segment struct {
+  Name        string  `json:"name"`
+  ElapsedTime int     `json:"elapsedTime"`
+  MovingTime  int     `json:"movingTime"`
+  Distance    float64 `json:"distance"`
+}
+
+type Image struct {
+  UrlSmall string `json:"urlSmall"`
+  UrlLarge string `json:"urlLarge"`
 }
 
 type Activity struct {
   Id                 string    `json:"id"`
+  StravaId           int64     `json:"stravaId"`
   Type               string    `json:"type"`
   Name               string    `json:"name"`
+  Description        string    `json:"description"`
   Distance           float64   `json:"distance"`
   MovingTime         int       `json:"movingTime"`
   ElapsedTime        int       `json:"elapsedTime"`
@@ -207,8 +257,30 @@ type Activity struct {
   StartDate          time.Time `json:"startDate"`
   StartDateLocal     time.Time `json:"startDateLocal"`
   GearName           string    `json:"gearName"`
-  ImageUrl           string    `json:"imageUrl"`
   MapPolyline        string    `json:"mapPolyline"`
   DateAdded          time.Time `json:"dateAdded"`
   DateModified       time.Time `json:"dateModified"`
+  Segments           []Segment `json:"segments"`
+  Splits             []Split   `json:"splits"`
+  Image              Image     `json:"image"`
+}
+
+type CreateActivityRequest struct {
+  StravaId           int64     `json:"stravaId"`
+  Type               string    `json:"type"`
+  Name               string    `json:"name"`
+  Description        string    `json:"description"`
+  Distance           float64   `json:"distance"`
+  MovingTime         int       `json:"movingTime"`
+  ElapsedTime        int       `json:"elapsedTime"`
+  TotalElevationGain float64   `json:"totalElevationGain"`
+  StartDate          time.Time `json:"startDate"`
+  StartDateLocal     time.Time `json:"startDateLocal"`
+  GearName           string    `json:"gearName"`
+  MapPolyline        string    `json:"mapPolyline"`
+  DateAdded          time.Time `json:"dateAdded"`
+  DateModified       time.Time `json:"dateModified"`
+  Segments           []Segment `json:"segments"`
+  Splits             []Split   `json:"splits"`
+  Image              Image     `json:"image"`
 }

@@ -55,7 +55,7 @@ func (s *service) GetNewActivity(ctx context.Context, activityId int) error {
     return errors.Wrap(err, "Failed to get activity from strava")
   }
 
-  if err := s.repo.InsertActivity(ctx, a.MapToActivity()); err != nil {
+  if err := s.repo.UpsertActivity(ctx, a.MapToDatabaseModel()); err != nil {
     return errors.Wrap(err, "Failed to insert activity into database")
   }
 
