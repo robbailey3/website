@@ -14,7 +14,7 @@ import (
 )
 
 type StravaApiService interface {
-  GetActivity(ctx context.Context, id string) (*StravaActivity, error)
+  GetActivity(ctx context.Context, id int) (*StravaActivity, error)
   WebhookIsValid(req WebhookChallengeRequest) bool
 }
 
@@ -38,9 +38,9 @@ func NewStravaService(authService auth.Service) StravaApiService {
   }
 }
 
-func (s *stravaApiService) GetActivity(ctx context.Context, id string) (*StravaActivity, error) {
+func (s *stravaApiService) GetActivity(ctx context.Context, id int) (*StravaActivity, error) {
   client := &http.Client{}
-  url := fmt.Sprintf("%s/activities/%s", s.baseUrl, id)
+  url := fmt.Sprintf("%s/activities/%d", s.baseUrl, id)
 
   req, err := http.NewRequest("GET", url, nil)
 
@@ -53,12 +53,16 @@ func (s *stravaApiService) GetActivity(ctx context.Context, id string) (*StravaA
     slog.Error(err)
     return nil, err
   }
-  req.Header.Add("Authorization", accessToken)
+  req.Header.Add("Authorization", fmt.Sprintf("Bearer %s", accessToken))
 
   resp, err := client.Do(req)
 
   if err != nil {
     return nil, err
+  }
+
+  if resp.StatusCode != 200 {
+    return nil, errors.New(fmt.Sprintf("HTTP Status code did not indicate success: %s", resp.Status))
   }
 
   var activity StravaActivity

@@ -14,16 +14,16 @@ type StravaActivity struct {
     ResourceState int `json:"resource_state"`
   } `json:"athlete"`
   Name               string    `json:"name"`
-  Distance           int       `json:"distance"`
+  Distance           float64   `json:"distance"`
   MovingTime         int       `json:"moving_time"`
   ElapsedTime        int       `json:"elapsed_time"`
-  TotalElevationGain int       `json:"total_elevation_gain"`
+  TotalElevationGain float64   `json:"total_elevation_gain"`
   Type               string    `json:"type"`
   SportType          string    `json:"sport_type"`
   StartDate          time.Time `json:"start_date"`
   StartDateLocal     time.Time `json:"start_date_local"`
   Timezone           string    `json:"timezone"`
-  UtcOffset          int       `json:"utc_offset"`
+  UtcOffset          float64   `json:"utc_offset"`
   StartLatlng        []float64 `json:"start_latlng"`
   EndLatlng          []float64 `json:"end_latlng"`
   AchievementCount   int       `json:"achievement_count"`
@@ -47,13 +47,13 @@ type StravaActivity struct {
   AverageSpeed         float64     `json:"average_speed"`
   MaxSpeed             float64     `json:"max_speed"`
   AverageCadence       float64     `json:"average_cadence"`
-  AverageTemp          int         `json:"average_temp"`
+  AverageTemp          float64     `json:"average_temp"`
   AverageWatts         float64     `json:"average_watts"`
-  WeightedAverageWatts int         `json:"weighted_average_watts"`
+  WeightedAverageWatts float64     `json:"weighted_average_watts"`
   Kilojoules           float64     `json:"kilojoules"`
   DeviceWatts          bool        `json:"device_watts"`
   HasHeartrate         bool        `json:"has_heartrate"`
-  MaxWatts             int         `json:"max_watts"`
+  MaxWatts             float64     `json:"max_watts"`
   ElevHigh             float64     `json:"elev_high"`
   ElevLow              float64     `json:"elev_low"`
   PrCount              int         `json:"pr_count"`
@@ -138,7 +138,7 @@ type StravaActivity struct {
     Distance           float64   `json:"distance"`
     StartIndex         int       `json:"start_index"`
     EndIndex           int       `json:"end_index"`
-    TotalElevationGain int       `json:"total_elevation_gain"`
+    TotalElevationGain float64   `json:"total_elevation_gain"`
     AverageSpeed       float64   `json:"average_speed"`
     MaxSpeed           float64   `json:"max_speed"`
     AverageCadence     float64   `json:"average_cadence"`
@@ -200,10 +200,10 @@ type Activity struct {
   Id                 string    `json:"id"`
   Type               string    `json:"type"`
   Name               string    `json:"name"`
-  Distance           int       `json:"distance"`
+  Distance           float64   `json:"distance"`
   MovingTime         int       `json:"movingTime"`
   ElapsedTime        int       `json:"elapsedTime"`
-  TotalElevationGain int       `json:"totalElevationGain"`
+  TotalElevationGain float64   `json:"totalElevationGain"`
   StartDate          time.Time `json:"startDate"`
   StartDateLocal     time.Time `json:"startDateLocal"`
   GearName           string    `json:"gearName"`

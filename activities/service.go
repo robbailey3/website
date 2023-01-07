@@ -11,6 +11,7 @@ type Service interface {
   GetActivities(ctx context.Context, request *GetActivitiesRequest) ([]*Activity, error)
   GetActivityById(ctx context.Context, id string) (*Activity, error)
   VerifyWebhook(req WebhookChallengeRequest) bool
+  GetNewActivity(ctx context.Context, activityId int) error
 }
 
 type service struct {
@@ -45,4 +46,18 @@ func (s *service) GetActivityById(ctx context.Context, id string) (*Activity, er
 
 func (s *service) VerifyWebhook(req WebhookChallengeRequest) bool {
   return s.stravaApiService.WebhookIsValid(req)
+}
+
+func (s *service) GetNewActivity(ctx context.Context, activityId int) error {
+  a, err := s.stravaApiService.GetActivity(ctx, activityId)
+
+  if err != nil {
+    return errors.Wrap(err, "Failed to get activity from strava")
+  }
+
+  if err := s.repo.InsertActivity(ctx, a.MapToActivity()); err != nil {
+    return errors.Wrap(err, "Failed to insert activity into database")
+  }
+
+  return nil
 }

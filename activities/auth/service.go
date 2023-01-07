@@ -1,9 +1,9 @@
 package auth
 
 import (
-  "bytes"
   "context"
   "encoding/json"
+  "fmt"
   "github.com/gookit/slog"
   "github.com/pkg/errors"
   "github.com/robbailey3/website-api/secrets"
@@ -59,27 +59,45 @@ func (s *service) GetAccessToken() (string, error) {
   if s.accessTokenIsValid() {
     return s.accessToken, nil
   }
-  return "", nil
+  if err := s.RefreshAccessToken(); err != nil {
+    return "", err
+  }
+  if s.accessTokenIsValid() {
+    return s.accessToken, nil
+  }
+  return "", errors.New("Access token not valid")
 }
 
 func (s *service) RefreshAccessToken() error {
-  req := &GetAuthTokenRequest{
-    Params: GetAuthTokenRequestParams{
-      ClientId:     s.stravaClientId,
-      ClientSecret: s.stravaClientSecret,
-      RefreshToken: s.refreshToken,
-      GrantType:    "refresh_token",
-      Scopes:       "activity:read",
-    },
-  }
-  httpBodyBytes, err := json.Marshal(req)
+  // req := &GetAuthTokenRequest{
+  //   Params: GetAuthTokenRequestParams{
+  //     ClientId:     s.stravaClientId,
+  //     ClientSecret: s.stravaClientSecret,
+  //     RefreshToken: s.refreshToken,
+  //     GrantType:    "refresh_token",
+  //     Scopes:       "activity:read",
+  //   },
+  // }
+  client := http.Client{}
+  req, err := http.NewRequest("POST", "https://www.strava.com/oauth/token", nil)
   if err != nil {
     return err
   }
-  body := bytes.NewBuffer(httpBodyBytes)
-  response, err := http.Post("https://www.strava.com/oauth/token", "application/json", body)
+  req.Header.Add("content-type", "application/json")
+  q := req.URL.Query()
+  q.Set("client_id", s.stravaClientId)
+  q.Set("client_secret", s.stravaClientSecret)
+  q.Set("refresh_token", s.refreshToken)
+  q.Set("grant_type", "refresh_token")
+  q.Set("scopes", "activity:read")
+  req.URL.RawQuery = q.Encode()
+
+  response, err := client.Do(req)
   if err != nil {
     return err
+  }
+  if response.StatusCode != 200 {
+    return errors.New(fmt.Sprintf("Failed to authenticate with strava: %s", response.Status))
   }
   responseBytes, err := io.ReadAll(response.Body)
 

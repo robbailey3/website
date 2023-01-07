@@ -3,6 +3,7 @@ package activities
 import (
   "cloud.google.com/go/firestore"
   "github.com/gofiber/fiber/v2"
+  "github.com/gookit/slog"
   "github.com/robbailey3/website-api/response"
   "log"
 )
@@ -71,6 +72,21 @@ func (c *controller) HandleWebhookGet(ctx *fiber.Ctx) error {
 }
 
 func (c *controller) HandleWebhookPost(ctx *fiber.Ctx) error {
-  // TODO implement me
-  panic("implement me")
+  var request WebhookPostRequest
+
+  if err := ctx.BodyParser(&request); err != nil {
+    return ctx.SendStatus(fiber.StatusBadRequest)
+  }
+
+  if request.ObjectType != "activity" {
+    slog.Warn("Strava webhook request received for non-activity")
+    return ctx.SendStatus(fiber.StatusOK)
+  }
+
+  if err := c.service.GetNewActivity(ctx.Context(), request.ObjectId); err != nil {
+    slog.Error(err)
+    return ctx.SendStatus(fiber.StatusInternalServerError)
+  }
+
+  return ctx.SendStatus(fiber.StatusOK)
 }
