@@ -8,6 +8,9 @@ module.exports = {
 			'sans-serif': ['"Noto Sans"', 'sans-serif']
 		},
 		extend: {
+			margin: {
+				18: '4.5rem'
+			},
 			colors: {
 				dark: {
 					DEFAULT: '#0d1117'
