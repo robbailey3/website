@@ -1,25 +1,35 @@
 package response
 
 import (
-	"github.com/getsentry/sentry-go"
-	"time"
+  "encoding/json"
+  "github.com/getsentry/sentry-go"
+  "github.com/gookit/slog"
+  "net/http"
+  "time"
 
-	"github.com/gofiber/fiber/v2"
-	"github.com/robbailey3/website-api/exception"
+  "github.com/robbailey3/website-api/exception"
 )
 
-func ServerError(ctx *fiber.Ctx, err error) error {
-	sentry.CaptureException(err)
-	return ctx.Status(fiber.StatusInternalServerError).JSON(struct {
-		BaseResponse
-	}{
-		BaseResponse: BaseResponse{
-			Success:   false,
-			Timestamp: time.Now().Unix(),
-			Error: &ErrorResponse{
-				Code:    exception.SERVER_ERROR,
-				Message: "Server error",
-			},
-		},
-	})
+func ServerError(w http.ResponseWriter, err error) {
+  sentry.CaptureException(err)
+
+  bytes, err := json.Marshal(&struct {
+    BaseResponse
+  }{
+    BaseResponse: BaseResponse{
+      Success:   false,
+      Timestamp: time.Now().Unix(),
+      Error: &ErrorResponse{
+        Code:    exception.SERVER_ERROR,
+        Message: "Server error",
+      },
+    },
+  })
+  if err != nil {
+    slog.Error(err)
+    return
+  }
+
+  w.WriteHeader(http.StatusInternalServerError)
+  w.Write(bytes)
 }
