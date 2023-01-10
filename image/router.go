@@ -1,19 +1,22 @@
 package image
 
 import (
-	"cloud.google.com/go/firestore"
-	"github.com/gofiber/fiber/v2"
+  "cloud.google.com/go/firestore"
+  "github.com/go-chi/chi/v5"
 )
 
-func InitImageRoutes(app fiber.Router, db *firestore.Client) {
-	controller := NewController(db)
+func InitImageRoutes(router chi.Router, db *firestore.Client) {
+  controller := NewController(db)
 
-	group := app.Group("image")
-	group.Post("", controller.Upload)
-	group.Get("/:id", controller.GetImage)
-	group.Get("/:id/labels", controller.GetLabels)
-	group.Get("/:id/properties", controller.GetProperties)
-	group.Get("/:id/landmarks", controller.GetLandmarks)
-	group.Get("/:id/logos", controller.GetLogos)
-	group.Get("/:id/faces", controller.GetFaces)
+  router.Route("/image", func(r chi.Router) {
+    r.Post("/", controller.Upload)
+    r.Post("/", controller.Upload)
+    r.Get("/{id}", controller.GetImage)
+    r.Get("/{id}/labels", controller.GetLabels)
+    r.Get("/{id}/properties", controller.GetProperties)
+    r.Get("/{id}/landmarks", controller.GetLandmarks)
+    r.Get("/{id}/logos", controller.GetLogos)
+    r.Get("/{id}/faces", controller.GetFaces)
+  })
+
 }

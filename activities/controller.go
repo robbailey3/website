@@ -2,17 +2,20 @@ package activities
 
 import (
   "cloud.google.com/go/firestore"
-  "github.com/gofiber/fiber/v2"
+  "encoding/json"
+  "github.com/go-chi/chi/v5"
   "github.com/gookit/slog"
   "github.com/robbailey3/website-api/response"
+  "io"
   "log"
+  "net/http"
 )
 
 type Controller interface {
-  HandleGet(ctx *fiber.Ctx) error
-  HandleGetById(ctx *fiber.Ctx) error
-  HandleWebhookGet(ctx *fiber.Ctx) error
-  HandleWebhookPost(ctx *fiber.Ctx) error
+  HandleGet(w http.ResponseWriter, req *http.Request)
+  HandleGetById(w http.ResponseWriter, req *http.Request)
+  HandleWebhookGet(w http.ResponseWriter, req *http.Request)
+  HandleWebhookPost(w http.ResponseWriter, req *http.Request)
 }
 
 type controller struct {
@@ -28,65 +31,81 @@ func NewController(db *firestore.Client) Controller {
   return &controller{service}
 }
 
-func (c *controller) HandleGet(ctx *fiber.Ctx) error {
+func (c *controller) HandleGet(w http.ResponseWriter, req *http.Request) {
   var request GetActivitiesRequest
 
-  if err := ctx.QueryParser(&request); err != nil {
-    return response.BadRequest(ctx, err.Error())
-  }
-
-  activities, err := c.service.GetActivities(ctx.Context(), &request)
+  activities, err := c.service.GetActivities(req.Context(), &request)
 
   if err != nil {
-    return response.ServerError(ctx, err)
+    response.ServerError(w, err)
+    return
   }
 
-  return response.Ok(ctx, activities)
+  response.Ok(w, activities)
 }
 
-func (c *controller) HandleGetById(ctx *fiber.Ctx) error {
-  id := ctx.Params("id")
+func (c *controller) HandleGetById(w http.ResponseWriter, req *http.Request) {
+  id := chi.URLParam(req, "id")
 
-  activity, err := c.service.GetActivityById(ctx.Context(), id)
+  activity, err := c.service.GetActivityById(req.Context(), id)
 
   if err != nil {
-    return response.ServerError(ctx, err)
+    response.ServerError(w, err)
+    return
   }
 
-  return response.Ok(ctx, activity)
+  response.Ok(w, activity)
 }
 
-func (c *controller) HandleWebhookGet(ctx *fiber.Ctx) error {
+func (c *controller) HandleWebhookGet(w http.ResponseWriter, req *http.Request) {
+  query := req.URL.Query()
   webhookQuery := WebhookChallengeRequest{
-    HubChallenge: ctx.Query("hub.challenge"),
-    HubMode:      ctx.Query("hub.mode"),
-    HubVerify:    ctx.Query("hub.verify_token"),
+    HubChallenge: query.Get("hub.challenge"),
+    HubMode:      query.Get("hub.mode"),
+    HubVerify:    query.Get("hub.verify_token"),
   }
   if !c.service.VerifyWebhook(webhookQuery) {
-    return ctx.SendStatus(fiber.StatusBadRequest)
+    w.WriteHeader(http.StatusBadRequest)
+    return
   }
 
-  return ctx.JSON(VerifyWebhookResponse{
+  respBytes, err := json.Marshal(&VerifyWebhookResponse{
     HubChallenge: webhookQuery.HubChallenge,
   })
+
+  if err != nil {
+    return
+  }
+
+  w.Write(respBytes)
 }
 
-func (c *controller) HandleWebhookPost(ctx *fiber.Ctx) error {
+func (c *controller) HandleWebhookPost(w http.ResponseWriter, req *http.Request) {
   var request WebhookPostRequest
 
-  if err := ctx.BodyParser(&request); err != nil {
-    return ctx.SendStatus(fiber.StatusBadRequest)
+  bodyBytes, err := io.ReadAll(req.Body)
+
+  if err != nil {
+    w.WriteHeader(http.StatusBadRequest)
+    return
+  }
+
+  if err := json.Unmarshal(bodyBytes, &request); err != nil {
+    w.WriteHeader(http.StatusBadRequest)
+    return
   }
 
   if request.ObjectType != "activity" {
     slog.Warn("Strava webhook request received for non-activity")
-    return ctx.SendStatus(fiber.StatusOK)
+    w.WriteHeader(http.StatusBadRequest)
+    return
   }
 
-  if err := c.service.GetNewActivity(ctx.Context(), request.ObjectId); err != nil {
+  if err := c.service.GetNewActivity(req.Context(), request.ObjectId); err != nil {
     slog.Error(err)
-    return ctx.SendStatus(fiber.StatusInternalServerError)
+    w.WriteHeader(http.StatusInternalServerError)
+    return
   }
 
-  return ctx.SendStatus(fiber.StatusOK)
+  w.WriteHeader(http.StatusOK)
 }

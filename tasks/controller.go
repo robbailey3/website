@@ -1,84 +1,104 @@
 package tasks
 
 import (
-	"cloud.google.com/go/firestore"
-	"github.com/gofiber/fiber/v2"
-	"github.com/robbailey3/website-api/response"
+  "cloud.google.com/go/firestore"
+  "encoding/json"
+  "github.com/go-chi/chi/v5"
+  "github.com/robbailey3/website-api/response"
+  "io"
+  "net/http"
 )
 
 type Controller interface {
-	GetTasks(ctx *fiber.Ctx) error
-	CreateTask(ctx *fiber.Ctx) error
-	UpdateTask(ctx *fiber.Ctx) error
-	DeleteTask(ctx *fiber.Ctx) error
+  GetTasks(w http.ResponseWriter, req *http.Request)
+  CreateTask(w http.ResponseWriter, req *http.Request)
+  UpdateTask(w http.ResponseWriter, req *http.Request)
+  DeleteTask(w http.ResponseWriter, req *http.Request)
 }
 
 type controller struct {
-	service Service
+  service Service
 }
 
 func NewController(db *firestore.Client) Controller {
-	return &controller{service: NewService(db)}
+  return &controller{service: NewService(db)}
 }
 
-func (c *controller) GetTasks(ctx *fiber.Ctx) error {
-	tasks, err := c.service.GetTasks(ctx.Context())
+func (c *controller) GetTasks(w http.ResponseWriter, req *http.Request) {
+  tasks, err := c.service.GetTasks(req.Context())
 
-	if err != nil {
-		return response.ServerError(ctx, err)
-	}
+  if err != nil {
+    response.ServerError(w, err)
+  }
 
-	return response.Ok(ctx, tasks)
+  response.Ok(w, tasks)
 }
 
-func (c *controller) CreateTask(ctx *fiber.Ctx) error {
-	var task Task
+func (c *controller) CreateTask(w http.ResponseWriter, req *http.Request) {
+  var task Task
 
-	if err := ctx.BodyParser(&task); err != nil {
-		return response.BadRequest(ctx, "Unable to parse request")
-	}
+  bodyBytes, err := io.ReadAll(req.Body)
+  if err != nil {
+    response.BadRequest(w, "Unable to parse request")
+    return
+  }
+  if err := json.Unmarshal(bodyBytes, &task); err != nil {
+    response.BadRequest(w, "Unable to parse request")
+    return
+  }
+  // TODO: Validation
 
-	// TODO: Validation
+  if err := c.service.CreateTask(req.Context(), &task); err != nil {
+    response.ServerError(w, err)
+    return
+  }
 
-	if err := c.service.CreateTask(ctx.Context(), &task); err != nil {
-		return response.ServerError(ctx, err)
-	}
-
-	return response.Created(ctx)
+  response.Created(w)
 }
 
-func (c *controller) UpdateTask(ctx *fiber.Ctx) error {
-	id := ctx.Params("id")
+func (c *controller) UpdateTask(w http.ResponseWriter, req *http.Request) {
+  id := chi.URLParam(req, "id")
 
-	if id == "" {
-		return response.BadRequest(ctx, "No id specified")
-	}
+  if id == "" {
+    response.BadRequest(w, "No id specified")
+    return
+  }
 
-	var updateTaskRequest UpdateTaskRequest
+  var updateTaskRequest UpdateTaskRequest
 
-	if err := ctx.BodyParser(&updateTaskRequest); err != nil {
-		return response.BadRequest(ctx, "Unable to parse request")
-	}
+  bodyBytes, err := io.ReadAll(req.Body)
 
-	// TODO: Validation
+  if err != nil {
+    response.BadRequest(w, "Unable to parse request")
+    return
+  }
 
-	if err := c.service.UpdateTask(ctx.Context(), id, &updateTaskRequest); err != nil {
-		return response.ServerError(ctx, err)
-	}
+  if err := json.Unmarshal(bodyBytes, &updateTaskRequest); err != nil {
+    response.BadRequest(w, "Unable to parse request")
+    return
+  }
 
-	return response.Accepted(ctx)
+  // TODO: Validation
+  if err := c.service.UpdateTask(req.Context(), id, &updateTaskRequest); err != nil {
+    response.ServerError(w, err)
+    return
+  }
+
+  response.Accepted(w)
 }
 
-func (c *controller) DeleteTask(ctx *fiber.Ctx) error {
-	id := ctx.Params("id")
+func (c *controller) DeleteTask(w http.ResponseWriter, req *http.Request) {
+  id := chi.URLParam(req, "id")
 
-	if id == "" {
-		return response.BadRequest(ctx, "No id specified")
-	}
+  if id == "" {
+    response.BadRequest(w, "No id specified")
+    return
+  }
 
-	if err := c.service.DeleteTask(ctx.Context(), id); err != nil {
-		return response.ServerError(ctx, err)
-	}
+  if err := c.service.DeleteTask(req.Context(), id); err != nil {
+    response.ServerError(w, err)
+    return
+  }
 
-	return response.Accepted(ctx)
+  response.Accepted(w)
 }

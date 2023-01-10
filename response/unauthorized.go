@@ -1,25 +1,32 @@
 package response
 
 import (
-	"log"
+	"encoding/json"
+	"github.com/gookit/slog"
+	"net/http"
 	"time"
 
-	"github.com/gofiber/fiber/v2"
 	"github.com/robbailey3/website-api/exception"
 )
 
-func Unauthorized(ctx *fiber.Ctx, err error) error {
-	log.Printf("unauthorized: %v\n", err)
-	return ctx.Status(fiber.StatusUnauthorized).JSON(struct {
-		BaseResponse
-	}{
-		BaseResponse: BaseResponse{
-			Success:   false,
-			Timestamp: time.Now().Unix(),
-			Error: &ErrorResponse{
-				Code:    exception.UNAUTHORIZED,
-				Message: "Unauthorized",
-			},
-		},
-	})
+func Unauthorized(w http.ResponseWriter, err error) {
+  bytes, err := json.Marshal(&struct {
+    BaseResponse
+  }{
+    BaseResponse: BaseResponse{
+      Success:   false,
+      Timestamp: time.Now().Unix(),
+      Error: &ErrorResponse{
+        Code:    exception.UNAUTHORIZED,
+        Message: "Unauthorized",
+      },
+    },
+  })
+  if err != nil {
+    slog.Error(err)
+    return
+  }
+
+  w.WriteHeader(http.StatusUnauthorized)
+  w.Write(bytes)
 }

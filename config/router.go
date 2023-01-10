@@ -1,13 +1,13 @@
 package config
 
 import (
-	"github.com/gofiber/fiber/v2"
+  "github.com/go-chi/chi/v5"
 )
 
-func SetupConfigRoutes(router fiber.Router) {
-	controller := NewController()
+func SetupConfigRoutes(router chi.Router) {
+  c := NewController()
 
-	group := router.Group("config")
-
-	group.Get("firebase", controller.GetFirebaseConfig)
+  router.Route("/config", func(r chi.Router) {
+    r.Get("/firebase", c.GetFirebaseConfig)
+  })
 }

@@ -9,7 +9,7 @@ import (
 type Service interface {
   GetPosts(ctx context.Context) ([]Post, error)
   GetPost(ctx context.Context, id string) (*Post, error)
-  InsertPost(ctx context.Context, req InsertPostRequest) error
+  InsertPost(ctx context.Context, req *InsertPostRequest) error
   UpdatePost(ctx context.Context, id string, request UpdatePostRequest) error
   DeletePost(ctx context.Context, id string) error
 }
@@ -50,7 +50,7 @@ func (s *service) GetPost(ctx context.Context, id string) (*Post, error) {
   return post, err
 }
 
-func (s *service) InsertPost(ctx context.Context, req InsertPostRequest) error {
+func (s *service) InsertPost(ctx context.Context, req *InsertPostRequest) error {
   // var post Post
   //
   // if err := ctx.BodyParser(&post); err != nil {

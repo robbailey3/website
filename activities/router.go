@@ -2,16 +2,16 @@ package activities
 
 import (
   "cloud.google.com/go/firestore"
-  "github.com/gofiber/fiber/v2"
-  "github.com/robbailey3/website-api/middleware"
+  "github.com/go-chi/chi/v5"
 )
 
-func SetupActivityRoutes(router fiber.Router, db *firestore.Client) {
+func SetupActivityRoutes(router chi.Router, db *firestore.Client) {
   c := NewController(db)
 
-  group := router.Group("activities")
+  router.Route("/activities", func(r chi.Router) {
+    r.Get("/", c.HandleGet)
+    r.Get("/webhook", c.HandleWebhookGet)
+    r.Post("/webhook", c.HandleWebhookPost)
+  })
 
-  group.Get("", middleware.UseQueryValidation[GetActivitiesRequest], c.HandleGet)
-  group.Get("webhook", c.HandleWebhookGet)
-  group.Post("webhook", c.HandleWebhookPost)
 }

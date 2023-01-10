@@ -1,44 +1,49 @@
 package middleware
 
 import (
-	"errors"
-	"log"
-	"strings"
+  "errors"
+  "github.com/gookit/slog"
+  "net/http"
+  "strings"
 
-	firebase "firebase.google.com/go"
-	"github.com/gofiber/fiber/v2"
-	"github.com/robbailey3/website-api/response"
+  firebase "firebase.google.com/go"
+  "github.com/robbailey3/website-api/response"
 )
 
-func WithFirebaseAuth(ctx *fiber.Ctx) error {
-	app, err := firebase.NewApp(ctx.Context(), nil)
+func WithFirebaseAuth(next http.Handler) http.Handler {
+  return http.HandlerFunc(func(w http.ResponseWriter, req *http.Request) {
+    app, err := firebase.NewApp(req.Context(), nil)
 
-	if err != nil {
-		log.Printf("error instantiating firebase app: %v\n", err)
-		return response.ServerError(ctx, err)
-	}
+    if err != nil {
+      slog.Errorf("error instantiating firebase app: %v\n", err)
+      response.ServerError(w, err)
+      return
+    }
 
-	client, err := app.Auth(ctx.Context())
+    client, err := app.Auth(req.Context())
 
-	if err != nil {
-		log.Printf("error getting Auth client: %v\n", err)
-		return response.ServerError(ctx, err)
-	}
+    if err != nil {
+      slog.Errorf("error getting Auth client: %v\n", err)
+      response.ServerError(w, err)
+      return
+    }
 
-	authHeader := ctx.Get("Authorization")
+    authHeader := req.Header.Get("Authorization")
 
-	if authHeader == "" {
-		return response.Unauthorized(ctx, errors.New("no auth header"))
-	}
+    if authHeader == "" {
+      response.Unauthorized(w, errors.New("no auth header"))
+    }
 
-	idToken := strings.Split(authHeader, " ")[1]
+    idToken := strings.Split(authHeader, " ")[1]
 
-	_, err = client.VerifyIDToken(ctx.Context(), idToken)
+    _, err = client.VerifyIDToken(req.Context(), idToken)
 
-	if err != nil {
-		log.Printf("error verifying ID token: %v\n", err)
-		return response.Unauthorized(ctx, errors.New("unable to verify token"))
-	}
+    if err != nil {
+      slog.Errorf("error verifying ID token: %v\n", err)
+      response.Unauthorized(w, errors.New("unable to verify token"))
+      return
+    }
 
-	return ctx.Next()
+    next.ServeHTTP(w, req)
+  })
 }
