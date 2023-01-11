@@ -31,8 +31,6 @@ func serveUi(r chi.Router) {
   if err != nil {
     fs := http.FileServer(http.Dir("public"))
     r.Handle("/*", fs)
-    fsAssets := http.FileServer(http.Dir("public/assets"))
-    r.Handle("/assets/*", fsAssets)
   }
 }
 
