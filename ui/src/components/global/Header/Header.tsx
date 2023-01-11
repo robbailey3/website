@@ -10,7 +10,6 @@ const Header = () => {
 	const [bgBlur, setBgBlur] = React.useState(false);
 
 	React.useEffect(() => {
-		console.log(y);
 		setBgBlur(y > 100);
 	}, [y]);
 
