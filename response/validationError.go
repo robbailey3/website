@@ -1,15 +1,17 @@
 package response
 
 import (
+	"encoding/json"
+	"net/http"
 	"time"
 
-	"github.com/gofiber/fiber/v2"
+	"github.com/gookit/slog"
 	"github.com/robbailey3/website-api/exception"
 	"github.com/robbailey3/website-api/validation"
 )
 
-func ValidationError(ctx *fiber.Ctx, errors []*validation.ValidationError) error {
-	return ctx.Status(fiber.StatusBadRequest).JSON(struct{ BaseResponse }{
+func ValidationError(w http.ResponseWriter, errors []*validation.ValidationError) {
+	bytes, err := json.Marshal(&struct{ BaseResponse }{
 		BaseResponse: BaseResponse{
 			Timestamp: time.Now().Unix(),
 			Error: &ErrorResponse{
@@ -19,4 +21,11 @@ func ValidationError(ctx *fiber.Ctx, errors []*validation.ValidationError) error
 			},
 		},
 	})
+	if err != nil {
+		slog.Error(err)
+		return
+	}
+
+	w.WriteHeader(http.StatusUnauthorized)
+	w.Write(bytes)
 }
