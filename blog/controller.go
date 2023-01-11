@@ -1,19 +1,22 @@
 package blog
 
 import (
-	"log"
+	"encoding/json"
+	"io"
+	"net/http"
 
-	"github.com/gofiber/fiber/v2"
+	"github.com/go-chi/chi/v5"
+	"github.com/gookit/slog"
+
 	"github.com/robbailey3/website-api/response"
-	"github.com/robbailey3/website-api/validation"
 )
 
 type Controller interface {
-	GetPosts(ctx *fiber.Ctx) error
-	GetPost(ctx *fiber.Ctx) error
-	AddPost(ctx *fiber.Ctx) error
-	UpdatePost(ctx *fiber.Ctx) error
-	DeletePost(ctx *fiber.Ctx) error
+	GetPosts(w http.ResponseWriter, req *http.Request)
+	GetPost(w http.ResponseWriter, req *http.Request)
+	AddPost(w http.ResponseWriter, req *http.Request)
+	UpdatePost(w http.ResponseWriter, req *http.Request)
+	DeletePost(w http.ResponseWriter, req *http.Request)
 }
 
 type controller struct {
@@ -26,59 +29,83 @@ func NewController(service Service) Controller {
 	}
 }
 
-func (c *controller) GetPosts(ctx *fiber.Ctx) error {
-	posts, err := c.service.GetPosts(ctx)
+func (c *controller) GetPosts(w http.ResponseWriter, req *http.Request) {
+	posts, err := c.service.GetPosts(req.Context())
 
 	if err != nil {
-		log.Println(err.Error())
-		return ctx.Status(fiber.StatusInternalServerError).SendString("Something went wrong")
+		response.ServerError(w, err)
+		return
 	}
 
-	return response.Ok(ctx, posts)
+	response.Ok(w, posts)
 }
 
-func (c *controller) GetPost(ctx *fiber.Ctx) error {
-	posts, err := c.service.GetPost(ctx)
+func (c *controller) GetPost(w http.ResponseWriter, req *http.Request) {
+	posts, err := c.service.GetPost(req.Context(), chi.URLParam(req, "id"))
 
 	if err != nil {
-		log.Println(err.Error())
-		return ctx.Status(fiber.StatusInternalServerError).SendString("Something went wrong")
+		slog.Println(err.Error())
+		response.ServerError(w, err)
+		return
 	}
 
-	return response.Ok(ctx, posts)
+	response.Ok(w, posts)
 }
 
-func (c *controller) AddPost(ctx *fiber.Ctx) error {
-	if err := c.service.InsertPost(ctx); err != nil {
-		return err
-	}
+func (c *controller) AddPost(w http.ResponseWriter, req *http.Request) {
+	var request InsertPostRequest
 
-	return response.Accepted(ctx)
-}
-
-func (c *controller) UpdatePost(ctx *fiber.Ctx) error {
-	var updateRequest UpdatePostRequest
-	err := ctx.BodyParser(&updateRequest)
+	bodyBytes, err := io.ReadAll(req.Body)
 
 	if err != nil {
-		return response.BadRequest(ctx, "Failed to parse request")
+		response.BadRequest(w, "failed to parse request")
+		return
 	}
 
-	validationErrors := validation.Validate(updateRequest)
-
-	if len(validationErrors) > 0 {
-		return response.ValidationError(ctx, validationErrors)
+	if err := json.Unmarshal(bodyBytes, &request); err != nil {
+		response.BadRequest(w, "failed to parse request")
+		return
 	}
 
-	return nil
+	if err := c.service.InsertPost(req.Context(), &request); err != nil {
+		response.ServerError(w, err)
+	}
+
+	response.Accepted(w)
 }
 
-func (c *controller) DeletePost(ctx *fiber.Ctx) error {
-	id := ctx.Params("id")
+func (c *controller) UpdatePost(w http.ResponseWriter, req *http.Request) {
+	var request UpdatePostRequest
 
-	if err := c.service.DeletePost(ctx.Context(), id); err != nil {
-		return response.ServerError(ctx, err)
+	bodyBytes, err := io.ReadAll(req.Body)
+
+	if err != nil {
+		response.BadRequest(w, "failed to parse request")
+		return
 	}
 
-	return response.Accepted(ctx)
+	if err := json.Unmarshal(bodyBytes, &request); err != nil {
+		response.BadRequest(w, "failed to parse request")
+		return
+	}
+
+	if err != nil {
+		response.BadRequest(w, "Failed to parse request")
+		return
+	}
+
+	if err := c.service.UpdatePost(req.Context(), chi.URLParam(req, "id"), request); err != nil {
+		response.ServerError(w, err)
+		return
+	}
+}
+
+func (c *controller) DeletePost(w http.ResponseWriter, req *http.Request) {
+	id := chi.URLParam(req, "id")
+
+	if err := c.service.DeletePost(req.Context(), id); err != nil {
+		response.ServerError(w, err)
+	}
+
+	response.Accepted(w)
 }

@@ -1,18 +1,17 @@
 package tasks
 
 import (
-	"cloud.google.com/go/firestore"
-	"github.com/gofiber/fiber/v2"
-	"github.com/robbailey3/website-api/middleware"
+  "cloud.google.com/go/firestore"
+  "github.com/go-chi/chi/v5"
 )
 
-func InitTasksRoutes(app fiber.Router, db *firestore.Client) {
-	controller := NewController(db)
+func InitTasksRoutes(router chi.Router, db *firestore.Client) {
+  controller := NewController(db)
 
-	group := app.Group("tasks")
-
-	group.Get("", middleware.WithFirebaseAuth, controller.GetTasks)
-	group.Post("", middleware.WithFirebaseAuth, controller.CreateTask)
-	group.Patch("/:id", middleware.WithFirebaseAuth, controller.UpdateTask)
-	group.Delete("/:id", middleware.WithFirebaseAuth, controller.DeleteTask)
+  router.Route("/tasks", func(r chi.Router) {
+    r.Get("/", controller.GetTasks)
+    r.Post("/", controller.CreateTask)
+    r.Patch("/{id}", controller.UpdateTask)
+    r.Delete("/{id}", controller.DeleteTask)
+  })
 }

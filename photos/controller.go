@@ -1,67 +1,72 @@
 package photos
 
 import (
-	"github.com/gofiber/fiber/v2"
-	"github.com/robbailey3/website-api/image"
-	"github.com/robbailey3/website-api/response"
+  "github.com/robbailey3/website-api/image"
+  "github.com/robbailey3/website-api/response"
+  "net/http"
 )
 
 type Controller interface {
-	UploadPhoto(ctx *fiber.Ctx) error
+  UploadPhoto(w http.ResponseWriter, req *http.Request)
 }
 
 type controller struct {
-	service Service
+  service Service
 }
 
 func NewController(service Service) Controller {
-	return &controller{
-		service,
-	}
+  return &controller{
+    service,
+  }
 }
 
-func (c *controller) UploadPhoto(ctx *fiber.Ctx) error {
-	fileHeader, err := ctx.FormFile("photo")
+func (c *controller) UploadPhoto(w http.ResponseWriter, req *http.Request) {
+  file, fileHeader, err := req.FormFile("photo")
 
-	if err != nil {
-		return response.ServerError(ctx, err)
-	}
+  if err != nil {
+    response.ServerError(w, err)
+    return
+  }
 
-	if !c.service.IsValidType(fileHeader) {
-		return response.BadRequest(ctx, "Invalid file type")
-	}
+  if !c.service.IsValidType(fileHeader) {
+    response.BadRequest(w, "Invalid file type")
+    return
+  }
 
-	if !c.service.IsValidSize(fileHeader) {
-		return response.BadRequest(ctx, "Invalid file size")
-	}
+  if !c.service.IsValidSize(fileHeader) {
+    response.BadRequest(w, "Invalid file size")
+    return
+  }
 
-	file, err := fileHeader.Open()
+  if err != nil {
+    response.ServerError(w, err)
+    return
+  }
 
-	if err != nil {
-		return response.ServerError(ctx, err)
-	}
+  // client, err := storage.NewClient(ctx.Context(), os.Getenv("PHOTO_BUCKET_NAME"))
+  //
+  // if err != nil {
+  // 	response.ServerError(w, err)
+  // }
 
-	// client, err := storage.NewClient(ctx.Context(), os.Getenv("PHOTO_BUCKET_NAME"))
-	//
-	// if err != nil {
-	// 	return response.ServerError(ctx, err)
-	// }
+  aiClient, err := image.NewVisionClient()
 
-	aiClient, err := image.NewVisionClient()
+  if err != nil {
+    response.ServerError(w, err)
+    return
+  }
 
-	if err != nil {
-		return response.ServerError(ctx, err)
-	}
+  res, err := aiClient.DetectProperties(req.Context(), file)
 
-	res, err := aiClient.DetectProperties(ctx.Context(), file)
+  if err != nil {
+    response.ServerError(w, err)
+    return
+  }
 
-	if err != nil {
-		return response.ServerError(ctx, err)
-	}
+  // if err := client.Upload(ctx.Context(), fileHeader.Filename, file); err != nil {
+  // 	response.ServerError(w, err)
+  //  return
+  // }
 
-	// if err := client.Upload(ctx.Context(), fileHeader.Filename, file); err != nil {
-	// 	return response.ServerError(ctx, err)
-	// }
-
-	return response.Ok(ctx, res)
+  response.Ok(w, res)
 }

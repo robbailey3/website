@@ -1,26 +1,26 @@
 package response
 
 import (
-	"bytes"
-	"github.com/gofiber/fiber/v2"
-	"io"
-	"log"
-	"net/http"
-	"strings"
+  "bytes"
+  "io"
+  "log"
+  "net/http"
+  "strings"
 )
 
-func File(ctx *fiber.Ctx, file io.Reader) error {
-	var buf bytes.Buffer
+func File(w http.ResponseWriter, file io.Reader) {
+  var buf bytes.Buffer
 
-	cp := io.TeeReader(file, &buf)
+  cp := io.TeeReader(file, &buf)
 
-	fileBytes, err := io.ReadAll(cp)
+  fileBytes, err := io.ReadAll(cp)
 
-	if err != nil {
-		log.Fatal(err)
-	}
+  if err != nil {
+    log.Fatal(err)
+  }
 
-	contentType := http.DetectContentType(fileBytes)
+  contentType := http.DetectContentType(fileBytes)
 
-	return ctx.Type(strings.Split(contentType, "/")[1]).SendStream(&buf)
+  w.Header().Add("Content-Type", strings.Split(contentType, "/")[1])
+  w.Write(buf.Bytes())
 }

@@ -69,15 +69,6 @@ func (s *service) GetAccessToken() (string, error) {
 }
 
 func (s *service) RefreshAccessToken() error {
-  // req := &GetAuthTokenRequest{
-  //   Params: GetAuthTokenRequestParams{
-  //     ClientId:     s.stravaClientId,
-  //     ClientSecret: s.stravaClientSecret,
-  //     RefreshToken: s.refreshToken,
-  //     GrantType:    "refresh_token",
-  //     Scopes:       "activity:read",
-  //   },
-  // }
   client := http.Client{}
   req, err := http.NewRequest("POST", "https://www.strava.com/oauth/token", nil)
   if err != nil {

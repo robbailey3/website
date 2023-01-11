@@ -1,61 +1,58 @@
 package server
 
 import (
-  "fmt"
-  "github.com/gofiber/fiber/v2/middleware/limiter"
-  "log"
-  "os"
-  "time"
+	"fmt"
+	"log"
+	"net/http"
+	"os"
+	"time"
 
-  "cloud.google.com/go/firestore"
-  "github.com/gofiber/fiber/v2"
-  "github.com/gofiber/fiber/v2/middleware/compress"
-  "github.com/gofiber/fiber/v2/middleware/cors"
-  "github.com/gofiber/fiber/v2/middleware/logger"
-  "github.com/gofiber/fiber/v2/middleware/monitor"
-  "github.com/gofiber/fiber/v2/middleware/recover"
-  "github.com/gofiber/fiber/v2/middleware/requestid"
+	_ "net/http/pprof"
+
+	"cloud.google.com/go/firestore"
+	"github.com/go-chi/chi/v5"
+	"github.com/go-chi/chi/v5/middleware"
+	"github.com/go-chi/cors"
+	"github.com/go-chi/httplog"
+	"github.com/go-chi/httprate"
 )
 
 func getPort() string {
-  port := os.Getenv("PORT")
-  if port == "" {
-    port = "8080"
-  }
-  return fmt.Sprintf(":%s", port)
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080"
+	}
+	return fmt.Sprintf(":%s", port)
 }
 
-func setupMiddleware(app *fiber.App) {
-  app.Get("/metrics", monitor.New(monitor.Config{Title: "Monitoring"}))
-  // app.Use(cache.New())
-  app.Use(limiter.New(limiter.Config{Max: 20, Expiration: time.Minute}))
-  app.Use(compress.New())
-  app.Use(cors.New(cors.Config{AllowOrigins: "*"}))
-  app.Use(requestid.New())
-  app.Use(logger.New(
-    logger.Config{
-      Format:     "[${time}] | ${locals:requestid} | ${status} - ${latency} | ${method} | ${path}\n",
-      TimeFormat: "02-01-2006 15:04:05",
-    },
-  ))
-  app.Use(recover.New())
+func setupMiddleware(r chi.Router) {
+	// TODO
+	logger := httplog.NewLogger("robbailey3-api", httplog.Options{
+		JSON: true,
+	})
+	r.Use(httprate.LimitByIP(100, 1*time.Minute))
+	r.Use(cors.Handler(cors.Options{
+		// AllowedOrigins:   []string{"https://foo.com"}, // Use this to allow specific origin hosts
+		AllowedOrigins: []string{"https://*", "http://*"},
+		// AllowOriginFunc:  func(r *http.Request, origin string) bool { return true },
+		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
+		AllowedHeaders:   []string{"Accept", "Authorization", "Content-Type", "X-CSRF-Token"},
+		ExposedHeaders:   []string{"Link"},
+		AllowCredentials: false,
+		MaxAge:           300, // Maximum value not ignored by any of major browsers
+	}))
+	r.Use(httplog.RequestLogger(logger))
+	r.Use(middleware.Recoverer)
+	// TODO: Evaluate whether this should be here
+	r.Mount("/debug", middleware.Profiler())
 }
 
 func Init(db *firestore.Client) {
-  app := fiber.New(fiber.Config{
-    BodyLimit: 20 * 1024 * 1024,
-  })
+	port := getPort()
 
-  setupMiddleware(app)
+	router := chi.NewRouter()
+	setupMiddleware(router)
+	setupRoutes(db, router)
 
-  app.Static("/", "./public")
-  app.Static("/assets", "./public/assets")
-
-  setupRoutes(db, app.Group("api"))
-
-  port := getPort()
-
-  log.Println(fmt.Sprintf("starting server on port %s", port))
-
-  log.Fatal(app.Listen(getPort()))
+	log.Fatal(http.ListenAndServe(port, router))
 }

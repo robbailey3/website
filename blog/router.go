@@ -1,21 +1,24 @@
 package blog
 
 import (
-	"cloud.google.com/go/firestore"
-	"github.com/gofiber/fiber/v2"
-	"github.com/robbailey3/website-api/middleware"
+  "cloud.google.com/go/firestore"
+  "github.com/go-chi/chi/v5"
+  "github.com/robbailey3/website-api/middleware"
 )
 
-func SetupBlogRoutes(db *firestore.Client, router fiber.Router) {
-	repo := NewRepository(db)
-	NewService(repo)
-	c := NewController(instance)
+func SetupBlogRoutes(db *firestore.Client, router chi.Router) {
+  repo := NewRepository(db)
+  NewService(repo)
+  c := NewController(instance)
 
-	group := router.Group("blog")
-
-	group.Get("", c.GetPosts)
-	group.Post("", middleware.WithFirebaseAuth, c.AddPost)
-	group.Get("/:id", c.GetPost)
-	group.Patch("/:id", middleware.WithFirebaseAuth, c.UpdatePost)
-	group.Delete("/:id", middleware.WithFirebaseAuth, c.DeletePost)
+  router.Route("/blog", func(r chi.Router) {
+    r.Get("/", c.GetPosts)
+    r.Get("/{id}", c.GetPost)
+    r.Group(func(r chi.Router) {
+      r.Use(middleware.WithFirebaseAuth)
+      r.Post("/", c.AddPost)
+      r.Patch("/{id}", c.UpdatePost)
+      r.Delete("/{id}", c.DeletePost)
+    })
+  })
 }

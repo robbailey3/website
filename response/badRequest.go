@@ -1,20 +1,29 @@
 package response
 
 import (
-	"time"
+  "encoding/json"
+  "net/http"
+  "time"
 
-	"github.com/gofiber/fiber/v2"
-	"github.com/robbailey3/website-api/exception"
+  "github.com/robbailey3/website-api/exception"
 )
 
-func BadRequest(ctx *fiber.Ctx, msg string) error {
-	return ctx.Status(fiber.StatusBadRequest).JSON(struct{ BaseResponse }{
-		BaseResponse: BaseResponse{
-			Timestamp: time.Now().Unix(),
-			Error: &ErrorResponse{
-				Code:    exception.BAD_REQUEST,
-				Message: msg,
-			},
-		},
-	})
+func BadRequest(w http.ResponseWriter, msg string) {
+  resp, err := json.Marshal(&struct{ BaseResponse }{
+    BaseResponse: BaseResponse{
+      Timestamp: time.Now().Unix(),
+      Error: &ErrorResponse{
+        Code:    exception.BAD_REQUEST,
+        Message: msg,
+      },
+    },
+  })
+
+  if err != nil {
+    ServerError(w, err)
+    return
+  }
+
+  w.WriteHeader(http.StatusBadRequest)
+  w.Write(resp)
 }

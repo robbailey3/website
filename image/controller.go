@@ -1,137 +1,152 @@
 package image
 
 import (
-	"cloud.google.com/go/firestore"
-	"github.com/gofiber/fiber/v2"
-	"github.com/robbailey3/website-api/response"
+  "cloud.google.com/go/firestore"
+  "github.com/go-chi/chi/v5"
+  "github.com/robbailey3/website-api/response"
+  "net/http"
 )
 
 type Controller interface {
-	Upload(ctx *fiber.Ctx) error
-	GetLabels(ctx *fiber.Ctx) error
-	GetProperties(ctx *fiber.Ctx) error
-	GetLandmarks(ctx *fiber.Ctx) error
-	GetFaces(ctx *fiber.Ctx) error
-	GetImage(ctx *fiber.Ctx) error
-	GetLogos(ctx *fiber.Ctx) error
+  Upload(w http.ResponseWriter, req *http.Request)
+  GetLabels(w http.ResponseWriter, req *http.Request)
+  GetProperties(w http.ResponseWriter, req *http.Request)
+  GetLandmarks(w http.ResponseWriter, req *http.Request)
+  GetFaces(w http.ResponseWriter, req *http.Request)
+  GetImage(w http.ResponseWriter, req *http.Request)
+  GetLogos(w http.ResponseWriter, req *http.Request)
 }
 
 type controller struct {
-	service Service
+  service Service
 }
 
 func NewController(db *firestore.Client) Controller {
-	return &controller{service: NewService(db)}
+  return &controller{service: NewService(db)}
 }
 
-func (c *controller) Upload(ctx *fiber.Ctx) error {
-	fileHeader, err := ctx.FormFile("image")
+func (c *controller) Upload(w http.ResponseWriter, req *http.Request) {
+  _, fileHeader, err := req.FormFile("image")
 
-	if err != nil {
-		return response.ServerError(ctx, err)
-	}
+  if err != nil {
+    response.ServerError(w, err)
+    return
+  }
 
-	id, err := c.service.CreateImage(ctx.Context(), fileHeader)
+  id, err := c.service.CreateImage(req.Context(), fileHeader)
 
-	if err != nil {
-		return response.ServerError(ctx, err)
-	}
+  if err != nil {
+    response.ServerError(w, err)
+    return
+  }
 
-	return response.Ok(ctx, id)
+  response.Ok(w, id)
 }
 
-func (c *controller) GetLabels(ctx *fiber.Ctx) error {
-	id := ctx.Params("id")
+func (c *controller) GetLabels(w http.ResponseWriter, req *http.Request) {
+  id := chi.URLParam(req, "id")
 
-	if id == "" {
-		return response.BadRequest(ctx, "No id")
-	}
+  if id == "" {
+    response.BadRequest(w, "No id")
+    return
+  }
 
-	labels, err := c.service.GetImageLabels(ctx.Context(), id)
+  labels, err := c.service.GetImageLabels(req.Context(), id)
 
-	if err != nil {
-		return response.ServerError(ctx, err)
-	}
+  if err != nil {
+    response.ServerError(w, err)
+    return
+  }
 
-	return response.Ok(ctx, labels)
+  response.Ok(w, labels)
 }
 
-func (c *controller) GetProperties(ctx *fiber.Ctx) error {
-	id := ctx.Params("id")
+func (c *controller) GetProperties(w http.ResponseWriter, req *http.Request) {
+  id := chi.URLParam(req, "id")
 
-	if id == "" {
-		return response.BadRequest(ctx, "No id")
-	}
+  if id == "" {
+    response.BadRequest(w, "No id")
+    return
+  }
 
-	labels, err := c.service.GetImageProperties(ctx.Context(), id)
+  labels, err := c.service.GetImageProperties(req.Context(), id)
 
-	if err != nil {
-		return response.ServerError(ctx, err)
-	}
+  if err != nil {
+    response.ServerError(w, err)
+    return
+  }
 
-	return response.Ok(ctx, labels)
+  response.Ok(w, labels)
 }
 
-func (c *controller) GetLandmarks(ctx *fiber.Ctx) error {
-	id := ctx.Params("id")
+func (c *controller) GetLandmarks(w http.ResponseWriter, req *http.Request) {
+  id := chi.URLParam(req, "id")
 
-	if id == "" {
-		return response.BadRequest(ctx, "No id")
-	}
+  if id == "" {
+    response.BadRequest(w, "No id")
+    return
+  }
 
-	labels, err := c.service.GetImageLandmarks(ctx.Context(), id)
+  labels, err := c.service.GetImageLandmarks(req.Context(), id)
 
-	if err != nil {
-		return response.ServerError(ctx, err)
-	}
+  if err != nil {
+    response.ServerError(w, err)
+    return
+  }
 
-	return response.Ok(ctx, labels)
+  response.Ok(w, labels)
 }
 
-func (c *controller) GetFaces(ctx *fiber.Ctx) error {
-	id := ctx.Params("id")
+func (c *controller) GetFaces(w http.ResponseWriter, req *http.Request) {
+  id := chi.URLParam(req, "id")
 
-	if id == "" {
-		return response.BadRequest(ctx, "No id")
-	}
+  if id == "" {
+    response.BadRequest(w, "No id")
+    return
+  }
 
-	faces, err := c.service.GetImageFaces(ctx.Context(), id)
+  faces, err := c.service.GetImageFaces(req.Context(), id)
 
-	if err != nil {
-		return response.ServerError(ctx, err)
-	}
+  if err != nil {
+    response.ServerError(w, err)
+    return
+  }
 
-	return response.Ok(ctx, faces)
+  response.Ok(w, faces)
 }
 
-func (c *controller) GetImage(ctx *fiber.Ctx) error {
-	id := ctx.Params("id")
+func (c *controller) GetImage(w http.ResponseWriter, req *http.Request) {
+  id := chi.URLParam(req, "id")
 
-	if id == "" {
-		return response.BadRequest(ctx, "No id")
-	}
+  if id == "" {
+    response.BadRequest(w, "No id")
+    return
+  }
 
-	img, err := c.service.GetImage(ctx.Context(), id)
+  img, err := c.service.GetImage(req.Context(), id)
 
-	if err != nil {
-		return response.ServerError(ctx, err)
-	}
+  if err != nil {
+    response.ServerError(w, err)
+    return
+  }
 
-	return response.File(ctx, img)
+  response.File(w, img)
 }
 
-func (c *controller) GetLogos(ctx *fiber.Ctx) error {
-	id := ctx.Params("id")
+func (c *controller) GetLogos(w http.ResponseWriter, req *http.Request) {
+  id := chi.URLParam(req, "id")
 
-	if id == "" {
-		return response.BadRequest(ctx, "No id")
-	}
+  if id == "" {
+    response.BadRequest(w, "No id")
+    return
+  }
 
-	logos, err := c.service.GetImageLogos(ctx.Context(), id)
+  logos, err := c.service.GetImageLogos(req.Context(), id)
 
-	if err != nil {
-		return response.ServerError(ctx, err)
-	}
+  if err != nil {
+    response.ServerError(w, err)
+    return
+  }
 
-	return response.Ok(ctx, logos)
+  response.Ok(w, logos)
 }

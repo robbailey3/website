@@ -1,18 +1,24 @@
 package response
 
 import (
-	"time"
-
-	"github.com/gofiber/fiber/v2"
+  "encoding/json"
+  "net/http"
+  "time"
 )
 
-func Accepted(ctx *fiber.Ctx) error {
-	return ctx.Status(fiber.StatusAccepted).JSON(struct {
-		BaseResponse
-	}{
-		BaseResponse{
-			Success:   true,
-			Timestamp: time.Now().Unix(),
-		},
-	})
+func Accepted(w http.ResponseWriter) {
+  resp, err := json.Marshal(&struct{ BaseResponse }{
+    BaseResponse{
+      Success:   true,
+      Timestamp: time.Now().Unix(),
+    },
+  })
+
+  if err != nil {
+    ServerError(w, err)
+    return
+  }
+
+  w.WriteHeader(http.StatusAccepted)
+  w.Write(resp)
 }
