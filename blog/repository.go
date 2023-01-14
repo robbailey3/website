@@ -2,6 +2,7 @@ package blog
 
 import (
   "context"
+  "github.com/robbailey3/website-api/exception"
   "log"
   "time"
 
@@ -57,6 +58,7 @@ func (r *repository) GetOne(ctx context.Context, id string) (*Post, error) {
 
   if status.Code(err) == codes.NotFound {
     log.Println("Not found")
+    return nil, exception.NotFound()
   }
 
   var post Post

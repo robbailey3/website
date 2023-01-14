@@ -2,6 +2,7 @@ package blog
 
 import (
   "encoding/json"
+  "github.com/robbailey3/website-api/exception"
   "io"
   "net/http"
   "strconv"
@@ -58,6 +59,10 @@ func (c *controller) GetPost(w http.ResponseWriter, req *http.Request) {
 
   if err != nil {
     slog.Println(err.Error())
+    if _, ok := err.(*exception.NotFoundError); ok {
+      response.NotFound(w)
+      return
+    }
     response.ServerError(w, err)
     return
   }
