@@ -7,7 +7,7 @@ import (
 )
 
 type Service interface {
-  GetPosts(ctx context.Context) ([]Post, error)
+  GetPosts(ctx context.Context, limit, offset int) ([]Post, error)
   GetPost(ctx context.Context, id string) (*Post, error)
   InsertPost(ctx context.Context, req *InsertPostRequest) error
   UpdatePost(ctx context.Context, id string, request UpdatePostRequest) error
@@ -30,8 +30,8 @@ func NewService(repo Repository) Service {
   return instance
 }
 
-func (s *service) GetPosts(ctx context.Context) ([]Post, error) {
-  posts, err := s.repo.GetMany(ctx)
+func (s *service) GetPosts(ctx context.Context, limit, offset int) ([]Post, error) {
+  posts, err := s.repo.GetMany(ctx, limit, offset)
 
   if err != nil {
     return nil, err

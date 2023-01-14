@@ -41,7 +41,7 @@ func setupMiddleware(r chi.Router) {
   })
   r.Use(httprate.LimitByIP(100, 1*time.Minute))
   r.Use(cors.Handler(cors.Options{
-    AllowedOrigins:   []string{"https://*", "http://*"},
+    AllowedOrigins:   []string{"https://*"},
     AllowedMethods:   []string{"GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"},
     AllowedHeaders:   []string{"Accept", "Authorization", "Content-Type", "X-CSRF-Token"},
     ExposedHeaders:   []string{"Link"},

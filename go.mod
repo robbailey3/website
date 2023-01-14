@@ -14,6 +14,7 @@ require (
 	github.com/go-chi/httplog v0.2.5
 	github.com/go-chi/httprate v0.7.1
 	github.com/go-playground/validator/v10 v10.11.1
+	github.com/golang/mock v1.6.0
 	github.com/gookit/slog v0.4.0
 	github.com/jellydator/ttlcache/v3 v3.0.0
 	github.com/joho/godotenv v1.4.0
