@@ -1,0 +1,21 @@
+name: Run UI tests ⚙
+
+on: [push, pull_request]
+
+jobs:
+  unit-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout 🛎️
+        uses: actions/checkout@master
+        with:
+          persist-credentials: false
+
+      - name: Install
+        working-directory: ./ui
+        run: |
+          yarn
+      - name: Unit Test
+        working-directory: ./ui
+        run: |
+          yarn run test
