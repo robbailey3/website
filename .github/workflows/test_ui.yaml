@@ -1,6 +1,6 @@
 name: Run UI tests ⚙
 
-on: push
+on: [push, pull_request]
 
 jobs:
   unit-test:
