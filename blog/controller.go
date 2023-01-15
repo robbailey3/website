@@ -37,12 +37,14 @@ func (c *controller) GetPosts(w http.ResponseWriter, req *http.Request) {
 
   if err != nil {
     response.BadRequest(w, "failed to parse limit")
+    return
   }
 
   offset, err := strconv.Atoi(req.URL.Query().Get("offset"))
 
   if err != nil {
     response.BadRequest(w, "failed to parse offset")
+    return
   }
 
   posts, err := c.service.GetPosts(req.Context(), limit, offset)

@@ -59,8 +59,6 @@ func TestController_GetPosts(t *testing.T) {
   t.Run("should return 400 bad request for invalid limit", func(t *testing.T) {
     sut := createNewTestServer(t)
 
-    sut.Service.EXPECT().GetPosts(gomock.Any(), gomock.Any(), gomock.Any())
-
     request := httptest.NewRequest(http.MethodGet, "/?limit=dodgylimit&offset=0", nil)
 
     response := executeRequest(request, sut)
