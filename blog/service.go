@@ -14,8 +14,9 @@ type Service interface {
   DeletePost(ctx context.Context, id string) error
 }
 
-type service struct {
-  repo Repository
+type ServiceImpl struct {
+  Repo  Repository
+  Clock func() time.Time
 }
 
 var once sync.Once
@@ -24,14 +25,17 @@ var instance Service
 
 func NewService(repo Repository) Service {
   once.Do(func() {
-    instance = &service{repo}
+    instance = &ServiceImpl{
+      Repo:  repo,
+      Clock: func() time.Time { return time.Now() },
+    }
   })
 
   return instance
 }
 
-func (s *service) GetPosts(ctx context.Context, limit, offset int) ([]Post, error) {
-  posts, err := s.repo.GetMany(ctx, limit, offset)
+func (s *ServiceImpl) GetPosts(ctx context.Context, limit, offset int) ([]Post, error) {
+  posts, err := s.Repo.GetMany(ctx, limit, offset)
 
   if err != nil {
     return nil, err
@@ -40,8 +44,8 @@ func (s *service) GetPosts(ctx context.Context, limit, offset int) ([]Post, erro
   return posts, err
 }
 
-func (s *service) GetPost(ctx context.Context, id string) (*Post, error) {
-  post, err := s.repo.GetOne(ctx, id)
+func (s *ServiceImpl) GetPost(ctx context.Context, id string) (*Post, error) {
+  post, err := s.Repo.GetOne(ctx, id)
 
   if err != nil {
     return nil, err
@@ -50,29 +54,29 @@ func (s *service) GetPost(ctx context.Context, id string) (*Post, error) {
   return post, err
 }
 
-func (s *service) AddPost(ctx context.Context, req *AddPostRequest) error {
+func (s *ServiceImpl) AddPost(ctx context.Context, req *AddPostRequest) error {
   var post PostDto
 
   post.Title = req.Title
   post.Content = req.Content
-  post.DateAdded = time.Now()
-  post.DateModified = time.Now()
+  post.DateAdded = s.Clock()
+  post.DateModified = s.Clock()
 
-  if err := s.repo.Insert(ctx, &post); err != nil {
+  if err := s.Repo.Insert(ctx, &post); err != nil {
     return err
   }
 
   return nil
 }
 
-func (s *service) UpdatePost(ctx context.Context, id string, req *UpdatePostRequest) error {
-  if err := s.repo.UpdateOne(ctx, id, req); err != nil {
+func (s *ServiceImpl) UpdatePost(ctx context.Context, id string, req *UpdatePostRequest) error {
+  if err := s.Repo.UpdateOne(ctx, id, req); err != nil {
     return err
   }
 
   return nil
 }
 
-func (s *service) DeletePost(ctx context.Context, id string) error {
-  return s.repo.Delete(ctx, id)
+func (s *ServiceImpl) DeletePost(ctx context.Context, id string) error {
+  return s.Repo.Delete(ctx, id)
 }

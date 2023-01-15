@@ -92,7 +92,7 @@ func TestController_GetPosts(t *testing.T) {
     checkResponseCode(t, http.StatusOK, response.Result().StatusCode)
   })
 
-  t.Run("should return a 500 status code when the service returns an error", func(t *testing.T) {
+  t.Run("should return a 500 status code when the ServiceImpl returns an error", func(t *testing.T) {
     sut := createNewTestServer(t)
 
     sut.Service.EXPECT().GetPosts(gomock.Any(), gomock.Any(), gomock.Any()).AnyTimes().Return(nil, errors.New("something went wrong"))
@@ -106,7 +106,7 @@ func TestController_GetPosts(t *testing.T) {
 }
 
 func TestController_GetPost(t *testing.T) {
-  t.Run("should return 404 when the service returns a not found exception", func(t *testing.T) {
+  t.Run("should return 404 when the ServiceImpl returns a not found exception", func(t *testing.T) {
     sut := createNewTestServer(t)
 
     sut.Service.EXPECT().GetPost(gomock.Any(), gomock.Any()).AnyTimes().Return(nil, exception.NotFound())
@@ -118,7 +118,7 @@ func TestController_GetPost(t *testing.T) {
     checkResponseCode(t, 404, response.Result().StatusCode)
   })
 
-  t.Run("should return 500 when the service returns any other exception", func(t *testing.T) {
+  t.Run("should return 500 when the ServiceImpl returns any other exception", func(t *testing.T) {
     sut := createNewTestServer(t)
 
     sut.Service.EXPECT().GetPost(gomock.Any(), gomock.Any()).AnyTimes().Return(nil, errors.New("kaboom"))
@@ -130,7 +130,7 @@ func TestController_GetPost(t *testing.T) {
     checkResponseCode(t, 500, response.Result().StatusCode)
   })
 
-  t.Run("should call the get post method of the service and pass in the Id", func(t *testing.T) {
+  t.Run("should call the get post method of the ServiceImpl and pass in the Id", func(t *testing.T) {
     sut := createNewTestServer(t)
 
     testId := 1234
@@ -171,7 +171,7 @@ func TestController_AddPost(t *testing.T) {
     checkResponseCode(t, 400, response.Result().StatusCode)
   })
 
-  t.Run("should call the AddPost method of the service", func(t *testing.T) {
+  t.Run("should call the AddPost method of the ServiceImpl", func(t *testing.T) {
     sut := createNewTestServer(t)
 
     requestBody := &blog.AddPostRequest{
@@ -190,7 +190,7 @@ func TestController_AddPost(t *testing.T) {
     checkResponseCode(t, http.StatusCreated, response.Result().StatusCode)
   })
 
-  t.Run("should return InternalServerError when the service returns an error", func(t *testing.T) {
+  t.Run("should return InternalServerError when the ServiceImpl returns an error", func(t *testing.T) {
     sut := createNewTestServer(t)
 
     requestBody := &blog.AddPostRequest{
@@ -211,7 +211,7 @@ func TestController_AddPost(t *testing.T) {
 }
 
 func TestController_UpdatePost(t *testing.T) {
-  t.Run("should call the UpdatePost method of the service", func(t *testing.T) {
+  t.Run("should call the UpdatePost method of the ServiceImpl", func(t *testing.T) {
     requestBody := &blog.UpdatePostRequest{
       Title:   "Title",
       Content: "Content",
@@ -286,7 +286,7 @@ func TestController_UpdatePost(t *testing.T) {
 }
 
 func TestController_DeletePost(t *testing.T) {
-  t.Run("should call the DeletePost method of the service with the provided Id", func(t *testing.T) {
+  t.Run("should call the DeletePost method of the ServiceImpl with the provided Id", func(t *testing.T) {
     testId := "test-123"
 
     sut := createNewTestServer(t)
@@ -298,7 +298,7 @@ func TestController_DeletePost(t *testing.T) {
     executeRequest(request, sut)
   })
 
-  t.Run("should return an accepted response when the service does not return an error", func(t *testing.T) {
+  t.Run("should return an accepted response when the ServiceImpl does not return an error", func(t *testing.T) {
     testId := "test-123"
 
     sut := createNewTestServer(t)
@@ -312,7 +312,7 @@ func TestController_DeletePost(t *testing.T) {
     checkResponseCode(t, http.StatusAccepted, response.Result().StatusCode)
   })
 
-  t.Run("should return a server error response when the service returns an error", func(t *testing.T) {
+  t.Run("should return a server error response when the ServiceImpl returns an error", func(t *testing.T) {
     testId := "test-123"
 
     sut := createNewTestServer(t)
