@@ -1,9 +1,9 @@
 package response
 
 import (
-	"encoding/json"
-	"net/http"
-	"time"
+  "encoding/json"
+  "net/http"
+  "time"
 )
 
 func Ok(w http.ResponseWriter, data interface{}) {
@@ -22,6 +22,6 @@ func Ok(w http.ResponseWriter, data interface{}) {
     return
   }
 
-  w.WriteHeader(http.StatusCreated)
+  w.WriteHeader(http.StatusOK)
   w.Write(resp)
 }

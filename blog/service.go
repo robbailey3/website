@@ -2,20 +2,21 @@ package blog
 
 import (
   "context"
-  "fmt"
   "sync"
+  "time"
 )
 
 type Service interface {
-  GetPosts(ctx context.Context) ([]Post, error)
+  GetPosts(ctx context.Context, limit, offset int) ([]Post, error)
   GetPost(ctx context.Context, id string) (*Post, error)
-  InsertPost(ctx context.Context, req *InsertPostRequest) error
-  UpdatePost(ctx context.Context, id string, request UpdatePostRequest) error
+  AddPost(ctx context.Context, req *AddPostRequest) error
+  UpdatePost(ctx context.Context, id string, request *UpdatePostRequest) error
   DeletePost(ctx context.Context, id string) error
 }
 
-type service struct {
-  repo Repository
+type ServiceImpl struct {
+  Repo  Repository
+  Clock func() time.Time
 }
 
 var once sync.Once
@@ -24,14 +25,17 @@ var instance Service
 
 func NewService(repo Repository) Service {
   once.Do(func() {
-    instance = &service{repo}
+    instance = &ServiceImpl{
+      Repo:  repo,
+      Clock: func() time.Time { return time.Now() },
+    }
   })
 
   return instance
 }
 
-func (s *service) GetPosts(ctx context.Context) ([]Post, error) {
-  posts, err := s.repo.GetMany(ctx)
+func (s *ServiceImpl) GetPosts(ctx context.Context, limit, offset int) ([]Post, error) {
+  posts, err := s.Repo.GetMany(ctx, limit, offset)
 
   if err != nil {
     return nil, err
@@ -40,8 +44,8 @@ func (s *service) GetPosts(ctx context.Context) ([]Post, error) {
   return posts, err
 }
 
-func (s *service) GetPost(ctx context.Context, id string) (*Post, error) {
-  post, err := s.repo.GetOne(ctx, id)
+func (s *ServiceImpl) GetPost(ctx context.Context, id string) (*Post, error) {
+  post, err := s.Repo.GetOne(ctx, id)
 
   if err != nil {
     return nil, err
@@ -50,32 +54,29 @@ func (s *service) GetPost(ctx context.Context, id string) (*Post, error) {
   return post, err
 }
 
-func (s *service) InsertPost(ctx context.Context, req *InsertPostRequest) error {
-  // var post Post
-  //
-  // if err := ctx.BodyParser(&post); err != nil {
-  //   return err
-  // }
-  //
-  // post.DateAdded = time.Now()
-  // post.DateModified = time.Now()
-  //
-  // if err := s.repo.Insert(ctx.Context(), post); err != nil {
-  //   return err
-  // }
-  //
-  // return nil
-  return fmt.Errorf("method not implemented yet")
-}
+func (s *ServiceImpl) AddPost(ctx context.Context, req *AddPostRequest) error {
+  var post PostDto
 
-func (s *service) UpdatePost(ctx context.Context, id string, req UpdatePostRequest) error {
-  if err := s.repo.UpdateOne(ctx, id, req); err != nil {
+  post.Title = req.Title
+  post.Content = req.Content
+  post.DateAdded = s.Clock()
+  post.DateModified = s.Clock()
+
+  if err := s.Repo.Insert(ctx, &post); err != nil {
     return err
   }
 
   return nil
 }
 
-func (s *service) DeletePost(ctx context.Context, id string) error {
-  return s.repo.Delete(ctx, id)
+func (s *ServiceImpl) UpdatePost(ctx context.Context, id string, req *UpdatePostRequest) error {
+  if err := s.Repo.UpdateOne(ctx, id, req); err != nil {
+    return err
+  }
+
+  return nil
+}
+
+func (s *ServiceImpl) DeletePost(ctx context.Context, id string) error {
+  return s.Repo.Delete(ctx, id)
 }

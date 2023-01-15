@@ -1,6 +1,8 @@
 package blog
 
-type InsertPostRequest struct {
+type AddPostRequest struct {
+  Title   string `json:"title" validate:"required,min=3,max=64"`
+  Content string `json:"content" validate:"required,min=1"`
 }
 
 type UpdatePostRequest struct {

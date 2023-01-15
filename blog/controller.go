@@ -1,111 +1,154 @@
 package blog
 
 import (
-	"encoding/json"
-	"io"
-	"net/http"
+  "encoding/json"
+  "github.com/robbailey3/website-api/exception"
+  "github.com/robbailey3/website-api/validation"
+  "io"
+  "net/http"
+  "strconv"
 
-	"github.com/go-chi/chi/v5"
-	"github.com/gookit/slog"
+  "github.com/go-chi/chi/v5"
+  "github.com/gookit/slog"
 
-	"github.com/robbailey3/website-api/response"
+  "github.com/robbailey3/website-api/response"
 )
 
 type Controller interface {
-	GetPosts(w http.ResponseWriter, req *http.Request)
-	GetPost(w http.ResponseWriter, req *http.Request)
-	AddPost(w http.ResponseWriter, req *http.Request)
-	UpdatePost(w http.ResponseWriter, req *http.Request)
-	DeletePost(w http.ResponseWriter, req *http.Request)
+  GetPosts(w http.ResponseWriter, req *http.Request)
+  GetPost(w http.ResponseWriter, req *http.Request)
+  AddPost(w http.ResponseWriter, req *http.Request)
+  UpdatePost(w http.ResponseWriter, req *http.Request)
+  DeletePost(w http.ResponseWriter, req *http.Request)
 }
 
 type controller struct {
-	service Service
+  service Service
 }
 
 func NewController(service Service) Controller {
-	return &controller{
-		service,
-	}
+  return &controller{
+    service,
+  }
 }
 
 func (c *controller) GetPosts(w http.ResponseWriter, req *http.Request) {
-	posts, err := c.service.GetPosts(req.Context())
+  limit, err := strconv.Atoi(req.URL.Query().Get("limit"))
 
-	if err != nil {
-		response.ServerError(w, err)
-		return
-	}
+  if err != nil {
+    response.BadRequest(w, "failed to parse limit")
+  }
 
-	response.Ok(w, posts)
+  offset, err := strconv.Atoi(req.URL.Query().Get("offset"))
+
+  if err != nil {
+    response.BadRequest(w, "failed to parse offset")
+  }
+
+  posts, err := c.service.GetPosts(req.Context(), limit, offset)
+
+  if err != nil {
+    response.ServerError(w, err)
+    return
+  }
+
+  response.Ok(w, posts)
 }
 
 func (c *controller) GetPost(w http.ResponseWriter, req *http.Request) {
-	posts, err := c.service.GetPost(req.Context(), chi.URLParam(req, "id"))
+  posts, err := c.service.GetPost(req.Context(), chi.URLParam(req, "id"))
 
-	if err != nil {
-		slog.Println(err.Error())
-		response.ServerError(w, err)
-		return
-	}
+  if err != nil {
+    slog.Println(err.Error())
+    if _, ok := err.(*exception.NotFoundError); ok {
+      response.NotFound(w)
+      return
+    }
+    response.ServerError(w, err)
+    return
+  }
 
-	response.Ok(w, posts)
+  response.Ok(w, posts)
 }
 
 func (c *controller) AddPost(w http.ResponseWriter, req *http.Request) {
-	var request InsertPostRequest
+  var request AddPostRequest
 
-	bodyBytes, err := io.ReadAll(req.Body)
+  bodyBytes, err := io.ReadAll(req.Body)
 
-	if err != nil {
-		response.BadRequest(w, "failed to parse request")
-		return
-	}
+  if err != nil {
+    response.BadRequest(w, "failed to parse request")
+    return
+  }
 
-	if err := json.Unmarshal(bodyBytes, &request); err != nil {
-		response.BadRequest(w, "failed to parse request")
-		return
-	}
+  if err := json.Unmarshal(bodyBytes, &request); err != nil {
+    response.BadRequest(w, "failed to parse request")
+    return
+  }
 
-	if err := c.service.InsertPost(req.Context(), &request); err != nil {
-		response.ServerError(w, err)
-	}
+  if err := validation.Validate(&request); err != nil {
+    response.ValidationError(w, err)
+    return
+  }
 
-	response.Accepted(w)
+  if err := c.service.AddPost(req.Context(), &request); err != nil {
+    response.ServerError(w, err)
+    return
+  }
+
+  response.Created(w)
 }
 
 func (c *controller) UpdatePost(w http.ResponseWriter, req *http.Request) {
-	var request UpdatePostRequest
+  var request UpdatePostRequest
 
-	bodyBytes, err := io.ReadAll(req.Body)
+  if req.Body == nil {
+    response.BadRequest(w, "request contained no body")
+    return
+  }
 
-	if err != nil {
-		response.BadRequest(w, "failed to parse request")
-		return
-	}
+  bodyBytes, err := io.ReadAll(req.Body)
 
-	if err := json.Unmarshal(bodyBytes, &request); err != nil {
-		response.BadRequest(w, "failed to parse request")
-		return
-	}
+  if err != nil {
+    response.BadRequest(w, "failed to parse request")
+    return
+  }
 
-	if err != nil {
-		response.BadRequest(w, "Failed to parse request")
-		return
-	}
+  if err := json.Unmarshal(bodyBytes, &request); err != nil {
+    response.BadRequest(w, "failed to parse request")
+    return
+  }
 
-	if err := c.service.UpdatePost(req.Context(), chi.URLParam(req, "id"), request); err != nil {
-		response.ServerError(w, err)
-		return
-	}
+  if err != nil {
+    response.BadRequest(w, "Failed to parse request")
+    return
+  }
+
+  if err := validation.Validate(&request); err != nil {
+    response.ValidationError(w, err)
+    return
+  }
+
+  if err := c.service.UpdatePost(req.Context(), chi.URLParam(req, "id"), &request); err != nil {
+    if _, ok := err.(*exception.NotFoundError); ok {
+      response.NotFound(w)
+      return
+    }
+
+    response.ServerError(w, err)
+    return
+  }
+
+  response.Accepted(w)
 }
 
 func (c *controller) DeletePost(w http.ResponseWriter, req *http.Request) {
-	id := chi.URLParam(req, "id")
+  id := chi.URLParam(req, "id")
 
-	if err := c.service.DeletePost(req.Context(), id); err != nil {
-		response.ServerError(w, err)
-	}
+  if err := c.service.DeletePost(req.Context(), id); err != nil {
+    response.ServerError(w, err)
+    return
+  }
 
-	response.Accepted(w)
+  response.Accepted(w)
 }
