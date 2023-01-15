@@ -80,7 +80,7 @@ func (mr *MockRepositoryMockRecorder) GetOne(ctx, id interface{}) *gomock.Call {
 }
 
 // Insert mocks base method.
-func (m *MockRepository) Insert(ctx context.Context, post blog.Post) error {
+func (m *MockRepository) Insert(ctx context.Context, post *blog.PostDto) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Insert", ctx, post)
 	ret0, _ := ret[0].(error)
@@ -94,7 +94,7 @@ func (mr *MockRepositoryMockRecorder) Insert(ctx, post interface{}) *gomock.Call
 }
 
 // UpdateOne mocks base method.
-func (m *MockRepository) UpdateOne(ctx context.Context, id string, update blog.UpdatePostRequest) error {
+func (m *MockRepository) UpdateOne(ctx context.Context, id string, update *blog.UpdatePostRequest) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "UpdateOne", ctx, id, update)
 	ret0, _ := ret[0].(error)

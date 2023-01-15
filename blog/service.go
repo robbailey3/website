@@ -2,15 +2,15 @@ package blog
 
 import (
   "context"
-  "fmt"
   "sync"
+  "time"
 )
 
 type Service interface {
   GetPosts(ctx context.Context, limit, offset int) ([]Post, error)
   GetPost(ctx context.Context, id string) (*Post, error)
-  InsertPost(ctx context.Context, req *InsertPostRequest) error
-  UpdatePost(ctx context.Context, id string, request UpdatePostRequest) error
+  AddPost(ctx context.Context, req *AddPostRequest) error
+  UpdatePost(ctx context.Context, id string, request *UpdatePostRequest) error
   DeletePost(ctx context.Context, id string) error
 }
 
@@ -50,25 +50,22 @@ func (s *service) GetPost(ctx context.Context, id string) (*Post, error) {
   return post, err
 }
 
-func (s *service) InsertPost(ctx context.Context, req *InsertPostRequest) error {
-  // var post Post
-  //
-  // if err := ctx.BodyParser(&post); err != nil {
-  //   return err
-  // }
-  //
-  // post.DateAdded = time.Now()
-  // post.DateModified = time.Now()
-  //
-  // if err := s.repo.Insert(ctx.Context(), post); err != nil {
-  //   return err
-  // }
-  //
-  // return nil
-  return fmt.Errorf("method not implemented yet")
+func (s *service) AddPost(ctx context.Context, req *AddPostRequest) error {
+  var post PostDto
+
+  post.Title = req.Title
+  post.Content = req.Content
+  post.DateAdded = time.Now()
+  post.DateModified = time.Now()
+
+  if err := s.repo.Insert(ctx, &post); err != nil {
+    return err
+  }
+
+  return nil
 }
 
-func (s *service) UpdatePost(ctx context.Context, id string, req UpdatePostRequest) error {
+func (s *service) UpdatePost(ctx context.Context, id string, req *UpdatePostRequest) error {
   if err := s.repo.UpdateOne(ctx, id, req); err != nil {
     return err
   }

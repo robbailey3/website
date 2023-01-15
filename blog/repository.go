@@ -16,8 +16,8 @@ import (
 type Repository interface {
   GetMany(ctx context.Context, limit, offset int) ([]Post, error)
   GetOne(ctx context.Context, id string) (*Post, error)
-  UpdateOne(ctx context.Context, id string, update UpdatePostRequest) error
-  Insert(ctx context.Context, post Post) error
+  UpdateOne(ctx context.Context, id string, update *UpdatePostRequest) error
+  Insert(ctx context.Context, post *PostDto) error
   Delete(ctc context.Context, id string) error
 }
 
@@ -72,7 +72,7 @@ func (r *repository) GetOne(ctx context.Context, id string) (*Post, error) {
   return &post, nil
 }
 
-func (r *repository) UpdateOne(ctx context.Context, id string, update UpdatePostRequest) error {
+func (r *repository) UpdateOne(ctx context.Context, id string, update *UpdatePostRequest) error {
   _, err := r.collection.Doc(id).Update(ctx, []firestore.Update{
     {
       Path:  "Title",
@@ -91,10 +91,14 @@ func (r *repository) UpdateOne(ctx context.Context, id string, update UpdatePost
   return err
 }
 
-func (r *repository) Insert(ctx context.Context, post Post) error {
+func (r *repository) Insert(ctx context.Context, post *PostDto) error {
   _, _, err := r.collection.Add(ctx, post)
 
   if err != nil {
+    if status.Code(err) == codes.NotFound {
+      log.Println("Not found")
+      return exception.NotFound()
+    }
     return err
   }
 

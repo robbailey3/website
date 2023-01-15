@@ -35,6 +35,20 @@ func (m *MockService) EXPECT() *MockServiceMockRecorder {
 	return m.recorder
 }
 
+// AddPost mocks base method.
+func (m *MockService) AddPost(ctx context.Context, req *blog.AddPostRequest) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "AddPost", ctx, req)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// AddPost indicates an expected call of AddPost.
+func (mr *MockServiceMockRecorder) AddPost(ctx, req interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AddPost", reflect.TypeOf((*MockService)(nil).AddPost), ctx, req)
+}
+
 // DeletePost mocks base method.
 func (m *MockService) DeletePost(ctx context.Context, id string) error {
 	m.ctrl.T.Helper()
@@ -79,22 +93,8 @@ func (mr *MockServiceMockRecorder) GetPosts(ctx, limit, offset interface{}) *gom
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetPosts", reflect.TypeOf((*MockService)(nil).GetPosts), ctx, limit, offset)
 }
 
-// InsertPost mocks base method.
-func (m *MockService) InsertPost(ctx context.Context, req *blog.InsertPostRequest) error {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "InsertPost", ctx, req)
-	ret0, _ := ret[0].(error)
-	return ret0
-}
-
-// InsertPost indicates an expected call of InsertPost.
-func (mr *MockServiceMockRecorder) InsertPost(ctx, req interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "InsertPost", reflect.TypeOf((*MockService)(nil).InsertPost), ctx, req)
-}
-
 // UpdatePost mocks base method.
-func (m *MockService) UpdatePost(ctx context.Context, id string, request blog.UpdatePostRequest) error {
+func (m *MockService) UpdatePost(ctx context.Context, id string, request *blog.UpdatePostRequest) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "UpdatePost", ctx, id, request)
 	ret0, _ := ret[0].(error)

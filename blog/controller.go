@@ -3,6 +3,7 @@ package blog
 import (
   "encoding/json"
   "github.com/robbailey3/website-api/exception"
+  "github.com/robbailey3/website-api/validation"
   "io"
   "net/http"
   "strconv"
@@ -71,7 +72,7 @@ func (c *controller) GetPost(w http.ResponseWriter, req *http.Request) {
 }
 
 func (c *controller) AddPost(w http.ResponseWriter, req *http.Request) {
-  var request InsertPostRequest
+  var request AddPostRequest
 
   bodyBytes, err := io.ReadAll(req.Body)
 
@@ -85,15 +86,26 @@ func (c *controller) AddPost(w http.ResponseWriter, req *http.Request) {
     return
   }
 
-  if err := c.service.InsertPost(req.Context(), &request); err != nil {
-    response.ServerError(w, err)
+  if err := validation.Validate(&request); err != nil {
+    response.ValidationError(w, err)
+    return
   }
 
-  response.Accepted(w)
+  if err := c.service.AddPost(req.Context(), &request); err != nil {
+    response.ServerError(w, err)
+    return
+  }
+
+  response.Created(w)
 }
 
 func (c *controller) UpdatePost(w http.ResponseWriter, req *http.Request) {
   var request UpdatePostRequest
+
+  if req.Body == nil {
+    response.BadRequest(w, "request contained no body")
+    return
+  }
 
   bodyBytes, err := io.ReadAll(req.Body)
 
@@ -112,10 +124,22 @@ func (c *controller) UpdatePost(w http.ResponseWriter, req *http.Request) {
     return
   }
 
-  if err := c.service.UpdatePost(req.Context(), chi.URLParam(req, "id"), request); err != nil {
+  if err := validation.Validate(&request); err != nil {
+    response.ValidationError(w, err)
+    return
+  }
+
+  if err := c.service.UpdatePost(req.Context(), chi.URLParam(req, "id"), &request); err != nil {
+    if _, ok := err.(*exception.NotFoundError); ok {
+      response.NotFound(w)
+      return
+    }
+
     response.ServerError(w, err)
     return
   }
+
+  response.Accepted(w)
 }
 
 func (c *controller) DeletePost(w http.ResponseWriter, req *http.Request) {
@@ -123,6 +147,7 @@ func (c *controller) DeletePost(w http.ResponseWriter, req *http.Request) {
 
   if err := c.service.DeletePost(req.Context(), id); err != nil {
     response.ServerError(w, err)
+    return
   }
 
   response.Accepted(w)

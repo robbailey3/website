@@ -1,6 +1,8 @@
 package blog_test
 
 import (
+  "bytes"
+  "encoding/json"
   "fmt"
   "github.com/go-chi/chi/v5"
   "github.com/golang/mock/gomock"
@@ -40,18 +42,12 @@ func createNewTestServer(t *testing.T) *TestServer {
   }
 }
 
-// checkResponseCode is a simple utility to check the response code
-// of the response
 func checkResponseCode(t *testing.T, expected, actual int) {
   if expected != actual {
     t.Errorf("Expected response code %d. Got %d\n", expected, actual)
   }
 }
 
-// executeRequest, creates a new ResponseRecorder
-// then executes the request by calling ServeHTTP in the router
-// after which the handler writes the response to the response recorder
-// which we can then inspect.
 func executeRequest(req *http.Request, t *TestServer) *httptest.ResponseRecorder {
   rr := httptest.NewRecorder()
   t.Router.ServeHTTP(rr, req)
@@ -69,9 +65,7 @@ func TestController_GetPosts(t *testing.T) {
 
     response := executeRequest(request, sut)
 
-    if response.Result().StatusCode != http.StatusBadRequest {
-      t.Errorf("incorrect status code returned, got %d", response.Result().StatusCode)
-    }
+    checkResponseCode(t, 400, response.Result().StatusCode)
   })
 
   t.Run("should return 400 bad request for invalid offset", func(t *testing.T) {
@@ -83,9 +77,7 @@ func TestController_GetPosts(t *testing.T) {
 
     response := executeRequest(request, sut)
 
-    if response.Result().StatusCode != http.StatusBadRequest {
-      t.Errorf("incorrect status code returned, got %d", response.Result().StatusCode)
-    }
+    checkResponseCode(t, 400, response.Result().StatusCode)
   })
 
   t.Run("should return a status code of 200", func(t *testing.T) {
@@ -97,9 +89,7 @@ func TestController_GetPosts(t *testing.T) {
 
     response := executeRequest(request, sut)
 
-    if response.Result().StatusCode != http.StatusOK {
-      t.Errorf("incorrect status code returned, got %d", response.Result().StatusCode)
-    }
+    checkResponseCode(t, http.StatusOK, response.Result().StatusCode)
   })
 
   t.Run("should return a 500 status code when the service returns an error", func(t *testing.T) {
@@ -111,9 +101,7 @@ func TestController_GetPosts(t *testing.T) {
 
     response := executeRequest(request, sut)
 
-    if response.Result().StatusCode != http.StatusInternalServerError {
-      t.Errorf("incorrect status code returned, got %d", response.Result().StatusCode)
-    }
+    checkResponseCode(t, http.StatusInternalServerError, response.Result().StatusCode)
   })
 }
 
@@ -127,9 +115,7 @@ func TestController_GetPost(t *testing.T) {
 
     response := executeRequest(request, sut)
 
-    if response.Result().StatusCode != http.StatusNotFound {
-      t.Errorf("incorrect status code returned, got %d", response.Result().StatusCode)
-    }
+    checkResponseCode(t, 404, response.Result().StatusCode)
   })
 
   t.Run("should return 500 when the service returns any other exception", func(t *testing.T) {
@@ -141,9 +127,7 @@ func TestController_GetPost(t *testing.T) {
 
     response := executeRequest(request, sut)
 
-    if response.Result().StatusCode != http.StatusInternalServerError {
-      t.Errorf("incorrect status code returned, got %d", response.Result().StatusCode)
-    }
+    checkResponseCode(t, 500, response.Result().StatusCode)
   })
 
   t.Run("should call the get post method of the service and pass in the Id", func(t *testing.T) {
@@ -156,5 +140,189 @@ func TestController_GetPost(t *testing.T) {
     sut.Service.EXPECT().GetPost(gomock.Any(), gomock.Eq(fmt.Sprintf("%d", testId))).AnyTimes().Return(nil, errors.New("kaboom"))
 
     executeRequest(request, sut)
+  })
+}
+
+func TestController_AddPost(t *testing.T) {
+  t.Run("should return 400 when no body is passed in the request", func(t *testing.T) {
+    sut := createNewTestServer(t)
+
+    request := httptest.NewRequest(http.MethodPost, "/", nil)
+
+    response := executeRequest(request, sut)
+
+    checkResponseCode(t, 400, response.Result().StatusCode)
+  })
+
+  t.Run("should return 400 when the request body fails validation", func(t *testing.T) {
+    sut := createNewTestServer(t)
+
+    requestBody := &blog.AddPostRequest{
+      Title:   "",
+      Content: "",
+    }
+
+    requestBytes, _ := json.Marshal(requestBody)
+
+    request := httptest.NewRequest(http.MethodPost, "/", bytes.NewReader(requestBytes))
+
+    response := executeRequest(request, sut)
+
+    checkResponseCode(t, 400, response.Result().StatusCode)
+  })
+
+  t.Run("should call the AddPost method of the service", func(t *testing.T) {
+    sut := createNewTestServer(t)
+
+    requestBody := &blog.AddPostRequest{
+      Title:   "Some test title",
+      Content: "Some test content",
+    }
+
+    requestBytes, _ := json.Marshal(requestBody)
+
+    request := httptest.NewRequest(http.MethodPost, "/", bytes.NewReader(requestBytes))
+
+    sut.Service.EXPECT().AddPost(gomock.Any(), requestBody).Times(1).Return(nil)
+
+    response := executeRequest(request, sut)
+
+    checkResponseCode(t, http.StatusCreated, response.Result().StatusCode)
+  })
+
+  t.Run("should return InternalServerError when the service returns an error", func(t *testing.T) {
+    sut := createNewTestServer(t)
+
+    requestBody := &blog.AddPostRequest{
+      Title:   "Some test title",
+      Content: "Some test content",
+    }
+
+    requestBytes, _ := json.Marshal(requestBody)
+
+    request := httptest.NewRequest(http.MethodPost, "/", bytes.NewReader(requestBytes))
+
+    sut.Service.EXPECT().AddPost(gomock.Any(), requestBody).Times(1).Return(errors.New("something went wrong"))
+
+    response := executeRequest(request, sut)
+
+    checkResponseCode(t, http.StatusInternalServerError, response.Result().StatusCode)
+  })
+}
+
+func TestController_UpdatePost(t *testing.T) {
+  t.Run("should call the UpdatePost method of the service", func(t *testing.T) {
+    requestBody := &blog.UpdatePostRequest{
+      Title:   "Title",
+      Content: "Content",
+    }
+
+    requestBytes, _ := json.Marshal(requestBody)
+
+    testId := "test-123"
+
+    sut := createNewTestServer(t)
+
+    request := httptest.NewRequest(http.MethodPatch, fmt.Sprintf("/%s", testId), bytes.NewReader(requestBytes))
+
+    sut.Service.EXPECT().UpdatePost(gomock.Any(), testId, requestBody).Times(1).Return(nil)
+
+    response := executeRequest(request, sut)
+
+    checkResponseCode(t, http.StatusAccepted, response.Result().StatusCode)
+  })
+
+  t.Run("should return BadRequest status when no body is passed", func(t *testing.T) {
+    testId := "test-123"
+
+    sut := createNewTestServer(t)
+
+    request := httptest.NewRequest(http.MethodPatch, fmt.Sprintf("/%s", testId), nil)
+
+    response := executeRequest(request, sut)
+
+    checkResponseCode(t, http.StatusBadRequest, response.Result().StatusCode)
+  })
+
+  t.Run("should return BadRequest status when an invalid body is passed", func(t *testing.T) {
+    requestBody := &blog.UpdatePostRequest{
+      Title:   "",
+      Content: "",
+    }
+
+    requestBytes, _ := json.Marshal(requestBody)
+
+    testId := "test-123"
+
+    sut := createNewTestServer(t)
+
+    request := httptest.NewRequest(http.MethodPatch, fmt.Sprintf("/%s", testId), bytes.NewReader(requestBytes))
+
+    response := executeRequest(request, sut)
+
+    checkResponseCode(t, http.StatusBadRequest, response.Result().StatusCode)
+  })
+
+  t.Run("should return BadRequest status when an invalid body is passed", func(t *testing.T) {
+    requestBody := &blog.UpdatePostRequest{
+      Title:   "Title",
+      Content: "Content",
+    }
+
+    requestBytes, _ := json.Marshal(requestBody)
+
+    testId := "test-123"
+
+    sut := createNewTestServer(t)
+
+    request := httptest.NewRequest(http.MethodPatch, fmt.Sprintf("/%s", testId), bytes.NewReader(requestBytes))
+
+    sut.Service.EXPECT().UpdatePost(gomock.Any(), testId, requestBody).Times(1).Return(exception.NotFound())
+
+    response := executeRequest(request, sut)
+
+    checkResponseCode(t, http.StatusNotFound, response.Result().StatusCode)
+  })
+}
+
+func TestController_DeletePost(t *testing.T) {
+  t.Run("should call the DeletePost method of the service with the provided Id", func(t *testing.T) {
+    testId := "test-123"
+
+    sut := createNewTestServer(t)
+
+    request := httptest.NewRequest(http.MethodDelete, fmt.Sprintf("/%s", testId), nil)
+
+    sut.Service.EXPECT().DeletePost(gomock.Any(), testId).Times(1).Return(nil)
+
+    executeRequest(request, sut)
+  })
+
+  t.Run("should return an accepted response when the service does not return an error", func(t *testing.T) {
+    testId := "test-123"
+
+    sut := createNewTestServer(t)
+
+    request := httptest.NewRequest(http.MethodDelete, fmt.Sprintf("/%s", testId), nil)
+
+    sut.Service.EXPECT().DeletePost(gomock.Any(), testId).Times(1).Return(nil)
+
+    response := executeRequest(request, sut)
+
+    checkResponseCode(t, http.StatusAccepted, response.Result().StatusCode)
+  })
+
+  t.Run("should return a server error response when the service returns an error", func(t *testing.T) {
+    testId := "test-123"
+
+    sut := createNewTestServer(t)
+
+    request := httptest.NewRequest(http.MethodDelete, fmt.Sprintf("/%s", testId), nil)
+
+    sut.Service.EXPECT().DeletePost(gomock.Any(), testId).Times(1).Return(errors.New("something went wrong"))
+
+    response := executeRequest(request, sut)
+
+    checkResponseCode(t, http.StatusInternalServerError, response.Result().StatusCode)
   })
 }
