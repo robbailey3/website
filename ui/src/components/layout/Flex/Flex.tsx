@@ -35,7 +35,7 @@ const Flex = (props: FlexProps) => {
 			case 'center':
 				return 'justify-center';
 			case 'end':
-				return 'justify-around';
+				return 'justify-end';
 			case 'evenly':
 				return 'justify-evenly';
 			case 'start':
