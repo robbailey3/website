@@ -11,10 +11,8 @@ jobs:
         with:
           persist-credentials: false
 
-      - name: Change Directory
-        run: |
-          cd ui
       - name: Install
+        working-directory: ./ui
         run: |
           yarn
       - name: Unit Test
