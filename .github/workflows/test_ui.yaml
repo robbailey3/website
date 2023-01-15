@@ -16,5 +16,6 @@ jobs:
         run: |
           yarn
       - name: Unit Test
+        working-directory: ./ui
         run: |
           yarn run test
