@@ -15,10 +15,13 @@ const Header = () => {
 
 	return (
 		<header
-			className={clsx('shadow fixed top-0 left-0 w-full duration-100', {
-				'backdrop-blur-sm': bgBlur,
-				'backdrop-blur-0': !bgBlur
-			})}
+			className={clsx(
+				'shadow fixed top-0 left-0 w-full duration-100 z-50 bg-dark bg-opacity-90',
+				{
+					'backdrop-blur-sm': bgBlur,
+					'backdrop-blur-0': !bgBlur
+				}
+			)}
 		>
 			<div>
 				<a

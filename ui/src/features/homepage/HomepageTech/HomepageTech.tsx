@@ -1,4 +1,4 @@
-import FadeInOnEnter from '@components/animations/FadeInOnEnter/FadeInOnEnter';
+import AnimateOnEnter from '@components/animations/AnimateOnEnter/AnimateOnEnter';
 import Container from '@components/layout/Container/Container';
 import Flex from '@components/layout/Flex/Flex';
 import FlexItem from '@components/layout/FlexItem/FlexItem';
@@ -40,25 +40,45 @@ const techItems: TechItem[] = [
 	{
 		title: 'C#',
 		image: '/tech-icons/csharp-plain.svg'
-	}
+	},
+	{ title: 'Angular', image: '/tech-icons/angularjs-plain.svg' },
+	{ title: 'MongoDB', image: '/tech-icons/mongodb-original.svg' }
 ];
 
 const HomepageTech = () => {
 	return (
 		<Container className="py-32">
-			<h2>Technologies</h2>
-			<Flex className="space-x-4" wrap>
+			<AnimateOnEnter
+				initial={{ opacity: 0 }}
+				animation={{ opacity: 1, transition: { duration: 5 } }}
+			>
+				<h2>Technologies</h2>
+			</AnimateOnEnter>
+			<Flex className="md:space-x-4 justify-center md:justify-start" wrap>
 				{techItems.map((techItem, i) => (
-					<FadeInOnEnter key={techItem.title} delay={0.25 * (i + 1)}>
-						<FlexItem className="text-center">
-							<span>{techItem.title}</span>
+					<AnimateOnEnter
+						key={techItem.title}
+						animation={{
+							y: 0,
+							opacity: 1,
+							transition: {
+								delay: 0.2 * (i + 1),
+								duration: 0.2
+							}
+						}}
+						initial={{ opacity: 0, y: -100 }}
+						enterThreshold={1}
+						className="basis-1/4 md:basis-auto"
+					>
+						<FlexItem className="text-center mb-4">
+							<span className="opacity-50 mb-4 block">{techItem.title}</span>
 							<img
 								src={techItem.image}
 								alt={`${techItem.image} logo`}
 								className="w-12 block mx-auto"
 							/>
 						</FlexItem>
-					</FadeInOnEnter>
+					</AnimateOnEnter>
 				))}
 			</Flex>
 		</Container>
