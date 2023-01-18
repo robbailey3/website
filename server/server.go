@@ -10,7 +10,6 @@ import (
 
   _ "net/http/pprof"
 
-  "cloud.google.com/go/firestore"
   "github.com/go-chi/chi/v5"
   "github.com/go-chi/chi/v5/middleware"
   "github.com/go-chi/cors"
@@ -54,13 +53,13 @@ func setupMiddleware(r chi.Router) {
   r.Mount("/debug", middleware.Profiler())
 }
 
-func Init(db *firestore.Client) {
+func Init() {
   port := getPort()
 
   router := chi.NewRouter()
   setupMiddleware(router)
   serveUi(router)
-  setupRoutes(db, router)
+  setupRoutes(nil, router)
 
   log.Fatal(http.ListenAndServe(port, router))
 }
