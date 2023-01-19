@@ -4,12 +4,15 @@ import (
   "context"
   "database/sql"
   "fmt"
+  "github.com/lib/pq"
   _ "github.com/lib/pq"
+  "os"
   "time"
 )
 
 type Client interface {
-  Query(query string, args ...string) (interface{}, error)
+  Query(ctx context.Context, result interface{}, query string, args ...any) error
+  Exec(ctx context.Context, query string, args ...any) error
 }
 
 type clientImpl struct {
@@ -19,7 +22,12 @@ type clientImpl struct {
 var Instance *clientImpl
 
 func getDbConn() string {
-  return fmt.Sprintf("postgres://%s:%s@%s:%d?sslmode=disable", "", "", "", 5432)
+  return fmt.Sprintf("postgres://%s:%s@%s:%s/%s?sslmode=disable",
+    os.Getenv("DB_USERNAME"),
+    os.Getenv("DB_PASSWORD"),
+    os.Getenv("DB_HOST"),
+    os.Getenv("DB_PORT"),
+    os.Getenv("DB_NAME"))
 }
 
 func Init() error {
@@ -45,17 +53,45 @@ func Init() error {
     return err
   }
 
-  return nil
-}
-
-func (c *clientImpl) Query(result interface{}, query string, args ...string) error {
-  rows, err := c.db.Query(query, args)
-
-  if err != nil {
+  if err := RunMigrations(); err != nil {
     return err
   }
 
-  if err := rows.Scan(result); err != nil {
+  return nil
+}
+
+func (c *clientImpl) Query(ctx context.Context, result []any, query string, args ...any) error {
+  if args == nil {
+    rows, err := c.db.QueryContext(ctx, query)
+    if err != nil {
+      return err
+    }
+    for rows.Next() {
+      var row any
+      err := rows.Scan(&row)
+      
+    }
+
+    if err := rows.Scan(result); err != nil {
+      return err
+    }
+  } else {
+    rows, err := c.db.QueryContext(ctx, query, pq.Array(args))
+    if err != nil {
+      return err
+    }
+    if err := rows.Scan(result); err != nil {
+      return err
+    }
+  }
+
+  return nil
+}
+
+func (c *clientImpl) Exec(ctx context.Context, query string, args ...any) error {
+  _, err := c.db.ExecContext(ctx, query, args)
+
+  if err != nil {
     return err
   }
 

@@ -39,7 +39,7 @@ func main() {
   err := database.Init()
 
   if err != nil {
-    log.Fatal(err)
+    panic(err)
   }
 
   server.Init()
