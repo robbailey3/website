@@ -15,7 +15,7 @@ type Migration struct {
 
 func CreateMigrationsTable() error {
   _, err := Instance.db.Exec(`CREATE TABLE IF NOT EXISTS migrations 
-    (Id INT PRIMARY KEY NOT NULL, 
+    (Id SERIAL PRIMARY KEY, 
     FileName VARCHAR(255) NOT NULL, 
     TimestampUtc TIMESTAMP NOT NULL);`)
 
@@ -25,13 +25,21 @@ func CreateMigrationsTable() error {
   return nil
 }
 
-func GetRunMigrations() ([]Migration, error) {
-  var result []Migration
-  err := Instance.Query(context.Background(), &result, "SELECT * FROM migrations")
+func GetRunMigrations() ([]*Migration, error) {
+  var results []*Migration
+  rows, err := Instance.Query(context.Background(), "SELECT * FROM migrations")
   if err != nil {
     return nil, err
   }
-  return result, nil
+
+  for rows.Next() {
+    var result Migration
+    if err := rows.Scan(&result); err != nil {
+      return nil, err
+    }
+    results = append(results, &result)
+  }
+  return results, nil
 }
 
 func RunMigrations() error {
@@ -78,5 +86,7 @@ func runMigrationFile(filePath string) error {
 }
 
 func logFileAsRun(filePath string) error {
-  return Instance.Exec(context.Background(), "INSERT INTO Migrations VALUES (FilePath = ?, TimestampUtc = ?)", filePath, time.Now().Unix())
+  _, err := Instance.Exec(context.Background(), "INSERT INTO Migrations (FileName, TimestampUtc) VALUES ($1, $2)", filePath, time.Now())
+
+  return err
 }

@@ -4,15 +4,15 @@ import (
   "context"
   "database/sql"
   "fmt"
-  "github.com/lib/pq"
   _ "github.com/lib/pq"
   "os"
   "time"
 )
 
 type Client interface {
-  Query(ctx context.Context, result interface{}, query string, args ...any) error
-  Exec(ctx context.Context, query string, args ...any) error
+  Query(ctx context.Context, query string, args ...any) (*sql.Rows, error)
+  QueryRow(ctx context.Context, query string, args ...any) *sql.Row
+  Exec(ctx context.Context, query string, args ...any) (sql.Result, error)
 }
 
 type clientImpl struct {
@@ -60,40 +60,20 @@ func Init() error {
   return nil
 }
 
-func (c *clientImpl) Query(ctx context.Context, result []any, query string, args ...any) error {
-  if args == nil {
-    rows, err := c.db.QueryContext(ctx, query)
-    if err != nil {
-      return err
-    }
-    for rows.Next() {
-      var row any
-      err := rows.Scan(&row)
-      
-    }
-
-    if err := rows.Scan(result); err != nil {
-      return err
-    }
-  } else {
-    rows, err := c.db.QueryContext(ctx, query, pq.Array(args))
-    if err != nil {
-      return err
-    }
-    if err := rows.Scan(result); err != nil {
-      return err
-    }
-  }
-
-  return nil
-}
-
-func (c *clientImpl) Exec(ctx context.Context, query string, args ...any) error {
-  _, err := c.db.ExecContext(ctx, query, args)
+func (c *clientImpl) Query(ctx context.Context, query string, args ...any) (*sql.Rows, error) {
+  rows, err := c.db.QueryContext(ctx, query, args...)
 
   if err != nil {
-    return err
+    return nil, err
   }
+  return rows, nil
+}
 
-  return nil
+func (c *clientImpl) QueryRow(ctx context.Context, query string, args ...any) *sql.Row {
+  return c.db.QueryRowContext(ctx, query, args...)
+
+}
+
+func (c *clientImpl) Exec(ctx context.Context, query string, args ...any) (sql.Result, error) {
+  return c.db.ExecContext(ctx, query, args...)
 }

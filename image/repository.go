@@ -1,47 +1,45 @@
 package image
 
 import (
-	"cloud.google.com/go/firestore"
-	"context"
+  "context"
+  "github.com/robbailey3/website-api/database"
 )
 
 type Repository interface {
-	Insert(ctx context.Context, image *AiImage) (*string, error)
-	GetById(ctx context.Context, id string) (*AiImage, error)
+  Insert(ctx context.Context, image *AiImage) (*int64, error)
+  GetById(ctx context.Context, id int64) (*AiImage, error)
 }
 
 type repository struct {
-	collection *firestore.CollectionRef
 }
 
-func NewRepository(db *firestore.Client) Repository {
-	return &repository{
-		collection: db.Collection("ai-images"),
-	}
+func NewRepository() Repository {
+  return &repository{}
 }
 
-func (r *repository) GetById(ctx context.Context, id string) (*AiImage, error) {
-	var image AiImage
+func (r *repository) GetById(ctx context.Context, id int64) (*AiImage, error) {
+  var image AiImage
 
-	doc, err := r.collection.Doc(id).Get(ctx)
+  row := database.Instance.QueryRow(ctx, "SELECT * FROM AiImages WHERE Id = $1", id)
 
-	if err != nil {
-		return nil, err
-	}
+  if err := row.Scan(&image); err != nil {
+    return nil, err
+  }
 
-	if err = doc.DataTo(&image); err != nil {
-		return nil, err
-	}
-
-	return &image, nil
+  return &image, nil
 }
 
-func (r *repository) Insert(ctx context.Context, image *AiImage) (*string, error) {
-	doc, _, err := r.collection.Add(ctx, image)
+func (r *repository) Insert(ctx context.Context, image *AiImage) (*int64, error) {
+  result, err := database.Instance.Exec(ctx, "INSERT INTO AiImages (Path, DateAdded, ExpiryTime) VALUES ($1, $2, $3)")
 
-	if err != nil {
-		return nil, err
-	}
+  if err != nil {
+    return nil, err
+  }
 
-	return &doc.ID, nil
+  id, err := result.LastInsertId()
+
+  if err != nil {
+    return nil, err
+  }
+  return &id, nil
 }
