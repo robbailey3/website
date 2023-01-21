@@ -8,10 +8,10 @@ import (
 
 type Service interface {
   GetPosts(ctx context.Context, limit, offset int) ([]Post, error)
-  GetPost(ctx context.Context, id string) (*Post, error)
+  GetPost(ctx context.Context, id int64) (*Post, error)
   AddPost(ctx context.Context, req *AddPostRequest) error
-  UpdatePost(ctx context.Context, id string, request *UpdatePostRequest) error
-  DeletePost(ctx context.Context, id string) error
+  UpdatePost(ctx context.Context, id int64, request *UpdatePostRequest) error
+  DeletePost(ctx context.Context, id int64) error
 }
 
 type ServiceImpl struct {
@@ -44,7 +44,7 @@ func (s *ServiceImpl) GetPosts(ctx context.Context, limit, offset int) ([]Post, 
   return posts, err
 }
 
-func (s *ServiceImpl) GetPost(ctx context.Context, id string) (*Post, error) {
+func (s *ServiceImpl) GetPost(ctx context.Context, id int64) (*Post, error) {
   post, err := s.Repo.GetOne(ctx, id)
 
   if err != nil {
@@ -69,7 +69,7 @@ func (s *ServiceImpl) AddPost(ctx context.Context, req *AddPostRequest) error {
   return nil
 }
 
-func (s *ServiceImpl) UpdatePost(ctx context.Context, id string, req *UpdatePostRequest) error {
+func (s *ServiceImpl) UpdatePost(ctx context.Context, id int64, req *UpdatePostRequest) error {
   if err := s.Repo.UpdateOne(ctx, id, req); err != nil {
     return err
   }
@@ -77,6 +77,6 @@ func (s *ServiceImpl) UpdatePost(ctx context.Context, id string, req *UpdatePost
   return nil
 }
 
-func (s *ServiceImpl) DeletePost(ctx context.Context, id string) error {
+func (s *ServiceImpl) DeletePost(ctx context.Context, id int64) error {
   return s.Repo.Delete(ctx, id)
 }

@@ -9,7 +9,7 @@ import (
 
 type Migration struct {
   Id           int
-  FilePath     string
+  Filename     string
   TimestampUtc time.Time
 }
 
@@ -34,7 +34,7 @@ func GetRunMigrations() ([]*Migration, error) {
 
   for rows.Next() {
     var result Migration
-    if err := rows.Scan(&result); err != nil {
+    if err := rows.Scan(&result.Id, &result.Filename, &result.TimestampUtc); err != nil {
       return nil, err
     }
     results = append(results, &result)
@@ -56,7 +56,7 @@ func RunMigrations() error {
   for _, entry := range entries {
     migrationAlreadyRun := false
     for _, runMigration := range runMigrations {
-      if runMigration.FilePath == entry.Name() {
+      if runMigration.Filename == fmt.Sprintf("./dbMigrations/%s", entry.Name()) {
         migrationAlreadyRun = true
       }
     }

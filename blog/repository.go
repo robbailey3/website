@@ -1,24 +1,17 @@
 package blog
 
 import (
-  "context"
-  "github.com/robbailey3/website-api/exception"
-  "log"
-  "time"
-
-  "google.golang.org/api/iterator"
-  "google.golang.org/grpc/codes"
-  "google.golang.org/grpc/status"
-
   "cloud.google.com/go/firestore"
+  "context"
+  "github.com/robbailey3/website-api/database"
 )
 
 type Repository interface {
   GetMany(ctx context.Context, limit, offset int) ([]Post, error)
-  GetOne(ctx context.Context, id string) (*Post, error)
-  UpdateOne(ctx context.Context, id string, update *UpdatePostRequest) error
+  GetOne(ctx context.Context, id int64) (*Post, error)
+  UpdateOne(ctx context.Context, id int64, update *UpdatePostRequest) error
   Insert(ctx context.Context, post *PostDto) error
-  Delete(ctc context.Context, id string) error
+  Delete(ctc context.Context, id int64) error
 }
 
 type repository struct {
@@ -32,81 +25,50 @@ func NewRepository(db *firestore.Client) Repository {
 func (r *repository) GetMany(ctx context.Context, limit, offset int) ([]Post, error) {
   var posts []Post
 
-  docs := r.collection.Limit(limit).Offset(offset).OrderBy("DateModified", firestore.Desc).Documents(ctx)
+  rows, err := database.Instance.Query(ctx, "SELECT * FROM Blog LIMIT $1 OFFSET $2", limit, offset)
 
-  for {
-    var currentDoc Post
+  if err != nil {
+    return nil, err
+  }
 
-    doc, err := docs.Next()
+  for rows.Next() {
+    var post Post
 
-    if err == iterator.Done {
-      return posts, nil
-    }
-
-    if err := doc.DataTo(&currentDoc); err != nil {
+    if err := rows.Scan(&post); err != nil {
       return nil, err
     }
-
-    currentDoc.Id = doc.Ref.ID
-
-    posts = append(posts, currentDoc)
+    posts = append(posts, post)
   }
+
+  return posts, nil
 }
 
-func (r *repository) GetOne(ctx context.Context, id string) (*Post, error) {
-  doc, err := r.collection.Doc(id).Get(ctx)
-
-  if status.Code(err) == codes.NotFound {
-    log.Println("Not found")
-    return nil, exception.NotFound()
-  }
+func (r *repository) GetOne(ctx context.Context, id int64) (*Post, error) {
+  row := database.Instance.QueryRow(ctx, "SELECT * FROM blog WHERE id = $1", id)
 
   var post Post
 
-  err = doc.DataTo(&post)
-
-  if err != nil {
+  if err := row.Scan(&post); err != nil {
     return nil, err
   }
 
   return &post, nil
 }
 
-func (r *repository) UpdateOne(ctx context.Context, id string, update *UpdatePostRequest) error {
-  _, err := r.collection.Doc(id).Update(ctx, []firestore.Update{
-    {
-      Path:  "Title",
-      Value: update.Title,
-    },
-    {
-      Path:  "Content",
-      Value: update.Content,
-    },
-    {
-      Path:  "DateModified",
-      Value: time.Now(),
-    },
-  })
+func (r *repository) UpdateOne(ctx context.Context, id int64, update *UpdatePostRequest) error {
+  _, err := database.Instance.Exec(ctx, "UPDATE blog SET title = $1, content = $2 WHERE id = $3;", update.Title, update.Content, id)
 
   return err
 }
 
 func (r *repository) Insert(ctx context.Context, post *PostDto) error {
-  _, _, err := r.collection.Add(ctx, post)
+  _, err := database.Instance.Exec(ctx, "INSERT INTO blog (title, content, dateadded, datemodified) VALUES ($1, $2, $3, $4);", post.Title, post.Content, post.DateAdded, post.DateModified)
 
-  if err != nil {
-    if status.Code(err) == codes.NotFound {
-      log.Println("Not found")
-      return exception.NotFound()
-    }
-    return err
-  }
-
-  return nil
+  return err
 }
 
-func (r *repository) Delete(ctx context.Context, id string) error {
-  _, err := r.collection.Doc(id).Delete(ctx)
+func (r *repository) Delete(ctx context.Context, id int64) error {
+  _, err := database.Instance.Exec(ctx, "DELETE FROM blog WHERE id = $1", id)
 
   return err
 }
