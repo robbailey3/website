@@ -2,7 +2,6 @@ package activities
 
 import (
   "context"
-  "github.com/pkg/errors"
   "github.com/robbailey3/website-api/database"
 )
 
@@ -89,23 +88,12 @@ func (r *repository) GetSplits(ctx context.Context, activityId int64) ([]*Split,
 }
 
 func (r *repository) GetActivityById(ctx context.Context, id string) (*Activity, error) {
-  // doc, err := r.collection.Doc(id).Get(ctx)
-  //
-  // if status.Code(err) == codes.NotFound {
-  //   log.Println("Not found")
-  // }
-  //
-  // var activity Activity
-  //
-  // err = doc.DataTo(&activity)
-  //
-  // if err != nil {
-  //   return nil, err
-  // }
-  //
-  // return &activity, nil
-  return nil, errors.New("not implemented")
-
+  row := database.Instance.QueryRow(ctx, "SELECT * FROM activities WHERE id = $1", id)
+  var activity Activity
+  if err := row.StructScan(&activity); err != nil {
+    return nil, err
+  }
+  return &activity, nil
 }
 
 func (r *repository) GetActivityByStravaId(ctx context.Context, id int64) (*Activity, error) {
