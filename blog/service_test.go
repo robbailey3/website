@@ -50,7 +50,7 @@ func TestServiceImpl_GetPosts(t *testing.T) {
     offset := 5
 
     posts := []blog.Post{{
-      Id:           "123",
+      Id:           123,
       Title:        "title",
       Content:      "content",
       DateAdded:    time.Now(),
@@ -73,7 +73,7 @@ func TestServiceImpl_GetPost(t *testing.T) {
   t.Run("should call the GetOne method of the repository", func(t *testing.T) {
     sut := setupTests(t)
 
-    id := "test-id"
+    id := int64(123)
 
     sut.Repository.EXPECT().GetOne(gomock.Any(), id).Times(1).Return(&blog.Post{}, nil)
 
@@ -83,10 +83,10 @@ func TestServiceImpl_GetPost(t *testing.T) {
   t.Run("should return the post from the repository", func(t *testing.T) {
     sut := setupTests(t)
 
-    id := "test-id"
+    id := int64(123)
 
     post := &blog.Post{
-      Id:           "123",
+      Id:           int64(123),
       Title:        "title",
       Content:      "content",
       DateAdded:    time.Now(),
@@ -127,7 +127,7 @@ func TestServiceImpl_DeletePost(t *testing.T) {
   t.Run("should call the Delete method of the repository", func(t *testing.T) {
     sut := setupTests(t)
 
-    testId := "test-1234"
+    testId := int64(123)
 
     sut.Repository.EXPECT().Delete(gomock.Any(), testId).Times(1).Return(nil)
 
@@ -139,7 +139,7 @@ func TestServiceImpl_UpdatePost(t *testing.T) {
   t.Run("should call the Update method of the repository with the post", func(t *testing.T) {
     sut := setupTests(t)
 
-    testId := "test-1234"
+    testId := int64(123)
 
     postRequest := &blog.UpdatePostRequest{
       Title:   "TestTitle",
