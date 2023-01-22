@@ -1,5 +1,9 @@
 package activities
 
+import (
+  "time"
+)
+
 type GetActivitiesRequest struct {
   Limit int `query:"limit" validate:"gte=1,lte=100"`
   Skip  int `query:"skip" validate:"gte=0"`
@@ -21,4 +25,21 @@ type WebhookPostRequest struct {
   Updates        struct {
     Title string `json:"title"`
   } `json:"updates"`
+}
+
+type CreateActivityRequest struct {
+  StravaId           int64     `json:"stravaId"`
+  Type               string    `json:"type"`
+  Name               string    `json:"name"`
+  Description        string    `json:"description"`
+  Distance           float64   `json:"distance"`
+  MovingTime         int       `json:"movingTime"`
+  ElapsedTime        int       `json:"elapsedTime"`
+  TotalElevationGain float64   `json:"totalElevationGain"`
+  StartDate          time.Time `json:"startDate"`
+  StartDateLocal     time.Time `json:"startDateLocal"`
+  GearName           string    `json:"gearName"`
+  MapPolyline        string    `json:"mapPolyline"`
+  DateAdded          time.Time `json:"dateAdded"`
+  DateModified       time.Time `json:"dateModified"`
 }

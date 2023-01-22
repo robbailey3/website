@@ -215,12 +215,6 @@ func (s *StravaActivity) MapToDatabaseModel() *CreateActivityRequest {
     StartDateLocal:     s.StartDateLocal,
     GearName:           s.Gear.Name,
     MapPolyline:        s.Map.SummaryPolyline,
-    Segments:           segments,
-    Splits:             splits,
-    Image: Image{
-      UrlSmall: s.Photos.Primary.Urls.Field1,
-      UrlLarge: s.Photos.Primary.Urls.Field2,
-    },
   }
 }
 
@@ -246,26 +240,6 @@ type Image struct {
 
 type Activity struct {
   Id                 string    `json:"id"`
-  StravaId           int64     `json:"stravaId"`
-  Type               string    `json:"type"`
-  Name               string    `json:"name"`
-  Description        string    `json:"description"`
-  Distance           float64   `json:"distance"`
-  MovingTime         int       `json:"movingTime"`
-  ElapsedTime        int       `json:"elapsedTime"`
-  TotalElevationGain float64   `json:"totalElevationGain"`
-  StartDate          time.Time `json:"startDate"`
-  StartDateLocal     time.Time `json:"startDateLocal"`
-  GearName           string    `json:"gearName"`
-  MapPolyline        string    `json:"mapPolyline"`
-  DateAdded          time.Time `json:"dateAdded"`
-  DateModified       time.Time `json:"dateModified"`
-  Segments           []Segment `json:"segments"`
-  Splits             []Split   `json:"splits"`
-  Image              Image     `json:"image"`
-}
-
-type CreateActivityRequest struct {
   StravaId           int64     `json:"stravaId"`
   Type               string    `json:"type"`
   Name               string    `json:"name"`

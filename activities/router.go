@@ -1,12 +1,11 @@
 package activities
 
 import (
-  "cloud.google.com/go/firestore"
   "github.com/go-chi/chi/v5"
 )
 
-func SetupActivityRoutes(router chi.Router, db *firestore.Client) {
-  c := NewController(db)
+func SetupActivityRoutes(router chi.Router) {
+  c := NewController()
 
   router.Route("/activities", func(r chi.Router) {
     r.Get("/", c.HandleGet)
