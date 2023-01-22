@@ -19,6 +19,10 @@ services:
     ports:
       - '443:443'
       - '80:80'
+    volumes:
+      - explorer:/var/lib/pgadmin
 volumes:
   db:
+    driver: local
+  explorer:
     driver: local

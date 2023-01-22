@@ -25,6 +25,23 @@ func CreateMigrationsTable() error {
   return nil
 }
 
+func GetPendingMigrations(entries []os.DirEntry, runMigrations []*Migration) []os.DirEntry {
+  var result []os.DirEntry
+
+  for _, entry := range entries {
+    entryRan := false
+    for _, migration := range runMigrations {
+      if migration.Filename == entry.Name() {
+        entryRan = true
+      }
+    }
+    if !entryRan {
+      result = append(result, entry)
+    }
+  }
+  return result
+}
+
 func GetRunMigrations() ([]*Migration, error) {
   var results []*Migration
   rows, err := Instance.Query(context.Background(), "SELECT * FROM migrations")
@@ -53,17 +70,9 @@ func RunMigrations() error {
   if err != nil {
     return err
   }
-  for _, entry := range entries {
-    migrationAlreadyRun := false
-    for _, runMigration := range runMigrations {
-      if runMigration.Filename == fmt.Sprintf("./dbMigrations/%s", entry.Name()) {
-        migrationAlreadyRun = true
-      }
-    }
-    if migrationAlreadyRun {
-      continue
-    }
-    if err := runMigrationFile(fmt.Sprintf("./dbMigrations/%s", entry.Name())); err != nil {
+  pendingMigrations := GetPendingMigrations(entries, runMigrations)
+  for _, migration := range pendingMigrations {
+    if err := runMigrationFile(fmt.Sprintf("./dbMigrations/%s", migration.Name())); err != nil {
       return err
     }
   }
