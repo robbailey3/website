@@ -1,12 +1,11 @@
 package image
 
 import (
-  "cloud.google.com/go/firestore"
   "github.com/go-chi/chi/v5"
 )
 
-func InitImageRoutes(router chi.Router, db *firestore.Client) {
-  controller := NewController(db)
+func InitImageRoutes(router chi.Router) {
+  controller := NewController()
 
   router.Route("/image", func(r chi.Router) {
     r.Post("/", controller.Upload)

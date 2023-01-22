@@ -1,12 +1,12 @@
 package tasks
 
 import (
-  "cloud.google.com/go/firestore"
   "encoding/json"
   "github.com/go-chi/chi/v5"
   "github.com/robbailey3/website-api/response"
   "io"
   "net/http"
+  "strconv"
 )
 
 type Controller interface {
@@ -20,8 +20,8 @@ type controller struct {
   service Service
 }
 
-func NewController(db *firestore.Client) Controller {
-  return &controller{service: NewService(db)}
+func NewController() Controller {
+  return &controller{service: NewService()}
 }
 
 func (c *controller) GetTasks(w http.ResponseWriter, req *http.Request) {
@@ -57,10 +57,15 @@ func (c *controller) CreateTask(w http.ResponseWriter, req *http.Request) {
 }
 
 func (c *controller) UpdateTask(w http.ResponseWriter, req *http.Request) {
-  id := chi.URLParam(req, "id")
+  id, err := strconv.ParseInt(chi.URLParam(req, "id"), 10, 64)
 
-  if id == "" {
-    response.BadRequest(w, "No id specified")
+  if err != nil {
+    response.BadRequest(w, "Bad id")
+    return
+  }
+
+  if id == 0 {
+    response.BadRequest(w, "No id")
     return
   }
 
@@ -88,10 +93,15 @@ func (c *controller) UpdateTask(w http.ResponseWriter, req *http.Request) {
 }
 
 func (c *controller) DeleteTask(w http.ResponseWriter, req *http.Request) {
-  id := chi.URLParam(req, "id")
+  id, err := strconv.ParseInt(chi.URLParam(req, "id"), 10, 64)
 
-  if id == "" {
-    response.BadRequest(w, "No id specified")
+  if err != nil {
+    response.BadRequest(w, "Bad id")
+    return
+  }
+
+  if id == 0 {
+    response.BadRequest(w, "No id")
     return
   }
 

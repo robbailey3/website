@@ -21,7 +21,6 @@ import (
   "google.golang.org/grpc/codes"
   "google.golang.org/grpc/status"
 
-  "cloud.google.com/go/firestore"
   "github.com/robbailey3/website-api/storage"
 )
 
@@ -42,7 +41,7 @@ type service struct {
   cache   *ttlcache.Cache[int64, []byte]
 }
 
-func NewService(db *firestore.Client) Service {
+func NewService() Service {
   storageClient, err := storage.NewClient(os.Getenv("IMAGE_AI_BUCKET_NAME"))
   if err != nil {
     log.Fatal("Failed to initialise storage client")

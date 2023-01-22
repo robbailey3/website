@@ -1,9 +1,9 @@
 package blog
 
 import (
-  "cloud.google.com/go/firestore"
   "context"
   "github.com/robbailey3/website-api/database"
+  "time"
 )
 
 type Repository interface {
@@ -15,11 +15,10 @@ type Repository interface {
 }
 
 type repository struct {
-  collection *firestore.CollectionRef
 }
 
-func NewRepository(db *firestore.Client) Repository {
-  return &repository{collection: db.Collection("posts")}
+func NewRepository() Repository {
+  return &repository{}
 }
 
 func (r *repository) GetMany(ctx context.Context, limit, offset int) ([]Post, error) {
@@ -34,7 +33,7 @@ func (r *repository) GetMany(ctx context.Context, limit, offset int) ([]Post, er
   for rows.Next() {
     var post Post
 
-    if err := rows.Scan(&post); err != nil {
+    if err := rows.StructScan(&post); err != nil {
       return nil, err
     }
     posts = append(posts, post)
@@ -48,7 +47,7 @@ func (r *repository) GetOne(ctx context.Context, id int64) (*Post, error) {
 
   var post Post
 
-  if err := row.Scan(&post); err != nil {
+  if err := row.StructScan(&post); err != nil {
     return nil, err
   }
 
@@ -56,7 +55,7 @@ func (r *repository) GetOne(ctx context.Context, id int64) (*Post, error) {
 }
 
 func (r *repository) UpdateOne(ctx context.Context, id int64, update *UpdatePostRequest) error {
-  _, err := database.Instance.Exec(ctx, "UPDATE blog SET title = $1, content = $2 WHERE id = $3;", update.Title, update.Content, id)
+  _, err := database.Instance.Exec(ctx, "UPDATE blog SET title = $1, content = $2, datemodified = $3 WHERE id = $4;", update.Title, update.Content, time.Now(), id)
 
   return err
 }

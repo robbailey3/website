@@ -4,6 +4,7 @@ import (
   "context"
   "database/sql"
   "fmt"
+  "github.com/jmoiron/sqlx"
   _ "github.com/lib/pq"
   "os"
   "time"
@@ -16,7 +17,7 @@ type Client interface {
 }
 
 type clientImpl struct {
-  db *sql.DB
+  db *sqlx.DB
 }
 
 var Instance *clientImpl
@@ -31,7 +32,7 @@ func getDbConn() string {
 }
 
 func Init() error {
-  db, err := sql.Open("postgres", getDbConn())
+  db, err := sqlx.Open("postgres", getDbConn())
 
   if err != nil {
     return err
@@ -60,8 +61,8 @@ func Init() error {
   return nil
 }
 
-func (c *clientImpl) Query(ctx context.Context, query string, args ...any) (*sql.Rows, error) {
-  rows, err := c.db.QueryContext(ctx, query, args...)
+func (c *clientImpl) Query(ctx context.Context, query string, args ...any) (*sqlx.Rows, error) {
+  rows, err := c.db.QueryxContext(ctx, query, args...)
 
   if err != nil {
     return nil, err
@@ -69,8 +70,8 @@ func (c *clientImpl) Query(ctx context.Context, query string, args ...any) (*sql
   return rows, nil
 }
 
-func (c *clientImpl) QueryRow(ctx context.Context, query string, args ...any) *sql.Row {
-  return c.db.QueryRowContext(ctx, query, args...)
+func (c *clientImpl) QueryRow(ctx context.Context, query string, args ...any) *sqlx.Row {
+  return c.db.QueryRowxContext(ctx, query, args...)
 
 }
 

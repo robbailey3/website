@@ -1,7 +1,6 @@
 package image
 
 import (
-  "cloud.google.com/go/firestore"
   "github.com/go-chi/chi/v5"
   "github.com/robbailey3/website-api/response"
   "net/http"
@@ -22,8 +21,8 @@ type controller struct {
   service Service
 }
 
-func NewController(db *firestore.Client) Controller {
-  return &controller{service: NewService(db)}
+func NewController() Controller {
+  return &controller{service: NewService()}
 }
 
 func (c *controller) Upload(w http.ResponseWriter, req *http.Request) {

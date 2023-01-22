@@ -10,8 +10,7 @@ type Repository interface {
   GetById(ctx context.Context, id int64) (*AiImage, error)
 }
 
-type repository struct {
-}
+type repository struct{}
 
 func NewRepository() Repository {
   return &repository{}
@@ -22,7 +21,7 @@ func (r *repository) GetById(ctx context.Context, id int64) (*AiImage, error) {
 
   row := database.Instance.QueryRow(ctx, "SELECT * FROM AiImages WHERE Id = $1", id)
 
-  if err := row.Scan(&image); err != nil {
+  if err := row.StructScan(&image); err != nil {
     return nil, err
   }
 

@@ -3,7 +3,7 @@ package blog
 import "time"
 
 type Post struct {
-  Id           string    `json:"id"`
+  Id           int64     `json:"id"`
   Title        string    `json:"title"`
   Content      string    `json:"content"`
   DateAdded    time.Time `json:"dateAdded"`
@@ -18,7 +18,7 @@ type PostDto struct {
 }
 
 type PostViewModel struct {
-  Id           string    `json:"id"`
+  Id           int64     `json:"id"`
   Title        string    `json:"title"`
   Content      string    `json:"content"`
   DateAdded    time.Time `json:"dateAdded"`
