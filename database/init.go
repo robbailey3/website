@@ -25,12 +25,18 @@ type clientImpl struct {
 var Instance *clientImpl
 
 func getDbConn() string {
-  return fmt.Sprintf("postgres://%s:%s@%s:%s/%s?sslmode=disable",
+  sslStr := ""
+  disabledSSLMode := os.Getenv("DB_SSL_DISABLED") == "true"
+  if disabledSSLMode {
+    sslStr = "sslmode=disable"
+  }
+  return fmt.Sprintf("postgres://%s:%s@%s:%s/%s?%s",
     os.Getenv("DB_USERNAME"),
     os.Getenv("DB_PASSWORD"),
     os.Getenv("DB_HOST"),
     os.Getenv("DB_PORT"),
-    os.Getenv("DB_NAME"))
+    os.Getenv("DB_NAME"),
+    sslStr)
 }
 
 func Init() error {
