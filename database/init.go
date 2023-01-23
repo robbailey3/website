@@ -26,7 +26,7 @@ var Instance *clientImpl
 
 func getDbConn() string {
   sslStr := ""
-  disabledSSLMode := os.Getenv("DB_SSL_DISABLED") == "true"
+  disabledSSLMode := os.Getenv("DB_SSLMODE_DISABLED") == "true"
   if disabledSSLMode {
     sslStr = "sslmode=disable"
   }
