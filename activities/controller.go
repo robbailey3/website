@@ -1,7 +1,6 @@
 package activities
 
 import (
-  "cloud.google.com/go/firestore"
   "encoding/json"
   "github.com/go-chi/chi/v5"
   "github.com/gookit/slog"
@@ -22,8 +21,8 @@ type controller struct {
   service Service
 }
 
-func NewController(db *firestore.Client) Controller {
-  service, err := NewService(db)
+func NewController() Controller {
+  service, err := NewService()
   if err != nil {
     // TODO: Handle this error better
     log.Println(err)
@@ -101,7 +100,7 @@ func (c *controller) HandleWebhookPost(w http.ResponseWriter, req *http.Request)
     return
   }
 
-  if err := c.service.GetNewActivity(req.Context(), request.ObjectId); err != nil {
+  if err := c.service.HandleActivityChange(req.Context(), request.ObjectId); err != nil {
     slog.Error(err)
     w.WriteHeader(http.StatusInternalServerError)
     return

@@ -14,11 +14,11 @@ import (
 func setupRoutes(db *firestore.Client, router chi.Router) {
   router.Route("/api", func(r chi.Router) {
     // TODO: Standardise these
-    blog.SetupBlogRoutes(db, r)
-    photos.InitPhotoRoutes(db, r)
+    blog.SetupBlogRoutes(r)
+    photos.InitPhotoRoutes(r)
     config.SetupConfigRoutes(r)
-    tasks.InitTasksRoutes(r, db)
-    image.InitImageRoutes(r, db)
-    activities.SetupActivityRoutes(r, db)
+    tasks.InitTasksRoutes(r)
+    image.InitImageRoutes(r)
+    activities.SetupActivityRoutes(r)
   })
 }

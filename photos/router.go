@@ -1,13 +1,12 @@
 package photos
 
 import (
-  "cloud.google.com/go/firestore"
   "github.com/go-chi/chi/v5"
   "github.com/robbailey3/website-api/middleware"
 )
 
-func InitPhotoRoutes(db *firestore.Client, router chi.Router) {
-  r := NewRepository(db)
+func InitPhotoRoutes(router chi.Router) {
+  r := NewRepository()
   s := NewService(r)
   c := NewController(s)
 

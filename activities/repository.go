@@ -2,115 +2,125 @@ package activities
 
 import (
   "context"
-  "log"
-  "time"
-
-  "cloud.google.com/go/firestore"
-  "google.golang.org/api/iterator"
-  "google.golang.org/grpc/codes"
-  "google.golang.org/grpc/status"
+  "github.com/robbailey3/website-api/database"
 )
 
 type Repository interface {
   GetActivities(ctx context.Context, limit, offset int) ([]*Activity, error)
+  GetSegments(ctx context.Context, activityId int64) ([]*Segment, error)
+  GetSplits(ctx context.Context, activityId int64) ([]*Split, error)
   GetActivityById(ctx context.Context, id string) (*Activity, error)
   GetActivityByStravaId(ctx context.Context, id int64) (*Activity, error)
-  UpsertActivity(ctx context.Context, activity *CreateActivityRequest) error
+  UpsertActivity(ctx context.Context, activity *CreateActivityRequest) (int64, error)
 }
 
 type repository struct {
-  collection *firestore.CollectionRef
 }
 
-func NewRepository(db *firestore.Client) Repository {
-  return &repository{collection: db.Collection("activities")}
+func NewRepository() Repository {
+  return &repository{}
 }
 
 func (r *repository) GetActivities(ctx context.Context, limit, offset int) ([]*Activity, error) {
   activities := []*Activity{}
 
-  docs := r.collection.Limit(10).OrderBy("DateModified", firestore.Desc).
-    Limit(limit).
-    Offset(offset).
-    Documents(ctx)
-
-  for {
-    var currentDoc Activity
-
-    doc, err := docs.Next()
-
-    if err == iterator.Done {
-      return activities, nil
-    }
-
-    if err := doc.DataTo(&currentDoc); err != nil {
-      return nil, err
-    }
-
-    currentDoc.Id = doc.Ref.ID
-
-    activities = append(activities, &currentDoc)
-  }
-}
-
-func (r *repository) GetActivityById(ctx context.Context, id string) (*Activity, error) {
-  doc, err := r.collection.Doc(id).Get(ctx)
-
-  if status.Code(err) == codes.NotFound {
-    log.Println("Not found")
-  }
-
-  var activity Activity
-
-  err = doc.DataTo(&activity)
+  rows, err := database.Instance.Query(ctx, "SELECT * FROM Activities LIMIT $1 OFFSET $2", limit, offset)
 
   if err != nil {
     return nil, err
   }
 
+  for rows.Next() {
+    var activity Activity
+
+    if err := rows.StructScan(&activity); err != nil {
+      return nil, err
+    }
+
+    activities = append(activities, &activity)
+  }
+
+  return activities, nil
+}
+
+func (r *repository) GetSegments(ctx context.Context, activityId int64) ([]*Segment, error) {
+  segments := []*Segment{}
+
+  rows, err := database.Instance.Query(ctx, "SELECT id, name, elapsedtime, movingtime, distance FROM activitysegment WHERE activityid = $1", activityId)
+
+  if err != nil {
+    return nil, err
+  }
+
+  for rows.Next() {
+    var segment Segment
+
+    if err := rows.StructScan(&segment); err != nil {
+      return nil, err
+    }
+
+    segments = append(segments, &segment)
+  }
+
+  return segments, nil
+}
+
+func (r *repository) GetSplits(ctx context.Context, activityId int64) ([]*Split, error) {
+  splits := []*Split{}
+
+  rows, err := database.Instance.Query(ctx, "SELECT id, distance, elapsedtime, movingtime, elevationdifference, averagespeed FROM activitysplit WHERE activityid = $1", activityId)
+
+  if err != nil {
+    return nil, err
+  }
+
+  for rows.Next() {
+    var split Split
+
+    if err := rows.StructScan(&split); err != nil {
+      return nil, err
+    }
+
+    splits = append(splits, &split)
+  }
+
+  return splits, nil
+}
+
+func (r *repository) GetActivityById(ctx context.Context, id string) (*Activity, error) {
+  row := database.Instance.QueryRow(ctx, "SELECT * FROM activities WHERE id = $1", id)
+  var activity Activity
+  if err := row.StructScan(&activity); err != nil {
+    return nil, err
+  }
   return &activity, nil
 }
 
 func (r *repository) GetActivityByStravaId(ctx context.Context, id int64) (*Activity, error) {
-  docs, err := r.collection.Where("StravaId", "==", id).Limit(1).Documents(ctx).GetAll()
-
-  if err != nil {
+  row := database.Instance.QueryRow(ctx, "SELECT id FROM activities WHERE stravaid = $1", id)
+  var activity Activity
+  if err := row.StructScan(&activity); err != nil {
     return nil, err
   }
-
-  for _, doc := range docs {
-    var activity Activity
-
-    if err := doc.DataTo(&activity); err != nil {
-      return nil, err
-    }
-    activity.Id = doc.Ref.ID
-    return &activity, nil
-  }
-
-  return nil, err
+  return &activity, nil
 }
 
-func (r *repository) UpsertActivity(ctx context.Context, activity *CreateActivityRequest) error {
-  existingDoc, err := r.GetActivityByStravaId(ctx, activity.StravaId)
+func (r *repository) UpsertActivity(ctx context.Context, activity *CreateActivityRequest) (int64, error) {
+  result, err := database.Instance.NamedQueryRow(
+    ctx,
+    `INSERT INTO activities 
+    (stravaid, type, name, description, distance, movingtime, elapsedtime, totalelevationgain, startdate, startdatelocal, gearname, mappolyline, dateadded, datemodified)
+    VALUES (:stravaid, :type, :name, :description, :distance, :movingtime, :elapsedtime, :totalelevationgain, :startdate, :startdatelocal, :gearname, :mappolyline, :dateadded, :datemodified)
+    ON CONFLICT (stravaid) DO UPDATE SET name = :name, description = :description RETURNING id;`,
+    activity,
+  )
 
   if err != nil {
-    return err
+    return 0, err
   }
-  activity.DateAdded = time.Now()
-  activity.DateModified = time.Now()
-  if existingDoc != nil {
-    _, err := r.collection.Doc(existingDoc.Id).Set(ctx, map[string]interface{}{
-      "Name":        activity.Name,
-      "Description": activity.Description,
-    }, firestore.MergeAll)
-    if err != nil {
-      return err
-    }
+  var id int64
+  if err := result.Scan(&id); err != nil {
+    return 0, err
   }
-  _, _, err = r.collection.Add(ctx, activity)
-  if err != nil {
-    return err
-  }
-  return nil
+  return id, nil
 }

@@ -1,37 +1,36 @@
 package tasks
 
 import (
-	"cloud.google.com/go/firestore"
-	"context"
+  "context"
 )
 
 type Service interface {
-	GetTasks(ctx context.Context) ([]*Task, error)
-	CreateTask(ctx context.Context, task *Task) error
-	UpdateTask(ctx context.Context, id string, request *UpdateTaskRequest) error
-	DeleteTask(ctx context.Context, id string) error
+  GetTasks(ctx context.Context) ([]*Task, error)
+  CreateTask(ctx context.Context, task *Task) error
+  UpdateTask(ctx context.Context, id int64, request *UpdateTaskRequest) error
+  DeleteTask(ctx context.Context, id int64) error
 }
 
 type service struct {
-	repository Repository
+  repository Repository
 }
 
-func NewService(db *firestore.Client) Service {
-	return &service{repository: NewRepository(db)}
+func NewService() Service {
+  return &service{repository: NewRepository()}
 }
 
 func (s *service) GetTasks(ctx context.Context) ([]*Task, error) {
-	return s.repository.Get(ctx)
+  return s.repository.Get(ctx)
 }
 
 func (s *service) CreateTask(ctx context.Context, task *Task) error {
-	return s.repository.Create(ctx, task)
+  return s.repository.Create(ctx, task)
 }
 
-func (s *service) UpdateTask(ctx context.Context, id string, request *UpdateTaskRequest) error {
-	return s.repository.Update(ctx, id, request.Title, request.Completed)
+func (s *service) UpdateTask(ctx context.Context, id int64, request *UpdateTaskRequest) error {
+  return s.repository.Update(ctx, id, request.Title, request.Completed)
 }
 
-func (s *service) DeleteTask(ctx context.Context, id string) error {
-	return s.repository.Delete(ctx, id)
+func (s *service) DeleteTask(ctx context.Context, id int64) error {
+  return s.repository.Delete(ctx, id)
 }

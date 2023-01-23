@@ -58,7 +58,19 @@ func (c *controller) GetPosts(w http.ResponseWriter, req *http.Request) {
 }
 
 func (c *controller) GetPost(w http.ResponseWriter, req *http.Request) {
-  posts, err := c.service.GetPost(req.Context(), chi.URLParam(req, "id"))
+  id, err := strconv.ParseInt(chi.URLParam(req, "id"), 10, 64)
+
+  if err != nil {
+    response.BadRequest(w, "Bad id")
+    return
+  }
+
+  if id == 0 {
+    response.BadRequest(w, "No id")
+    return
+  }
+
+  posts, err := c.service.GetPost(req.Context(), id)
 
   if err != nil {
     slog.Println(err.Error())
@@ -131,7 +143,19 @@ func (c *controller) UpdatePost(w http.ResponseWriter, req *http.Request) {
     return
   }
 
-  if err := c.service.UpdatePost(req.Context(), chi.URLParam(req, "id"), &request); err != nil {
+  id, err := strconv.ParseInt(chi.URLParam(req, "id"), 10, 64)
+
+  if err != nil {
+    response.BadRequest(w, "Bad id")
+    return
+  }
+
+  if id == 0 {
+    response.BadRequest(w, "No id")
+    return
+  }
+
+  if err := c.service.UpdatePost(req.Context(), id, &request); err != nil {
     if _, ok := err.(*exception.NotFoundError); ok {
       response.NotFound(w)
       return
@@ -145,7 +169,17 @@ func (c *controller) UpdatePost(w http.ResponseWriter, req *http.Request) {
 }
 
 func (c *controller) DeletePost(w http.ResponseWriter, req *http.Request) {
-  id := chi.URLParam(req, "id")
+  id, err := strconv.ParseInt(chi.URLParam(req, "id"), 10, 64)
+
+  if err != nil {
+    response.BadRequest(w, "Bad id")
+    return
+  }
+
+  if id == 0 {
+    response.BadRequest(w, "No id")
+    return
+  }
 
   if err := c.service.DeletePost(req.Context(), id); err != nil {
     response.ServerError(w, err)

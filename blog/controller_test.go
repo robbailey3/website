@@ -131,11 +131,11 @@ func TestController_GetPost(t *testing.T) {
   t.Run("should call the get post method of the ServiceImpl and pass in the Id", func(t *testing.T) {
     sut := createNewTestServer(t)
 
-    testId := 1234
+    testId := int64(1234)
 
     request := httptest.NewRequest(http.MethodGet, fmt.Sprintf("/%d", testId), nil)
 
-    sut.Service.EXPECT().GetPost(gomock.Any(), gomock.Eq(fmt.Sprintf("%d", testId))).AnyTimes().Return(nil, errors.New("kaboom"))
+    sut.Service.EXPECT().GetPost(gomock.Any(), gomock.Eq(testId)).AnyTimes().Return(nil, errors.New("kaboom"))
 
     executeRequest(request, sut)
   })
@@ -217,11 +217,11 @@ func TestController_UpdatePost(t *testing.T) {
 
     requestBytes, _ := json.Marshal(requestBody)
 
-    testId := "test-123"
+    testId := int64(123)
 
     sut := createNewTestServer(t)
 
-    request := httptest.NewRequest(http.MethodPatch, fmt.Sprintf("/%s", testId), bytes.NewReader(requestBytes))
+    request := httptest.NewRequest(http.MethodPatch, fmt.Sprintf("/%d", testId), bytes.NewReader(requestBytes))
 
     sut.Service.EXPECT().UpdatePost(gomock.Any(), testId, requestBody).Times(1).Return(nil)
 
@@ -231,11 +231,11 @@ func TestController_UpdatePost(t *testing.T) {
   })
 
   t.Run("should return BadRequest status when no body is passed", func(t *testing.T) {
-    testId := "test-123"
+    testId := int64(123)
 
     sut := createNewTestServer(t)
 
-    request := httptest.NewRequest(http.MethodPatch, fmt.Sprintf("/%s", testId), nil)
+    request := httptest.NewRequest(http.MethodPatch, fmt.Sprintf("/%d", testId), nil)
 
     response := executeRequest(request, sut)
 
@@ -250,11 +250,11 @@ func TestController_UpdatePost(t *testing.T) {
 
     requestBytes, _ := json.Marshal(requestBody)
 
-    testId := "test-123"
+    testId := int64(123)
 
     sut := createNewTestServer(t)
 
-    request := httptest.NewRequest(http.MethodPatch, fmt.Sprintf("/%s", testId), bytes.NewReader(requestBytes))
+    request := httptest.NewRequest(http.MethodPatch, fmt.Sprintf("/%d", testId), bytes.NewReader(requestBytes))
 
     response := executeRequest(request, sut)
 
@@ -269,11 +269,11 @@ func TestController_UpdatePost(t *testing.T) {
 
     requestBytes, _ := json.Marshal(requestBody)
 
-    testId := "test-123"
+    testId := int64(123)
 
     sut := createNewTestServer(t)
 
-    request := httptest.NewRequest(http.MethodPatch, fmt.Sprintf("/%s", testId), bytes.NewReader(requestBytes))
+    request := httptest.NewRequest(http.MethodPatch, fmt.Sprintf("/%d", testId), bytes.NewReader(requestBytes))
 
     sut.Service.EXPECT().UpdatePost(gomock.Any(), testId, requestBody).Times(1).Return(exception.NotFound())
 
@@ -285,11 +285,11 @@ func TestController_UpdatePost(t *testing.T) {
 
 func TestController_DeletePost(t *testing.T) {
   t.Run("should call the DeletePost method of the ServiceImpl with the provided Id", func(t *testing.T) {
-    testId := "test-123"
+    testId := int64(123)
 
     sut := createNewTestServer(t)
 
-    request := httptest.NewRequest(http.MethodDelete, fmt.Sprintf("/%s", testId), nil)
+    request := httptest.NewRequest(http.MethodDelete, fmt.Sprintf("/%d", testId), nil)
 
     sut.Service.EXPECT().DeletePost(gomock.Any(), testId).Times(1).Return(nil)
 
@@ -297,11 +297,11 @@ func TestController_DeletePost(t *testing.T) {
   })
 
   t.Run("should return an accepted response when the ServiceImpl does not return an error", func(t *testing.T) {
-    testId := "test-123"
+    testId := int64(123)
 
     sut := createNewTestServer(t)
 
-    request := httptest.NewRequest(http.MethodDelete, fmt.Sprintf("/%s", testId), nil)
+    request := httptest.NewRequest(http.MethodDelete, fmt.Sprintf("/%d", testId), nil)
 
     sut.Service.EXPECT().DeletePost(gomock.Any(), testId).Times(1).Return(nil)
 
@@ -311,11 +311,11 @@ func TestController_DeletePost(t *testing.T) {
   })
 
   t.Run("should return a server error response when the ServiceImpl returns an error", func(t *testing.T) {
-    testId := "test-123"
+    testId := int64(123)
 
     sut := createNewTestServer(t)
 
-    request := httptest.NewRequest(http.MethodDelete, fmt.Sprintf("/%s", testId), nil)
+    request := httptest.NewRequest(http.MethodDelete, fmt.Sprintf("/%d", testId), nil)
 
     sut.Service.EXPECT().DeletePost(gomock.Any(), testId).Times(1).Return(errors.New("something went wrong"))
 

@@ -2,111 +2,86 @@ package blog
 
 import (
   "context"
+  "database/sql"
+  sq "github.com/Masterminds/squirrel"
+  "github.com/robbailey3/website-api/database"
   "github.com/robbailey3/website-api/exception"
-  "log"
   "time"
-
-  "google.golang.org/api/iterator"
-  "google.golang.org/grpc/codes"
-  "google.golang.org/grpc/status"
-
-  "cloud.google.com/go/firestore"
 )
 
 type Repository interface {
   GetMany(ctx context.Context, limit, offset int) ([]Post, error)
-  GetOne(ctx context.Context, id string) (*Post, error)
-  UpdateOne(ctx context.Context, id string, update *UpdatePostRequest) error
+  GetOne(ctx context.Context, id int64) (*Post, error)
+  UpdateOne(ctx context.Context, id int64, update *UpdatePostRequest) error
   Insert(ctx context.Context, post *PostDto) error
-  Delete(ctc context.Context, id string) error
+  Delete(ctc context.Context, id int64) error
 }
 
 type repository struct {
-  collection *firestore.CollectionRef
+  psql sq.StatementBuilderType
 }
 
-func NewRepository(db *firestore.Client) Repository {
-  return &repository{collection: db.Collection("posts")}
+func NewRepository() Repository {
+  return &repository{
+    psql: sq.StatementBuilder.PlaceholderFormat(sq.Dollar),
+  }
 }
 
 func (r *repository) GetMany(ctx context.Context, limit, offset int) ([]Post, error) {
   var posts []Post
 
-  docs := r.collection.Limit(limit).Offset(offset).OrderBy("DateModified", firestore.Desc).Documents(ctx)
+  query, _, _ := r.psql.Select("*").From("blog").Limit(uint64(limit)).Offset(uint64(offset)).ToSql()
+  rows, err := database.Instance.Query(ctx, query)
 
-  for {
-    var currentDoc Post
+  if err != nil {
+    return nil, err
+  }
 
-    doc, err := docs.Next()
+  for rows.Next() {
+    var post Post
 
-    if err == iterator.Done {
-      return posts, nil
-    }
-
-    if err := doc.DataTo(&currentDoc); err != nil {
+    if err := rows.StructScan(&post); err != nil {
       return nil, err
     }
-
-    currentDoc.Id = doc.Ref.ID
-
-    posts = append(posts, currentDoc)
+    posts = append(posts, post)
   }
+
+  return posts, nil
 }
 
-func (r *repository) GetOne(ctx context.Context, id string) (*Post, error) {
-  doc, err := r.collection.Doc(id).Get(ctx)
-
-  if status.Code(err) == codes.NotFound {
-    log.Println("Not found")
-    return nil, exception.NotFound()
-  }
+func (r *repository) GetOne(ctx context.Context, id int64) (*Post, error) {
+  query, args, _ := r.psql.Select("*").From("blog").Where(sq.Eq{"id": id}).ToSql()
+  row := database.Instance.QueryRow(ctx, query, args...)
 
   var post Post
 
-  err = doc.DataTo(&post)
-
-  if err != nil {
+  if err := row.StructScan(&post); err != nil {
+    if err == sql.ErrNoRows {
+      return nil, exception.NotFound()
+    }
     return nil, err
   }
 
   return &post, nil
 }
 
-func (r *repository) UpdateOne(ctx context.Context, id string, update *UpdatePostRequest) error {
-  _, err := r.collection.Doc(id).Update(ctx, []firestore.Update{
-    {
-      Path:  "Title",
-      Value: update.Title,
-    },
-    {
-      Path:  "Content",
-      Value: update.Content,
-    },
-    {
-      Path:  "DateModified",
-      Value: time.Now(),
-    },
-  })
+func (r *repository) UpdateOne(ctx context.Context, id int64, update *UpdatePostRequest) error {
+  query, args, _ := r.psql.Update("blog").Set("title", update.Title).Set("content", update.Content).Set("datemodified", time.Now()).Where("id", id).ToSql()
+  _, err := database.Instance.Exec(ctx, query, args...)
 
   return err
 }
 
 func (r *repository) Insert(ctx context.Context, post *PostDto) error {
-  _, _, err := r.collection.Add(ctx, post)
+  query, args, _ := r.psql.Insert("blog").Columns("title", "content", "dateadded", "datemodified").Values(post.Title, post.Content, post.DateAdded, post.DateModified).ToSql()
+  _, err := database.Instance.Exec(ctx, query, args)
 
-  if err != nil {
-    if status.Code(err) == codes.NotFound {
-      log.Println("Not found")
-      return exception.NotFound()
-    }
-    return err
-  }
-
-  return nil
+  return err
 }
 
-func (r *repository) Delete(ctx context.Context, id string) error {
-  _, err := r.collection.Doc(id).Delete(ctx)
+func (r *repository) Delete(ctx context.Context, id int64) error {
+  query, args, _ := r.psql.Delete("blog").Where(sq.Eq{"id": id}).ToSql()
+  _, err := database.Instance.Exec(ctx, query, args)
 
   return err
 }

@@ -36,7 +36,7 @@ func (m *MockRepository) EXPECT() *MockRepositoryMockRecorder {
 }
 
 // Delete mocks base method.
-func (m *MockRepository) Delete(ctc context.Context, id string) error {
+func (m *MockRepository) Delete(ctc context.Context, id int64) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Delete", ctc, id)
 	ret0, _ := ret[0].(error)
@@ -65,7 +65,7 @@ func (mr *MockRepositoryMockRecorder) GetMany(ctx, limit, offset interface{}) *g
 }
 
 // GetOne mocks base method.
-func (m *MockRepository) GetOne(ctx context.Context, id string) (*blog.Post, error) {
+func (m *MockRepository) GetOne(ctx context.Context, id int64) (*blog.Post, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetOne", ctx, id)
 	ret0, _ := ret[0].(*blog.Post)
@@ -94,7 +94,7 @@ func (mr *MockRepositoryMockRecorder) Insert(ctx, post interface{}) *gomock.Call
 }
 
 // UpdateOne mocks base method.
-func (m *MockRepository) UpdateOne(ctx context.Context, id string, update *blog.UpdatePostRequest) error {
+func (m *MockRepository) UpdateOne(ctx context.Context, id int64, update *blog.UpdatePostRequest) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "UpdateOne", ctx, id, update)
 	ret0, _ := ret[0].(error)

@@ -1,87 +1,81 @@
 package tasks
 
 import (
-	"cloud.google.com/go/firestore"
-	"context"
-	"google.golang.org/api/iterator"
-	"time"
+  "context"
+  sq "github.com/Masterminds/squirrel"
+  "github.com/robbailey3/website-api/database"
+  "time"
 )
 
 type Repository interface {
-	Get(ctx context.Context) ([]*Task, error)
-	Create(ctx context.Context, task *Task) error
-	Update(ctx context.Context, id string, title string, completed bool) error
-	Delete(ctx context.Context, id string) error
+  Get(ctx context.Context) ([]*Task, error)
+  Create(ctx context.Context, task *Task) error
+  Update(ctx context.Context, id int64, title string, completed bool) error
+  Delete(ctx context.Context, id int64) error
 }
 
 type repository struct {
-	collection *firestore.CollectionRef
+  psql sq.StatementBuilderType
 }
 
-func NewRepository(db *firestore.Client) Repository {
-	return &repository{
-		collection: db.Collection("tasks"),
-	}
+func NewRepository() Repository {
+  return &repository{
+    psql: sq.StatementBuilder.PlaceholderFormat(sq.Dollar),
+  }
 }
 
 func (r *repository) Get(ctx context.Context) ([]*Task, error) {
-	var tasks []*Task
+  var tasks []*Task
+  query, _, _ := r.psql.Select("*").From("tasks").ToSql()
+  rows, err := database.Instance.Query(ctx, query)
 
-	docs := r.collection.OrderBy("DateModified", firestore.Desc).Documents(ctx)
+  if err != nil {
+    return nil, err
+  }
 
-	for {
-		var task Task
+  for rows.Next() {
+    var task Task
 
-		doc, err := docs.Next()
+    if err := rows.StructScan(&task); err != nil {
+      return nil, err
+    }
 
-		if err == iterator.Done {
-			return tasks, nil
-		}
+    tasks = append(tasks, &task)
+  }
 
-		if err := doc.DataTo(&task); err != nil {
-			return nil, err
-		}
-
-		task.Id = doc.Ref.ID
-
-		tasks = append(tasks, &task)
-	}
+  return tasks, nil
 }
 
 func (r *repository) Create(ctx context.Context, task *Task) error {
-	task.DateModified = time.Now()
-	task.DateAdded = time.Now()
+  task.DateModified = time.Now()
+  task.DateAdded = time.Now()
 
-	_, _, err := r.collection.Add(ctx, task)
-
-	if err != nil {
-		return err
-	}
-
-	return nil
+  query, args, _ := r.psql.Insert("tasks").Columns("title", "completed", "dateadded", "datemodified").Values(task.Title, task.Completed, task.DateAdded, task.DateModified).ToSql()
+  if _, err := database.Instance.Exec(
+    ctx,
+    query,
+    args...,
+  ); err != nil {
+    return err
+  }
+  return nil
 }
 
-func (r *repository) Update(ctx context.Context, id string, title string, completed bool) error {
-	_, err := r.collection.Doc(id).Update(ctx, []firestore.Update{
-		{
-			Path:  "Title",
-			Value: title,
-		},
-		{
-			Path:  "Completed",
-			Value: completed,
-		},
-		{
-			Path:  "DateModified",
-			Value: time.Now(),
-		},
-	})
+func (r *repository) Update(ctx context.Context, id int64, title string, completed bool) error {
+  query, args, _ := r.psql.Update("tasks").Set("title", title).Set("completed", completed).Set("datemodified", time.Now()).Where("id", id).ToSql()
 
-	return err
+  _, err := database.Instance.Exec(
+    ctx,
+    query,
+    args...)
+
+  return err
 }
 
-func (r *repository) Delete(ctx context.Context, id string) error {
-	_, err := r.collection.Doc(id).Delete(ctx)
+func (r *repository) Delete(ctx context.Context, id int64) error {
+  query, args, _ := r.psql.Delete("tasks").Where("id", id).ToSql()
 
-	return err
+  _, err := database.Instance.Exec(ctx, query, args...)
+
+  return err
 }

@@ -1,13 +1,12 @@
 package blog
 
 import (
-  "cloud.google.com/go/firestore"
   "github.com/go-chi/chi/v5"
   "github.com/robbailey3/website-api/middleware"
 )
 
-func SetupBlogRoutes(db *firestore.Client, router chi.Router) {
-  repo := NewRepository(db)
+func SetupBlogRoutes(router chi.Router) {
+  repo := NewRepository()
   NewService(repo)
   c := NewController(instance)
 

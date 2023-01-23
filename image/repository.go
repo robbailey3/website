@@ -1,47 +1,50 @@
 package image
 
 import (
-	"cloud.google.com/go/firestore"
-	"context"
+  "context"
+  sq "github.com/Masterminds/squirrel"
+  "github.com/robbailey3/website-api/database"
 )
 
 type Repository interface {
-	Insert(ctx context.Context, image *AiImage) (*string, error)
-	GetById(ctx context.Context, id string) (*AiImage, error)
+  Insert(ctx context.Context, image *AiImage) (*int64, error)
+  GetById(ctx context.Context, id int64) (*AiImage, error)
 }
 
 type repository struct {
-	collection *firestore.CollectionRef
+  psql sq.StatementBuilderType
 }
 
-func NewRepository(db *firestore.Client) Repository {
-	return &repository{
-		collection: db.Collection("ai-images"),
-	}
+func NewRepository() Repository {
+  return &repository{
+    psql: sq.StatementBuilder.PlaceholderFormat(sq.Dollar),
+  }
 }
 
-func (r *repository) GetById(ctx context.Context, id string) (*AiImage, error) {
-	var image AiImage
+func (r *repository) GetById(ctx context.Context, id int64) (*AiImage, error) {
+  var image AiImage
+  query, args, _ := r.psql.Select("*").From("AiImages").Where(sq.Eq{"id": id}).ToSql()
+  row := database.Instance.QueryRow(ctx, query, args...)
 
-	doc, err := r.collection.Doc(id).Get(ctx)
+  if err := row.StructScan(&image); err != nil {
+    return nil, err
+  }
 
-	if err != nil {
-		return nil, err
-	}
-
-	if err = doc.DataTo(&image); err != nil {
-		return nil, err
-	}
-
-	return &image, nil
+  return &image, nil
 }
 
-func (r *repository) Insert(ctx context.Context, image *AiImage) (*string, error) {
-	doc, _, err := r.collection.Add(ctx, image)
+func (r *repository) Insert(ctx context.Context, image *AiImage) (*int64, error) {
+  query, args, _ := r.psql.Insert("AiImages").Columns("Path", "DateAdded", "ExpiryTime").Values(image.Path, image.DateAdded, image.ExpiryTime).ToSql()
+  result, err := database.Instance.Exec(ctx, query, args...)
 
-	if err != nil {
-		return nil, err
-	}
+  if err != nil {
+    return nil, err
+  }
 
-	return &doc.ID, nil
+  id, err := result.LastInsertId()
+
+  if err != nil {
+    return nil, err
+  }
+  return &id, nil
 }
