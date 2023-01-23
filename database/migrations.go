@@ -3,6 +3,7 @@ package database
 import (
   "context"
   "fmt"
+  "io/fs"
   "os"
   "time"
 )
@@ -25,13 +26,13 @@ func CreateMigrationsTable() error {
   return nil
 }
 
-func GetPendingMigrations(entries []os.DirEntry, runMigrations []*Migration) []os.DirEntry {
+func GetPendingMigrations(entries []fs.DirEntry, runMigrations []*Migration) []os.DirEntry {
   var result []os.DirEntry
 
   for _, entry := range entries {
     entryRan := false
     for _, migration := range runMigrations {
-      if migration.Filename == entry.Name() {
+      if migration.Filename == fmt.Sprintf("%s/%s", "./dbMigrations", entry.Name()) {
         entryRan = true
       }
     }

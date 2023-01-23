@@ -2,7 +2,10 @@ package blog
 
 import (
   "context"
+  "database/sql"
+  sq "github.com/Masterminds/squirrel"
   "github.com/robbailey3/website-api/database"
+  "github.com/robbailey3/website-api/exception"
   "time"
 )
 
@@ -15,16 +18,20 @@ type Repository interface {
 }
 
 type repository struct {
+  psql sq.StatementBuilderType
 }
 
 func NewRepository() Repository {
-  return &repository{}
+  return &repository{
+    psql: sq.StatementBuilder.PlaceholderFormat(sq.Dollar),
+  }
 }
 
 func (r *repository) GetMany(ctx context.Context, limit, offset int) ([]Post, error) {
   var posts []Post
 
-  rows, err := database.Instance.Query(ctx, "SELECT * FROM Blog LIMIT $1 OFFSET $2", limit, offset)
+  query, _, _ := r.psql.Select("*").From("blog").Limit(uint64(limit)).Offset(uint64(offset)).ToSql()
+  rows, err := database.Instance.Query(ctx, query)
 
   if err != nil {
     return nil, err
@@ -43,11 +50,15 @@ func (r *repository) GetMany(ctx context.Context, limit, offset int) ([]Post, er
 }
 
 func (r *repository) GetOne(ctx context.Context, id int64) (*Post, error) {
-  row := database.Instance.QueryRow(ctx, "SELECT * FROM blog WHERE id = $1", id)
+  query, args, _ := r.psql.Select("*").From("blog").Where(sq.Eq{"id": id}).ToSql()
+  row := database.Instance.QueryRow(ctx, query, args...)
 
   var post Post
 
   if err := row.StructScan(&post); err != nil {
+    if err == sql.ErrNoRows {
+      return nil, exception.NotFound()
+    }
     return nil, err
   }
 
@@ -55,19 +66,22 @@ func (r *repository) GetOne(ctx context.Context, id int64) (*Post, error) {
 }
 
 func (r *repository) UpdateOne(ctx context.Context, id int64, update *UpdatePostRequest) error {
-  _, err := database.Instance.Exec(ctx, "UPDATE blog SET title = $1, content = $2, datemodified = $3 WHERE id = $4;", update.Title, update.Content, time.Now(), id)
+  query, args, _ := r.psql.Update("blog").Set("title", update.Title).Set("content", update.Content).Set("datemodified", time.Now()).Where("id", id).ToSql()
+  _, err := database.Instance.Exec(ctx, query, args...)
 
   return err
 }
 
 func (r *repository) Insert(ctx context.Context, post *PostDto) error {
-  _, err := database.Instance.Exec(ctx, "INSERT INTO blog (title, content, dateadded, datemodified) VALUES ($1, $2, $3, $4);", post.Title, post.Content, post.DateAdded, post.DateModified)
+  query, args, _ := r.psql.Insert("blog").Columns("title", "content", "dateadded", "datemodified").Values(post.Title, post.Content, post.DateAdded, post.DateModified).ToSql()
+  _, err := database.Instance.Exec(ctx, query, args)
 
   return err
 }
 
 func (r *repository) Delete(ctx context.Context, id int64) error {
-  _, err := database.Instance.Exec(ctx, "DELETE FROM blog WHERE id = $1", id)
+  query, args, _ := r.psql.Delete("blog").Where(sq.Eq{"id": id}).ToSql()
+  _, err := database.Instance.Exec(ctx, query, args)
 
   return err
 }
