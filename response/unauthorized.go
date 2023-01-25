@@ -1,12 +1,12 @@
 package response
 
 import (
-	"encoding/json"
-	"github.com/gookit/slog"
-	"net/http"
-	"time"
+  "encoding/json"
+  "github.com/gookit/slog"
+  "net/http"
+  "time"
 
-	"github.com/robbailey3/website-api/exception"
+  "github.com/robbailey3/website-api/exception"
 )
 
 func Unauthorized(w http.ResponseWriter, err error) {
@@ -17,7 +17,7 @@ func Unauthorized(w http.ResponseWriter, err error) {
       Success:   false,
       Timestamp: time.Now().Unix(),
       Error: &ErrorResponse{
-        Code:    exception.UNAUTHORIZED,
+        Code:    exception.Unauthorized,
         Message: "Unauthorized",
       },
     },

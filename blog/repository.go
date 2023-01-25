@@ -34,7 +34,7 @@ func (r *repository) GetMany(ctx context.Context, limit, offset int) ([]Post, er
   rows, err := database.Instance.Query(ctx, query)
 
   if err != nil {
-    return nil, err
+    return nil, exception.DbError(err, "Failed to Get Blog Posts")
   }
 
   for rows.Next() {

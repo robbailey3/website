@@ -13,7 +13,7 @@ func BadRequest(w http.ResponseWriter, msg string) {
     BaseResponse: BaseResponse{
       Timestamp: time.Now().Unix(),
       Error: &ErrorResponse{
-        Code:    exception.BAD_REQUEST,
+        Code:    exception.BadRequest,
         Message: msg,
       },
     },

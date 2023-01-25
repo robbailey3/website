@@ -12,7 +12,7 @@ func NotFound(w http.ResponseWriter) {
     BaseResponse{
       Success:   false,
       Timestamp: time.Now().Unix(),
-      Error:     &ErrorResponse{Code: exception.NOT_FOUND, Message: "Not found"},
+      Error:     &ErrorResponse{Code: exception.NotFound, Message: "Not found"},
     },
   })
 

@@ -15,7 +15,7 @@ func ValidationError(w http.ResponseWriter, errors []*validation.ValidationError
     BaseResponse: BaseResponse{
       Timestamp: time.Now().Unix(),
       Error: &ErrorResponse{
-        Code:             exception.BAD_REQUEST,
+        Code:             exception.BadRequest,
         Message:          "Bad Request",
         ValidationErrors: errors,
       },

@@ -20,7 +20,7 @@ func ServerError(w http.ResponseWriter, err error) {
       Success:   false,
       Timestamp: time.Now().Unix(),
       Error: &ErrorResponse{
-        Code:    exception.SERVER_ERROR,
+        Code:    exception.ServerError,
         Message: "Server error",
       },
     },
