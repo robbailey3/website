@@ -15,7 +15,6 @@ import (
   "unsafe"
 
   "github.com/jellydator/ttlcache/v3"
-  "github.com/robbailey3/website-api/exception"
   "github.com/robbailey3/website-api/validation"
   "google.golang.org/genproto/googleapis/cloud/vision/v1"
   "google.golang.org/grpc/codes"
@@ -187,7 +186,7 @@ func (s *service) getImageById(ctx context.Context, id int64) (io.Reader, error)
 
   if err != nil {
     if status.Code(err) == codes.NotFound {
-      return nil, exception.NotFound()
+      return nil, errors.NotFound()
     }
   }
 

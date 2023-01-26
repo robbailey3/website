@@ -5,7 +5,6 @@ import (
   "database/sql"
   sq "github.com/Masterminds/squirrel"
   "github.com/robbailey3/website-api/database"
-  "github.com/robbailey3/website-api/exception"
   "time"
 )
 
@@ -34,7 +33,7 @@ func (r *repository) GetMany(ctx context.Context, limit, offset int) ([]Post, er
   rows, err := database.Instance.Query(ctx, query)
 
   if err != nil {
-    return nil, exception.DbError(err, "Failed to Get Blog Posts")
+    return nil, errors.DbError(err, "Failed to Get Blog Posts")
   }
 
   for rows.Next() {
@@ -57,7 +56,7 @@ func (r *repository) GetOne(ctx context.Context, id int64) (*Post, error) {
 
   if err := row.StructScan(&post); err != nil {
     if err == sql.ErrNoRows {
-      return nil, exception.NotFound()
+      return nil, errors.NotFound()
     }
     return nil, err
   }

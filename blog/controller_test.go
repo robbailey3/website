@@ -8,7 +8,6 @@ import (
   "github.com/golang/mock/gomock"
   "github.com/pkg/errors"
   "github.com/robbailey3/website-api/blog"
-  "github.com/robbailey3/website-api/exception"
   mock_blog "github.com/robbailey3/website-api/mocks/blog"
   "net/http"
   "net/http/httptest"
@@ -107,7 +106,7 @@ func TestController_GetPost(t *testing.T) {
   t.Run("should return 404 when the ServiceImpl returns a not found exception", func(t *testing.T) {
     sut := createNewTestServer(t)
 
-    sut.Service.EXPECT().GetPost(gomock.Any(), gomock.Any()).AnyTimes().Return(nil, exception.NotFound())
+    sut.Service.EXPECT().GetPost(gomock.Any(), gomock.Any()).AnyTimes().Return(nil, errors.NotFound())
 
     request := httptest.NewRequest(http.MethodGet, "/1234", nil)
 
@@ -275,7 +274,7 @@ func TestController_UpdatePost(t *testing.T) {
 
     request := httptest.NewRequest(http.MethodPatch, fmt.Sprintf("/%d", testId), bytes.NewReader(requestBytes))
 
-    sut.Service.EXPECT().UpdatePost(gomock.Any(), testId, requestBody).Times(1).Return(exception.NotFound())
+    sut.Service.EXPECT().UpdatePost(gomock.Any(), testId, requestBody).Times(1).Return(errors.NotFound())
 
     response := executeRequest(request, sut)
 

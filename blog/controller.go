@@ -2,7 +2,6 @@ package blog
 
 import (
   "encoding/json"
-  "github.com/robbailey3/website-api/exception"
   "github.com/robbailey3/website-api/validation"
   "io"
   "net/http"
@@ -74,7 +73,7 @@ func (c *controller) GetPost(w http.ResponseWriter, req *http.Request) {
 
   if err != nil {
     slog.Println(err.Error())
-    if _, ok := err.(*exception.NotFoundError); ok {
+    if _, ok := err.(*errors.NotFoundError); ok {
       response.NotFound(w)
       return
     }
@@ -156,7 +155,7 @@ func (c *controller) UpdatePost(w http.ResponseWriter, req *http.Request) {
   }
 
   if err := c.service.UpdatePost(req.Context(), id, &request); err != nil {
-    if _, ok := err.(*exception.NotFoundError); ok {
+    if _, ok := err.(*errors.NotFoundError); ok {
       response.NotFound(w)
       return
     }

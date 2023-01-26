@@ -6,8 +6,6 @@ import (
   "github.com/gookit/slog"
   "net/http"
   "time"
-
-  "github.com/robbailey3/website-api/exception"
 )
 
 func ServerError(w http.ResponseWriter, err error) {
@@ -20,7 +18,7 @@ func ServerError(w http.ResponseWriter, err error) {
       Success:   false,
       Timestamp: time.Now().Unix(),
       Error: &ErrorResponse{
-        Code:    exception.ServerError,
+        Code:    errors.ServerError,
         Message: "Server error",
       },
     },

@@ -1,4 +1,8 @@
-package exception
+package errors
+
+import (
+  "github.com/pkg/errors"
+)
 
 type ErrorCode uint8
 
@@ -17,12 +21,12 @@ type ApiError struct {
 }
 
 func (a ApiError) Error() string {
-
+  return errors.Cause(a.Cause).Error()
 }
 
 func NewApiError(err error, status int, detail string) error {
   return &ApiError{
-    Cause:  err,
+    Cause:  errors.Wrap(err, detail),
     Detail: detail,
     Status: status,
   }

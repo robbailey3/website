@@ -4,8 +4,6 @@ import (
   "encoding/json"
   "net/http"
   "time"
-
-  "github.com/robbailey3/website-api/exception"
 )
 
 func BadRequest(w http.ResponseWriter, msg string) {
@@ -13,7 +11,7 @@ func BadRequest(w http.ResponseWriter, msg string) {
     BaseResponse: BaseResponse{
       Timestamp: time.Now().Unix(),
       Error: &ErrorResponse{
-        Code:    exception.BadRequest,
+        Code:    errors.BadRequest,
         Message: msg,
       },
     },

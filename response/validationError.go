@@ -6,7 +6,6 @@ import (
   "time"
 
   "github.com/gookit/slog"
-  "github.com/robbailey3/website-api/exception"
   "github.com/robbailey3/website-api/validation"
 )
 
@@ -15,7 +14,7 @@ func ValidationError(w http.ResponseWriter, errors []*validation.ValidationError
     BaseResponse: BaseResponse{
       Timestamp: time.Now().Unix(),
       Error: &ErrorResponse{
-        Code:             exception.BadRequest,
+        Code:             errors.BadRequest,
         Message:          "Bad Request",
         ValidationErrors: errors,
       },

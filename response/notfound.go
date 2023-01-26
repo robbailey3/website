@@ -2,7 +2,6 @@ package response
 
 import (
   "encoding/json"
-  "github.com/robbailey3/website-api/exception"
   "net/http"
   "time"
 )
@@ -12,7 +11,7 @@ func NotFound(w http.ResponseWriter) {
     BaseResponse{
       Success:   false,
       Timestamp: time.Now().Unix(),
-      Error:     &ErrorResponse{Code: exception.NotFound, Message: "Not found"},
+      Error:     &ErrorResponse{Code: errors.NotFound, Message: "Not found"},
     },
   })
 
