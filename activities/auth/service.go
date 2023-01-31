@@ -22,6 +22,7 @@ type service struct {
   accessTokenExpiryTime time.Time
   stravaClientSecret    string
   stravaClientId        string
+  repository            Repository
 }
 
 func NewService() (Service, error) {
@@ -37,13 +38,14 @@ func NewService() (Service, error) {
   s := &service{
     stravaClientSecret: clientSecret,
     stravaClientId:     clientId,
+    repository:         NewRepository(),
   }
 
   go func() {
     ctx, cancel := context.WithTimeout(context.Background(), time.Second*10)
     defer cancel()
 
-    refreshToken, err := s.getRefreshToken(ctx)
+    refreshToken, err := s.repository.GetRefreshToken(ctx)
 
     if err != nil {
       slog.Warn(errors.Wrap(err, "Failed to get refresh token from store"))
@@ -103,7 +105,7 @@ func (s *service) RefreshAccessToken() error {
 
   ctx, cancel := context.WithTimeout(context.Background(), time.Second*10)
   defer cancel()
-  if err := s.saveRefreshToken(ctx, s.refreshToken); err != nil {
+  if err := s.repository.SetRefreshToken(ctx, s.refreshToken); err != nil {
     return err
   }
   return nil
@@ -127,14 +129,6 @@ func getClientId() (string, error) {
     return "", err
   }
   return clientId, nil
-}
-
-func (s *service) saveRefreshToken(ctx context.Context, token string) error {
-  return secrets.UpdateSecret(ctx, "STRAVA_REFRESH_TOKEN", token)
-}
-
-func (s *service) getRefreshToken(ctx context.Context) (string, error) {
-  return secrets.GetSecret(ctx, "STRAVA_REFRESH_TOKEN")
 }
 
 func (s *service) accessTokenIsValid() bool {
