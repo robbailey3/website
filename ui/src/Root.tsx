@@ -5,7 +5,7 @@ const Root = () => {
 	return (
 		<>
 			<Header />
-			<div id="main" className="mt-18">
+			<div id="main">
 				<Outlet />
 			</div>
 		</>
