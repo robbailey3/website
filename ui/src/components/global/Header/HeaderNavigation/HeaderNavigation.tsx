@@ -57,7 +57,7 @@ const HeaderNavigation = () => {
 				<HeaderNavigationLink to="/" onClick={toggleMobileNav}>
 					Home
 				</HeaderNavigationLink>
-				<HeaderNavigationLink to="/blog" onClick={toggleMobileNav}>
+				{/* <HeaderNavigationLink to="/blog" onClick={toggleMobileNav}>
 					Blog
 				</HeaderNavigationLink>
 				<HeaderNavigationLink to="/cv" onClick={toggleMobileNav}>
@@ -65,7 +65,7 @@ const HeaderNavigation = () => {
 				</HeaderNavigationLink>
 				<HeaderNavigationLink to="/experiments" onClick={toggleMobileNav}>
 					Experiments
-				</HeaderNavigationLink>
+				</HeaderNavigationLink> */}
 			</ul>
 		</div>
 	);
