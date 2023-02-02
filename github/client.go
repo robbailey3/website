@@ -7,10 +7,11 @@ import (
   "io"
   "net/http"
   "os"
+  "strconv"
 )
 
 type Client interface {
-  GetRepositories(username string) ([]*RepositoryViewModel, error)
+  GetRepositories(request GetReposRequest) ([]*RepositoryViewModel, error)
   GetRepository()
 }
 
@@ -19,19 +20,25 @@ type clientImpl struct {
   apiVersion string
 }
 
-func (c *clientImpl) GetRepositories(username string) ([]*RepositoryViewModel, error) {
+func (c *clientImpl) GetRepositories(request GetReposRequest) ([]*RepositoryViewModel, error) {
   httpClient := http.Client{}
 
-  request, err := http.NewRequest(http.MethodGet, fmt.Sprintf("%s/users/%s/repos", c.urlBase, username), nil)
+  req, err := http.NewRequest(http.MethodGet, fmt.Sprintf("%s/users/%s/repos", c.urlBase, request.Username), nil)
 
   if err != nil {
     return nil, err
   }
+  query := req.URL.Query()
+  query.Set("sort", request.Sort)
+  query.Set("direction", request.Direction)
+  query.Set("per_page", strconv.Itoa(request.PerPage))
+  query.Set("page", strconv.Itoa(request.Page))
+  req.URL.RawQuery = query.Encode()
 
-  request.Header.Add("X-GitHub-Api-Version", c.apiVersion)
-  request.Header.Add("Authorization", fmt.Sprint("Bearer ", os.Getenv("GH_ACCESS_TOKEN")))
+  req.Header.Add("X-GitHub-Api-Version", c.apiVersion)
+  req.Header.Add("Authorization", fmt.Sprint("Bearer ", os.Getenv("GH_ACCESS_TOKEN")))
 
-  resp, err := httpClient.Do(request)
+  resp, err := httpClient.Do(req)
 
   if err != nil {
     return nil, err
