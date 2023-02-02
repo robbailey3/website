@@ -7,10 +7,11 @@ export interface IconLinkProps {
 	href: string;
 	alt: string;
 	size?: 'sm' | 'md' | 'lg';
+	target?: '_blank' | '_self' | '_parent' | 'top';
 }
 
 const IconLink = (props: IconLinkProps) => {
-	const { icon, href, alt, size } = props;
+	const { icon, href, alt, size, target } = props;
 
 	const getSizeClass = () => {
 		switch (size) {
@@ -25,8 +26,18 @@ const IconLink = (props: IconLinkProps) => {
 	};
 
 	return (
-		<a href={href} className={clsx(getSizeClass(), 'hover:opacity-75')}>
+		<a
+			href={href}
+			className={clsx(getSizeClass(), 'hover:opacity-75')}
+			target={target}
+			rel={target == '_blank' ? 'noopener noreferrer' : ''}
+		>
 			<span className="sr-only">{alt}</span>
+			{target == '_blank' ? (
+				<span className="sr-only">(Opens in a new window)</span>
+			) : (
+				''
+			)}
 			<FontAwesomeIcon icon={icon} />
 		</a>
 	);

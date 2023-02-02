@@ -9,7 +9,7 @@ const Header = () => {
 				<a
 					id="skip-link"
 					href="#main"
-					className="sr-only focus:not-sr-only focus:p-4 focus:bg-white focus:shadow focus:rounded focus:text-black focus:absolute focus:m-4"
+					className="sr-only focus:not-sr-only focus:p-4 focus:bg-white focus:shadow focus:rounded focus:text-black focus:absolute focus:m-4 focus:z-50"
 				>
 					Skip to content
 				</a>

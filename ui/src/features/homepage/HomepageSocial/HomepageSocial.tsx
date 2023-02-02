@@ -19,6 +19,7 @@ const HomepageSocial = () => {
 							icon={faGithub}
 							href="https://github.com/robbailey3"
 							alt="GitHub"
+							target="_blank"
 						/>
 					</FlexItem>
 					<FlexItem>
@@ -26,6 +27,7 @@ const HomepageSocial = () => {
 							icon={faLinkedin}
 							href="https://www.linkedin.com/in/robbailey3/"
 							alt="LinkedIn"
+							target="_blank"
 						/>
 					</FlexItem>
 					<FlexItem>
@@ -33,6 +35,7 @@ const HomepageSocial = () => {
 							icon={faStackOverflow}
 							href="https://stackoverflow.com/users/7959497/rob-bailey"
 							alt="Stack Overflow"
+							target="_blank"
 						/>
 					</FlexItem>
 				</Flex>

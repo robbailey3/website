@@ -50,7 +50,7 @@ const HomepageTech = () => {
 		<Container className="py-32">
 			<AnimateOnEnter
 				initial={{ opacity: 0 }}
-				animation={{ opacity: 1, transition: { duration: 5 } }}
+				animation={{ opacity: 1, transition: { duration: 1 } }}
 			>
 				<h2>Technologies</h2>
 			</AnimateOnEnter>
