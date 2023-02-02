@@ -4,7 +4,7 @@
 
 html,
 body {
-	@apply bg-dark text-white;
+	@apply bg-dark text-white font-sans-serif;
 	font-size: 18px;
 }
 
@@ -14,7 +14,7 @@ h3,
 h4,
 h5,
 h6 {
-	@apply font-serif leading-7 mb-8;
+	@apply leading-7 mb-8 font-bold;
 }
 
 h1 {
@@ -36,4 +36,9 @@ h4 {
 h5,
 h6 {
 	@apply text-lg italic;
+}
+
+*:focus {
+	outline: 2px dashed white;
+	outline-offset: -2px;
 }

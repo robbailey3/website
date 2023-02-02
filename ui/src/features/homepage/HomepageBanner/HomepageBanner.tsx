@@ -77,7 +77,7 @@ const HomepageBanner = () => {
 									🎓
 								</span>
 								<span className="font-bold">Currently learning: </span>
-								<span className="font-bold">Go</span>
+								<span>Go</span>
 							</p>
 						</div>
 					</AnimateOnEnter>
