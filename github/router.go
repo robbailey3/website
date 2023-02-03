@@ -5,7 +5,8 @@ import (
 )
 
 func SetupRoutes(router chi.Router) {
+  controller := NewController()
   router.Route("/github", func(r chi.Router) {
-    r.Get("/repos", GetRepos)
+    r.Get("/repos", controller.GetRepos)
   })
 }

@@ -10,8 +10,8 @@ import (
   "strconv"
 )
 
-type Client interface {
-  GetRepositories(request GetReposRequest) ([]*RepositoryViewModel, error)
+type ApiClient interface {
+  GetRepositories(request GetReposRequest) ([]*Repository, error)
   GetRepository()
 }
 
@@ -20,7 +20,7 @@ type clientImpl struct {
   apiVersion string
 }
 
-func (c *clientImpl) GetRepositories(request GetReposRequest) ([]*RepositoryViewModel, error) {
+func (c *clientImpl) GetRepositories(request GetReposRequest) ([]*Repository, error) {
   httpClient := http.Client{}
 
   req, err := http.NewRequest(http.MethodGet, fmt.Sprintf("%s/users/%s/repos", c.urlBase, request.Username), nil)
@@ -53,19 +53,13 @@ func (c *clientImpl) GetRepositories(request GetReposRequest) ([]*RepositoryView
   if err != nil {
     return nil, err
   }
-  var repositories []Repository
+  var repositories []*Repository
 
   if err := json.Unmarshal(respBytes, &repositories); err != nil {
     return nil, err
   }
 
-  var repoViewModels []*RepositoryViewModel
-
-  for _, repo := range repositories {
-    repoViewModels = append(repoViewModels, repo.ToViewModel())
-  }
-
-  return repoViewModels, nil
+  return repositories, nil
 }
 
 func (c *clientImpl) GetRepository() {
@@ -73,7 +67,7 @@ func (c *clientImpl) GetRepository() {
   panic("implement me")
 }
 
-func NewClient() Client {
+func NewApiClient() ApiClient {
   return &clientImpl{
     urlBase:    "https://api.github.com",
     apiVersion: "2022-11-28",

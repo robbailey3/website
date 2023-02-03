@@ -6,9 +6,19 @@ import (
   "strconv"
 )
 
-func GetRepos(w http.ResponseWriter, req *http.Request) {
-  client := NewClient()
+type Controller interface {
+  GetRepos(w http.ResponseWriter, req *http.Request)
+}
 
+type controllerImpl struct {
+  service Service
+}
+
+func NewController() Controller {
+  return &controllerImpl{service: NewService()}
+}
+
+func (c *controllerImpl) GetRepos(w http.ResponseWriter, req *http.Request) {
   query := req.URL.Query()
 
   page, err := strconv.Atoi(query.Get("page"))
@@ -30,7 +40,7 @@ func GetRepos(w http.ResponseWriter, req *http.Request) {
     Page:      page,
   }
 
-  repos, err := client.GetRepositories(request)
+  repos, err := c.service.GetRepos(request)
 
   if err != nil {
     response.ServerError(w, err)
