@@ -22,6 +22,7 @@ func Ok(w http.ResponseWriter, data interface{}) {
     return
   }
 
+  w.Header().Set("Content-Type", "application/json")
   w.WriteHeader(http.StatusOK)
   w.Write(resp)
 }
