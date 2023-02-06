@@ -1,6 +1,7 @@
 package hermod
 
 import (
+  "bytes"
   "encoding/json"
   "errors"
   "github.com/gookit/slog"
@@ -10,7 +11,7 @@ import (
 
 type Hermod interface {
   WithHeader(key, value string) Hermod
-  WithBody(body io.Reader) Hermod
+  WithBody(body []byte) Hermod
   WithQueryParam(key, value string) Hermod
   Send(result interface{}) error
 }
@@ -20,7 +21,7 @@ type hermodImpl struct {
   url     string
   headers map[string]string
   params  map[string]string
-  body    io.Reader
+  body    []byte
 }
 
 func New(method string, url string) Hermod {
@@ -43,7 +44,7 @@ func (h *hermodImpl) WithQueryParam(key string, value string) Hermod {
   return h
 }
 
-func (h *hermodImpl) WithBody(body io.Reader) Hermod {
+func (h *hermodImpl) WithBody(body []byte) Hermod {
   h.body = body
   return h
 }
@@ -51,16 +52,16 @@ func (h *hermodImpl) WithBody(body io.Reader) Hermod {
 func (h *hermodImpl) Send(result interface{}) error {
   client := http.Client{}
 
-  request, err := http.NewRequest(h.method, h.url, h.body)
-
-  query := request.URL.Query()
+  request, err := http.NewRequest(h.method, h.url, bytes.NewReader(h.body))
 
   if err != nil {
     return err
   }
 
+  query := request.URL.Query()
+
   for key, value := range h.headers {
-    request.Header.Add(key, value)
+    request.Header.Set(key, value)
   }
 
   for key, value := range h.params {

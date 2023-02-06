@@ -9,5 +9,6 @@ func SetupOpenAiRoutes(router chi.Router) {
 
   router.Route("/openai", func(r chi.Router) {
     r.Post("/completions", c.GetCompletion)
+    r.Post("/edits", c.GetEdit)
   })
 }

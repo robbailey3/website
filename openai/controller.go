@@ -9,6 +9,7 @@ import (
 
 type Controller interface {
   GetCompletion(w http.ResponseWriter, req *http.Request)
+  GetEdit(w http.ResponseWriter, req *http.Request)
 }
 
 type controllerImpl struct {
@@ -20,7 +21,7 @@ func NewController() Controller {
 }
 
 func (c *controllerImpl) GetCompletion(w http.ResponseWriter, req *http.Request) {
-  var request CompletionRequest
+  var request GetCompletionRequest
 
   bodyBytes, err := io.ReadAll(req.Body)
 
@@ -35,6 +36,31 @@ func (c *controllerImpl) GetCompletion(w http.ResponseWriter, req *http.Request)
   }
 
   completion, err := c.client.GetCompletion(&request)
+
+  if err != nil {
+    response.ServerError(w, err)
+    return
+  }
+
+  response.Ok(w, completion)
+}
+
+func (c *controllerImpl) GetEdit(w http.ResponseWriter, req *http.Request) {
+  var request GetEditRequest
+
+  bodyBytes, err := io.ReadAll(req.Body)
+
+  if err != nil {
+    response.ServerError(w, err)
+    return
+  }
+
+  if err := json.Unmarshal(bodyBytes, &request); err != nil {
+    response.ServerError(w, err)
+    return
+  }
+
+  completion, err := c.client.GetEdit(request)
 
   if err != nil {
     response.ServerError(w, err)
