@@ -13,11 +13,11 @@ type Controller interface {
 }
 
 type controllerImpl struct {
-  client Client
+  service Service
 }
 
 func NewController() Controller {
-  return &controllerImpl{client: NewClient()}
+  return &controllerImpl{service: NewService()}
 }
 
 func (c *controllerImpl) GetCompletion(w http.ResponseWriter, req *http.Request) {
@@ -35,7 +35,7 @@ func (c *controllerImpl) GetCompletion(w http.ResponseWriter, req *http.Request)
     return
   }
 
-  completion, err := c.client.GetCompletion(&request)
+  completion, err := c.service.GetCompletion(&request)
 
   if err != nil {
     response.ServerError(w, err)
@@ -60,7 +60,7 @@ func (c *controllerImpl) GetEdit(w http.ResponseWriter, req *http.Request) {
     return
   }
 
-  completion, err := c.client.GetEdit(request)
+  completion, err := c.service.GetEdit(request)
 
   if err != nil {
     response.ServerError(w, err)
