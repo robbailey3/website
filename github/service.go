@@ -2,6 +2,7 @@ package github
 
 type Service interface {
   GetRepos(req GetReposRequest) ([]*RepositoryViewModel, error)
+  GetUser(req GetUserRequest) (*UserViewModel, error)
 }
 
 type serviceImpl struct {
@@ -26,4 +27,14 @@ func (s *serviceImpl) GetRepos(req GetReposRequest) ([]*RepositoryViewModel, err
   }
 
   return repos, nil
+}
+
+func (s *serviceImpl) GetUser(req GetUserRequest) (*UserViewModel, error) {
+  user, err := s.githubClient.GetUser(req)
+
+  if err != nil {
+    return nil, err
+  }
+
+  return user.ToViewModel(), nil
 }

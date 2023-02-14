@@ -1,75 +1,60 @@
 package github
 
 import (
-	"encoding/json"
-	"fmt"
-	"io"
-	"net/http"
-	"os"
-	"strconv"
-
-	"github.com/pkg/errors"
+  "fmt"
+  "github.com/robbailey3/website-api/hermod"
+  "net/http"
+  "os"
+  "strconv"
 )
 
 type ApiClient interface {
-	GetRepositories(request GetReposRequest) ([]*Repository, error)
-	GetUser(request GetUserRequest) (*User, error)
+  GetRepositories(request GetReposRequest) ([]*Repository, error)
+  GetUser(request GetUserRequest) (*User, error)
 }
 
 type clientImpl struct {
-	urlBase    string
-	apiVersion string
+  urlBase    string
+  apiVersion string
 }
 
 func (c *clientImpl) GetRepositories(request GetReposRequest) ([]*Repository, error) {
-	httpClient := http.Client{}
+  var repositories []*Repository
 
-	req, err := http.NewRequest(http.MethodGet, fmt.Sprintf("%s/users/%s/repos", c.urlBase, request.Username), nil)
+  err := hermod.New(http.MethodGet, fmt.Sprintf("%s/users/%s/repos", c.urlBase, request.Username)).
+    WithQueryParam("sort", request.Sort).
+    WithQueryParam("direction", request.Direction).
+    WithQueryParam("per_page", strconv.Itoa(request.PerPage)).
+    WithQueryParam("page", strconv.Itoa(request.Page)).
+    WithHeader("X-GitHub-Api-Version", c.apiVersion).
+    WithHeader("Authorization", fmt.Sprint("Bearer ", os.Getenv("GH_ACCESS_TOKEN"))).
+    Send(&repositories)
 
-	if err != nil {
-		return nil, err
-	}
-	query := req.URL.Query()
-	query.Set("sort", request.Sort)
-	query.Set("direction", request.Direction)
-	query.Set("per_page", strconv.Itoa(request.PerPage))
-	query.Set("page", strconv.Itoa(request.Page))
-	req.URL.RawQuery = query.Encode()
+  if err != nil {
+    return nil, err
+  }
 
-	req.Header.Add("X-GitHub-Api-Version", c.apiVersion)
-	req.Header.Add("Authorization", fmt.Sprint("Bearer ", os.Getenv("GH_ACCESS_TOKEN")))
-
-	resp, err := httpClient.Do(req)
-
-	if err != nil {
-		return nil, err
-	}
-
-	if resp.StatusCode != http.StatusOK {
-		return nil, errors.New("HTTP Status did not indicate success")
-	}
-
-	respBytes, err := io.ReadAll(resp.Body)
-
-	if err != nil {
-		return nil, err
-	}
-	var repositories []*Repository
-
-	if err := json.Unmarshal(respBytes, &repositories); err != nil {
-		return nil, err
-	}
-
-	return repositories, nil
+  return repositories, nil
 }
 
 func (c *clientImpl) GetUser(request GetUserRequest) (*User, error) {
-	return nil, nil
+  var user User
+
+  err := hermod.New(http.MethodGet, fmt.Sprintf("%s/users/%s", c.urlBase, request.Username)).
+    WithHeader("X-GitHub-Api-Version", c.apiVersion).
+    WithHeader("Authorization", fmt.Sprint("Bearer ", os.Getenv("GH_ACCESS_TOKEN"))).
+    Send(&user)
+
+  if err != nil {
+    return nil, err
+  }
+
+  return &user, nil
 }
 
 func NewApiClient() ApiClient {
-	return &clientImpl{
-		urlBase:    "https://api.github.com",
-		apiVersion: "2022-11-28",
-	}
+  return &clientImpl{
+    urlBase:    "https://api.github.com",
+    apiVersion: "2022-11-28",
+  }
 }
