@@ -49,12 +49,7 @@ func setupMiddleware(r chi.Router) {
   }))
   r.Use(httplog.RequestLogger(logger))
   r.Use(middleware.Recoverer)
-  r.Use(func(next http.Handler) http.Handler {
-    return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-      w.Header().Set("Content-Type", "application/json")
-      next.ServeHTTP(w, r)
-    })
-  })
+
   // TODO: Evaluate whether this should be here
   r.Mount("/debug", middleware.Profiler())
 }
