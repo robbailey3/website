@@ -40,15 +40,21 @@ func setupMiddleware(r chi.Router) {
   })
   r.Use(httprate.LimitByIP(100, 1*time.Minute))
   r.Use(cors.Handler(cors.Options{
-    AllowedOrigins:   []string{"https://*"},
+    AllowedOrigins:   []string{"*"},
     AllowedMethods:   []string{"GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"},
-    AllowedHeaders:   []string{"Accept", "Authorization", "Content-Type", "X-CSRF-Token"},
+    AllowedHeaders:   []string{"Accept", "Authorization", "Content-Type"},
     ExposedHeaders:   []string{"Link"},
     AllowCredentials: false,
     MaxAge:           300,
   }))
   r.Use(httplog.RequestLogger(logger))
   r.Use(middleware.Recoverer)
+  r.Use(func(next http.Handler) http.Handler {
+    return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+      w.Header().Set("Content-Type", "application/json")
+      next.ServeHTTP(w, r)
+    })
+  })
   // TODO: Evaluate whether this should be here
   r.Mount("/debug", middleware.Profiler())
 }

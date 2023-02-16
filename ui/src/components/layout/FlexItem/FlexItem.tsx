@@ -4,7 +4,7 @@ export interface FlexItemProps {
 	grow?: boolean;
 	shrink?: boolean;
 	className?: string;
-	children: JSX.Element | JSX.Element[] | string;
+	children: React.ReactNode;
 }
 
 const FlexItem = (props: FlexItemProps) => {
