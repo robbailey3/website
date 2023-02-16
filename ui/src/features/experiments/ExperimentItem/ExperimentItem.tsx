@@ -11,8 +11,9 @@ const ExperimentItem = (props: ExperimentItemProps) => {
 	return (
 		<div className="border p-4 rounded mr-4">
 			<h2>
-				<Link to={experiment.link}>{experiment.title}</Link>
+				<Link to={`/experiments/${experiment.link}`}>{experiment.title}</Link>
 			</h2>
+			<p>{experiment.description}</p>
 		</div>
 	);
 };

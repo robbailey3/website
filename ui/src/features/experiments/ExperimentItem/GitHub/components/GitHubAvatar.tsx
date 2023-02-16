@@ -1,13 +1,22 @@
+import FlexItem from '@components/layout/FlexItem/FlexItem';
+
 export interface GitHubAvatarProps {
 	imageUrl: string;
 	name: string;
 }
 
 const GitHubAvatar = (props: GitHubAvatarProps) => {
-	console.log(props);
 	const { imageUrl, name } = props;
 
-	return <img src={imageUrl} alt={`${name} avatar image`} />;
+	return (
+		<FlexItem>
+			<img
+				src={imageUrl}
+				alt={`${name} avatar image`}
+				className="rounded-full border-4 shadow-lg border-primary-500 md:w-56 w-32"
+			/>
+		</FlexItem>
+	);
 };
 
 export default GitHubAvatar;

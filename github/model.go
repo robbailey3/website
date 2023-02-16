@@ -126,6 +126,7 @@ type RepositoryViewModel struct {
   DefaultBranch string  `json:"defaultBranch"`
   Size          int     `json:"size"`
   Language      *string `json:"language"`
+  Url           string  `json:"url"`
 }
 
 func (r *Repository) ToViewModel() *RepositoryViewModel {
@@ -137,6 +138,7 @@ func (r *Repository) ToViewModel() *RepositoryViewModel {
     DefaultBranch: r.DefaultBranch,
     Size:          r.Size,
     Language:      r.Language,
+    Url:           r.HtmlUrl,
   }
 }
 

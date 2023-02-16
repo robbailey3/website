@@ -1,19 +1,10 @@
 import Container from '@components/layout/Container/Container';
 import Flex from '@components/layout/Flex/Flex';
 import FlexItem from '@components/layout/FlexItem/FlexItem';
-import { Experiment } from '@features/experiments/ExperimentItem/Experiment';
 import ExperimentItem from '@features/experiments/ExperimentItem/ExperimentItem';
+import { experiments } from '@features/experiments/experiments';
 
 const ExperimentsPage = () => {
-	const experiments: Experiment[] = [
-		{ title: 'GitHub', description: '', link: 'github' },
-		{ title: 'GitHub', description: '', link: 'github' },
-		{ title: 'GitHub', description: '', link: 'github' },
-		{ title: 'GitHub', description: '', link: 'github' },
-		{ title: 'GitHub', description: '', link: 'github' },
-		{ title: 'GitHub', description: '', link: 'github' }
-	];
-
 	return (
 		<Container>
 			<Flex wrap>

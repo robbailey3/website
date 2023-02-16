@@ -1,5 +1,6 @@
 export interface GitHubRepo {
 	id: number;
+	url: string;
 	name: string;
 	fullName: string;
 	description: string;

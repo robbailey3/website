@@ -6,7 +6,7 @@ export interface FlexProps {
 	justify?: 'start' | 'end' | 'center' | 'between' | 'around' | 'evenly';
 	align?: 'start' | 'end' | 'center' | 'baseline' | 'stretch';
 	className?: string;
-	children: JSX.Element | JSX.Element[];
+	children: React.ReactNode;
 }
 
 const Flex = (props: FlexProps) => {

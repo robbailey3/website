@@ -4,6 +4,8 @@ import { GitHubRepo } from '../types/repo';
 import { GitHubUser } from '../types/user';
 
 export function useGithub() {
+	const BASE_URL = import.meta.env.DEV ? 'http://localhost:8080/api' : '/api';
+
 	const [user, setUser] = React.useState<GitHubUser>();
 
 	const [repos, setRepos] = React.useState<GitHubRepo[]>();
@@ -13,7 +15,7 @@ export function useGithub() {
 	const [error, setError] = React.useState(false);
 
 	const fetchUser = async () => {
-		const response = await fetch('http://localhost:8080/api/github/user');
+		const response = await fetch(`${BASE_URL}/github/user`);
 
 		const json: APIResponse<GitHubUser> = await response.json();
 
@@ -21,7 +23,9 @@ export function useGithub() {
 	};
 
 	const fetchRepos = async () => {
-		const response = await fetch('http://localhost:8080/api/github/repos');
+		const response = await fetch(
+			`${BASE_URL}/github/repos?sort=pushed&direction=descending&per_page=50`
+		);
 
 		const json: APIResponse<GitHubRepo[]> = await response.json();
 
