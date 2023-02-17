@@ -4,7 +4,11 @@ import HeaderNavigation from './HeaderNavigation/HeaderNavigation';
 
 const Header = () => {
 	return (
-		<header className={clsx('w-full duration-100 z-50 bg-dark bg-opacity-80')}>
+		<header
+			className={clsx(
+				'w-full duration-100 z-50 bg-dark bg-opacity-80 relative'
+			)}
+		>
 			<div>
 				<a
 					id="skip-link"

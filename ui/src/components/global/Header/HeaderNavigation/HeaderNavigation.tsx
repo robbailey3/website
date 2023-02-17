@@ -37,7 +37,7 @@ const HeaderNavigation = () => {
 	};
 
 	return (
-		<div className="relative py-4">
+		<div className="py-4">
 			{isMobile() && (
 				<button
 					className="p-4 rounded-full hover:bg-gray-100 hover:bg-opacity-50"
@@ -48,7 +48,8 @@ const HeaderNavigation = () => {
 			)}
 			<ul
 				className={clsx('flex items-center overflow-hidden duration-300', {
-					'flex-col absolute top-full bg-dark bg-opacity-90 w-full': isMobile(),
+					'flex-col absolute top-full bg-dark bg-opacity-90 w-full z-50':
+						isMobile(),
 					'p-4': navState === NavState.OPEN,
 					'p-0': isMobile() && navState === NavState.CLOSED
 				})}
