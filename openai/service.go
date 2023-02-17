@@ -1,22 +1,22 @@
 package openai
 
 type Service interface {
-  GetCompletion(request *GetCompletionRequest) (*Completion, error)
-  GetEdit(request GetEditRequest) (*Edit, error)
+	GetCompletion(request *GetCompletionRequest) (*Completion, error)
+	GetEdit(request GetEditRequest) (*Edit, error)
 }
 
 type serviceImpl struct {
-  client Client
+	client Client
 }
 
 func NewService() Service {
-  return &serviceImpl{client: NewClient()}
+	return &serviceImpl{client: NewClient()}
 }
 
 func (s serviceImpl) GetCompletion(request *GetCompletionRequest) (*Completion, error) {
-  return s.client.GetCompletion(request)
+	return s.client.GetCompletion(request)
 }
 
 func (s serviceImpl) GetEdit(request GetEditRequest) (*Edit, error) {
-  return s.GetEdit(request)
+	return s.client.GetEdit(request)
 }
