@@ -14,7 +14,7 @@ const GitHubRepoList = (props: GitHubRepoListProps) => {
 	return (
 		<Flex wrap align="stretch">
 			{repos.map((repo, index) => (
-				<FlexItem key={repo.id} className="md:basis-1/3">
+				<FlexItem key={repo.id} className="md:basis-1/3 basis-full">
 					<AnimateOnEnter
 						className="h-full"
 						initial={{ y: 10, opacity: 0 }}

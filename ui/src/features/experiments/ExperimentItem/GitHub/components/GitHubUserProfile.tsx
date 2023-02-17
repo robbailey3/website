@@ -19,7 +19,12 @@ const GitHubUserProfile = (props: GitHubUserProfileProps) => {
 				initial={{ y: -100, opacity: 0 }}
 				animation={{ y: 0, opacity: 1 }}
 			>
-				<Flex align="center" justify="center" className="p-8" column>
+				<Flex
+					align="center"
+					justify="center"
+					className="p-8 text-center"
+					column
+				>
 					<GitHubAvatar imageUrl={user.avatarUrl} name={user.name} />
 					<FlexItem className="my-4">
 						<h1>{user.name}</h1>
