@@ -1,11 +1,14 @@
 package openai
 
 import (
+  "context"
   "encoding/json"
   "fmt"
+  "github.com/gookit/slog"
   "github.com/robbailey3/website-api/hermod"
+  "github.com/robbailey3/website-api/secrets"
   "net/http"
-  "os"
+  "time"
 )
 
 type Client interface {
@@ -59,8 +62,16 @@ func (c *clientImpl) GetEdit(request GetEditRequest) (*Edit, error) {
 }
 
 func NewClient() Client {
+  ctx, cancel := context.WithTimeout(context.Background(), time.Second*5)
+  defer cancel()
+
+  apiKey, err := secrets.GetSecret(ctx, "OPEN_AI_API_KEY")
+  if err != nil {
+    slog.Error("Failed to get Open AI Api Key. Err: ", err)
+    return nil
+  }
   return &clientImpl{
-    apiKey:  os.Getenv("OPEN_AI_API_KEY"),
+    apiKey:  apiKey,
     urlBase: "https://api.openai.com/v1",
   }
 }
