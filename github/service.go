@@ -1,5 +1,9 @@
 package github
 
+import (
+  "github.com/robbailey3/website-api/secrets"
+)
+
 type Service interface {
   GetRepos(req GetReposRequest) ([]*RepositoryViewModel, error)
   GetUser(req GetUserRequest) (*UserViewModel, error)
@@ -9,8 +13,8 @@ type serviceImpl struct {
   githubClient ApiClient
 }
 
-func NewService() Service {
-  return &serviceImpl{githubClient: NewApiClient()}
+func NewService(secretsClient secrets.Client) Service {
+  return &serviceImpl{githubClient: NewApiClient(secretsClient)}
 }
 
 func (s *serviceImpl) GetRepos(req GetReposRequest) ([]*RepositoryViewModel, error) {

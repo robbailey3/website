@@ -25,12 +25,12 @@ type service struct {
   repository            Repository
 }
 
-func NewService() (Service, error) {
-  clientSecret, err := getClientSecret()
+func NewService(secretsClient secrets.Client) (Service, error) {
+  clientSecret, err := getClientSecret(secretsClient)
   if err != nil {
     return nil, err
   }
-  clientId, err := getClientId()
+  clientId, err := getClientId(secretsClient)
   if err != nil {
     return nil, err
   }
@@ -111,20 +111,20 @@ func (s *service) RefreshAccessToken() error {
   return nil
 }
 
-func getClientSecret() (string, error) {
+func getClientSecret(secretsClient secrets.Client) (string, error) {
   ctx, cancel := context.WithTimeout(context.Background(), time.Second*15)
   defer cancel()
-  clientSecret, err := secrets.GetSecret(ctx, "STRAVA_CLIENT_SECRET")
+  clientSecret, err := secretsClient.GetSecret(ctx, "STRAVA_CLIENT_SECRET")
   if err != nil {
     return "", err
   }
   return clientSecret, nil
 }
 
-func getClientId() (string, error) {
+func getClientId(secretsClient secrets.Client) (string, error) {
   ctx, cancel := context.WithTimeout(context.Background(), time.Second*15)
   defer cancel()
-  clientId, err := secrets.GetSecret(ctx, "STRAVA_CLIENT_ID")
+  clientId, err := secretsClient.GetSecret(ctx, "STRAVA_CLIENT_ID")
   if err != nil {
     return "", err
   }

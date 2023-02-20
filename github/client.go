@@ -56,11 +56,11 @@ func (c *clientImpl) GetUser(request GetUserRequest) (*User, error) {
   return &user, nil
 }
 
-func NewApiClient() ApiClient {
+func NewApiClient(secretsClient secrets.Client) ApiClient {
   ctx, cancel := context.WithTimeout(context.Background(), time.Second*5)
   defer cancel()
 
-  apiKey, err := secrets.GetSecret(ctx, "GH_ACCESS_TOKEN")
+  apiKey, err := secretsClient.GetSecret(ctx, "GH_ACCESS_TOKEN")
   if err != nil {
     slog.Error("Failed to get GitHub Access Token. Err: ", err)
     return nil

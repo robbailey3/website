@@ -24,10 +24,10 @@ type stravaApiService struct {
   verifyToken string
 }
 
-func NewStravaService(authService auth.Service) StravaApiService {
+func NewStravaService(authService auth.Service, secretsClient secrets.Client) StravaApiService {
   ctx, cancel := context.WithTimeout(context.Background(), time.Second*10)
   defer cancel()
-  stravaVerify, err := secrets.GetSecret(ctx, "STRAVA_VERIFY_TOKEN")
+  stravaVerify, err := secretsClient.GetSecret(ctx, "STRAVA_VERIFY_TOKEN")
   if err != nil {
     slog.Warn(errors.Wrap(err, "Failed to get Webhook verify token"))
   }

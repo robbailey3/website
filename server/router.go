@@ -10,7 +10,9 @@ import (
   "github.com/robbailey3/website-api/image"
   "github.com/robbailey3/website-api/openai"
   "github.com/robbailey3/website-api/photos"
+  "github.com/robbailey3/website-api/secrets"
   "github.com/robbailey3/website-api/tasks"
+  "log"
   "net/http"
 )
 
@@ -22,13 +24,18 @@ func setupRoutes(db *firestore.Client, router chi.Router) {
         next.ServeHTTP(w, r)
       })
     })
+    secretsClient, err := secrets.NewClient()
+    if err != nil {
+      log.Fatalf(err.Error())
+    }
+
     blog.SetupBlogRoutes(r)
     photos.InitPhotoRoutes(r)
     config.SetupConfigRoutes(r)
     tasks.InitTasksRoutes(r)
     image.InitImageRoutes(r)
-    activities.SetupActivityRoutes(r)
-    github.SetupRoutes(r)
-    openai.SetupOpenAiRoutes(r)
+    activities.SetupActivityRoutes(r, secretsClient)
+    github.SetupRoutes(r, secretsClient)
+    openai.SetupOpenAiRoutes(r, secretsClient)
   })
 }

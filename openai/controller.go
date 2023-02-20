@@ -3,6 +3,7 @@ package openai
 import (
   "encoding/json"
   "github.com/robbailey3/website-api/response"
+  "github.com/robbailey3/website-api/secrets"
   "io"
   "net/http"
 )
@@ -16,8 +17,8 @@ type controllerImpl struct {
   service Service
 }
 
-func NewController() Controller {
-  return &controllerImpl{service: NewService()}
+func NewController(secretsClient secrets.Client) Controller {
+  return &controllerImpl{service: NewService(secretsClient)}
 }
 
 func (c *controllerImpl) GetCompletion(w http.ResponseWriter, req *http.Request) {

@@ -2,7 +2,6 @@ package main
 
 import (
   "github.com/getsentry/sentry-go"
-  "github.com/robbailey3/website-api/secrets"
   "log"
   "os"
   "time"
@@ -31,10 +30,6 @@ func main() {
   config.InitEnv()
 
   initialiseSentry()
-
-  if err := secrets.Init(); err != nil {
-    log.Fatal(err.Error())
-  }
 
   err := database.Init()
 

@@ -61,11 +61,11 @@ func (c *clientImpl) GetEdit(request GetEditRequest) (*Edit, error) {
   return &edit, nil
 }
 
-func NewClient() Client {
+func NewClient(secretsClient secrets.Client) Client {
   ctx, cancel := context.WithTimeout(context.Background(), time.Second*5)
   defer cancel()
 
-  apiKey, err := secrets.GetSecret(ctx, "OPEN_AI_API_KEY")
+  apiKey, err := secretsClient.GetSecret(ctx, "OPEN_AI_API_KEY")
   if err != nil {
     slog.Error("Failed to get Open AI Api Key. Err: ", err)
     return nil

@@ -4,6 +4,7 @@ import (
   "context"
   "github.com/pkg/errors"
   "github.com/robbailey3/website-api/activities/auth"
+  "github.com/robbailey3/website-api/secrets"
 )
 
 type Service interface {
@@ -18,14 +19,14 @@ type service struct {
   stravaApiService StravaApiService
 }
 
-func NewService() (Service, error) {
-  authService, err := auth.NewService()
+func NewService(secretsClient secrets.Client) (Service, error) {
+  authService, err := auth.NewService(secretsClient)
   if err != nil {
     return nil, err
   }
   return &service{
     repo:             NewRepository(),
-    stravaApiService: NewStravaService(authService),
+    stravaApiService: NewStravaService(authService, secretsClient),
   }, nil
 }
 

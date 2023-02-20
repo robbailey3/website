@@ -5,6 +5,7 @@ import (
   "github.com/go-chi/chi/v5"
   "github.com/gookit/slog"
   "github.com/robbailey3/website-api/response"
+  "github.com/robbailey3/website-api/secrets"
   "io"
   "log"
   "net/http"
@@ -21,8 +22,8 @@ type controller struct {
   service Service
 }
 
-func NewController() Controller {
-  service, err := NewService()
+func NewController(secretsClient secrets.Client) Controller {
+  service, err := NewService(secretsClient)
   if err != nil {
     // TODO: Handle this error better
     log.Println(err)
