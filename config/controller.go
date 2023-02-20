@@ -17,7 +17,7 @@ func NewController() Controller {
 }
 
 func (c controller) GetFirebaseConfig(w http.ResponseWriter, req *http.Request) {
-  response.Ok(w, firebaseConfig{
+  response.Ok(w, FirebaseConfig{
     ApiKey:            os.Getenv("FIREBASE_API_KEY"),
     AuthDomain:        os.Getenv("FIREBASE_AUTH_DOMAIN"),
     ProjectId:         os.Getenv("GOOGLE_CLOUD_PROJECT"),
