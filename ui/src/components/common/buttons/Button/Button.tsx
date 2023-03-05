@@ -1,19 +1,22 @@
 import { clsx } from 'clsx';
+import { MouseEventHandler } from 'react';
 import { ButtonSize } from '../buttonSize';
 import { ButtonVariant } from '../buttonVariant';
 
 export interface ButtonProps {
+	type?: 'button' | 'submit';
 	variant?: ButtonVariant;
 	size?: ButtonSize;
 	rounded?: boolean;
 	disabled?: boolean;
 	loading?: boolean;
 	children: JSX.Element | string;
-	onClick: (e: MouseEvent) => any;
+	onClick?: MouseEventHandler<HTMLButtonElement>;
 }
 
 const Button = (props: ButtonProps) => {
-	const { variant, size, rounded, disabled, loading, children } = props;
+	const { type, variant, size, rounded, disabled, loading, children, onClick } =
+		props;
 
 	const getVariantClass = () => {
 		switch (variant) {
@@ -52,6 +55,7 @@ const Button = (props: ButtonProps) => {
 
 	return (
 		<button
+			type={type ?? 'button'}
 			className={clsx(
 				'duration-200 border',
 				getVariantClass(),
@@ -64,6 +68,7 @@ const Button = (props: ButtonProps) => {
 			)}
 			disabled={disabled || loading}
 			data-testid="button"
+			onClick={onClick}
 		>
 			{children}
 		</button>
