@@ -6,6 +6,7 @@ import (
   "crypto/rand"
   "errors"
   "fmt"
+  "github.com/google/uuid"
   "io"
   "log"
   "mime/multipart"
@@ -25,20 +26,20 @@ import (
 )
 
 type Service interface {
-  CreateImage(ctx context.Context, fileHeader *multipart.FileHeader) (*int64, error)
-  GetImage(xtx context.Context, id int64) (io.Reader, error)
-  GetImageLabels(ctx context.Context, id int64) ([]*Label, error)
-  GetImageProperties(ctx context.Context, id int64) (*vision.ImageProperties, error)
-  GetImageLandmarks(ctx context.Context, id int64) ([]*vision.EntityAnnotation, error)
-  GetImageFaces(ctx context.Context, id int64) ([]*vision.FaceAnnotation, error)
-  GetImageLogos(ctx context.Context, id int64) ([]*vision.EntityAnnotation, error)
+  CreateImage(ctx context.Context, fileHeader *multipart.FileHeader) (*uuid.UUID, error)
+  GetImage(xtx context.Context, guid string) (io.Reader, error)
+  GetImageLabels(ctx context.Context, guid string) ([]*Label, error)
+  GetImageProperties(ctx context.Context, guid string) (*vision.ImageProperties, error)
+  GetImageLandmarks(ctx context.Context, guid string) ([]*vision.EntityAnnotation, error)
+  GetImageFaces(ctx context.Context, guid string) ([]*vision.FaceAnnotation, error)
+  GetImageLogos(ctx context.Context, guid string) ([]*vision.EntityAnnotation, error)
 }
 
 type service struct {
   repo    Repository
   storage storage.Client
   vision  VisionAiClient
-  cache   *ttlcache.Cache[int64, []byte]
+  cache   *ttlcache.Cache[uuid.UUID, []byte]
 }
 
 func NewService() Service {
@@ -51,7 +52,7 @@ func NewService() Service {
     log.Fatal("Failed to initialise visionAi client")
   }
   cache := ttlcache.New(
-    ttlcache.WithTTL[int64, []byte](2 * time.Minute))
+    ttlcache.WithTTL[uuid.UUID, []byte](2 * time.Minute))
 
   go cache.Start()
   return &service{
@@ -62,12 +63,12 @@ func NewService() Service {
   }
 }
 
-func (s *service) GetImage(ctx context.Context, id int64) (io.Reader, error) {
-  return s.getImageById(ctx, id)
+func (s *service) GetImage(ctx context.Context, guid string) (io.Reader, error) {
+  return s.getImageById(ctx, guid)
 }
 
-func (s *service) GetImageLabels(ctx context.Context, id int64) ([]*Label, error) {
-  imageReader, err := s.getImageById(ctx, id)
+func (s *service) GetImageLabels(ctx context.Context, guid string) ([]*Label, error) {
+  imageReader, err := s.getImageById(ctx, guid)
 
   if err != nil {
     return nil, err
@@ -76,8 +77,8 @@ func (s *service) GetImageLabels(ctx context.Context, id int64) ([]*Label, error
   return s.vision.DetectLabels(ctx, imageReader, 10)
 }
 
-func (s *service) GetImageProperties(ctx context.Context, id int64) (*vision.ImageProperties, error) {
-  imageReader, err := s.getImageById(ctx, id)
+func (s *service) GetImageProperties(ctx context.Context, guid string) (*vision.ImageProperties, error) {
+  imageReader, err := s.getImageById(ctx, guid)
 
   if err != nil {
     return nil, err
@@ -86,8 +87,8 @@ func (s *service) GetImageProperties(ctx context.Context, id int64) (*vision.Ima
   return s.vision.DetectProperties(ctx, imageReader)
 }
 
-func (s *service) GetImageLandmarks(ctx context.Context, id int64) ([]*vision.EntityAnnotation, error) {
-  imageReader, err := s.getImageById(ctx, id)
+func (s *service) GetImageLandmarks(ctx context.Context, guid string) ([]*vision.EntityAnnotation, error) {
+  imageReader, err := s.getImageById(ctx, guid)
 
   if err != nil {
     return nil, err
@@ -96,8 +97,8 @@ func (s *service) GetImageLandmarks(ctx context.Context, id int64) ([]*vision.En
   return s.vision.DetectLandmarks(ctx, imageReader, 10)
 }
 
-func (s *service) GetImageFaces(ctx context.Context, id int64) ([]*vision.FaceAnnotation, error) {
-  imageReader, err := s.getImageById(ctx, id)
+func (s *service) GetImageFaces(ctx context.Context, guid string) ([]*vision.FaceAnnotation, error) {
+  imageReader, err := s.getImageById(ctx, guid)
 
   if err != nil {
     return nil, err
@@ -106,8 +107,8 @@ func (s *service) GetImageFaces(ctx context.Context, id int64) ([]*vision.FaceAn
   return s.vision.DetectFaces(ctx, imageReader, 10)
 }
 
-func (s *service) GetImageLogos(ctx context.Context, id int64) ([]*vision.EntityAnnotation, error) {
-  imageReader, err := s.getImageById(ctx, id)
+func (s *service) GetImageLogos(ctx context.Context, guid string) ([]*vision.EntityAnnotation, error) {
+  imageReader, err := s.getImageById(ctx, guid)
 
   if err != nil {
     return nil, err
@@ -116,7 +117,7 @@ func (s *service) GetImageLogos(ctx context.Context, id int64) ([]*vision.Entity
   return s.vision.DetectLogos(ctx, imageReader, 10)
 }
 
-func (s *service) CreateImage(ctx context.Context, fileHeader *multipart.FileHeader) (*int64, error) {
+func (s *service) CreateImage(ctx context.Context, fileHeader *multipart.FileHeader) (*uuid.UUID, error) {
   fileExt := strings.Split(fileHeader.Filename, ".")[1] // TODO: make this more robust
 
   fileName := fmt.Sprintf("%s.%s", s.generateRandomFilename(), fileExt)
@@ -144,24 +145,22 @@ func (s *service) CreateImage(ctx context.Context, fileHeader *multipart.FileHea
     return nil, err
   }
 
-  id, err := s.repo.Insert(ctx, &AiImage{
+  guid := uuid.New()
+
+  _, err = s.repo.Insert(ctx, &AiImage{
+    Guid:       guid,
     DateAdded:  time.Now(),
     Path:       fileName,
     ExpiryTime: time.Now().Add(time.Hour * 24),
   })
 
-  s.cache.Set(*id, fileBytes, ttlcache.DefaultTTL)
-
   if err != nil {
     return nil, err
   }
 
-  return id, nil
-}
+  s.cache.Set(guid, fileBytes, ttlcache.DefaultTTL)
 
-func (s *service) isValidImage(fileheader *multipart.FileHeader) bool {
-  // TODO: Implement me
-  return true
+  return &guid, nil
 }
 
 func (s *service) generateRandomFilename() string {
@@ -178,8 +177,14 @@ func (s *service) generateRandomFilename() string {
   return *(*string)(unsafe.Pointer(&b))
 }
 
-func (s *service) getImageById(ctx context.Context, id int64) (io.Reader, error) {
-  cachedImg := s.cache.Get(id, ttlcache.WithDisableTouchOnHit[int64, []byte]())
+func (s *service) getImageById(ctx context.Context, guid string) (io.Reader, error) {
+  id, err := uuid.Parse(guid)
+
+  if err != nil {
+    return nil, err
+  }
+
+  cachedImg := s.cache.Get(id, ttlcache.WithDisableTouchOnHit[uuid.UUID, []byte]())
   if cachedImg != nil {
     return bytes.NewReader(cachedImg.Value()), nil
   }

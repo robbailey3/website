@@ -4,6 +4,7 @@ import HomePage from '@pages/home/HomePage';
 import Root from './Root';
 import ExperimentsPage from '@pages/experiments/ExperimentsPage';
 import GitHubPage from '@pages/experiments/GitHub/GitHubPage';
+import ImageAIPage from '@pages/experiments/ImageAI/ImageAIPage';
 
 const router = createBrowserRouter([
 	{
@@ -22,6 +23,10 @@ const router = createBrowserRouter([
 			{
 				path: 'experiments/github',
 				element: <GitHubPage />
+			},
+			{
+				path: 'experiments/imageai',
+				element: <ImageAIPage />
 			}
 		]
 	}

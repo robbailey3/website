@@ -4,7 +4,6 @@ import (
   "github.com/go-chi/chi/v5"
   "github.com/robbailey3/website-api/response"
   "net/http"
-  "strconv"
 )
 
 type Controller interface {
@@ -44,14 +43,9 @@ func (c *controller) Upload(w http.ResponseWriter, req *http.Request) {
 }
 
 func (c *controller) GetLabels(w http.ResponseWriter, req *http.Request) {
-  id, err := strconv.ParseInt(chi.URLParam(req, "id"), 10, 64)
+  id := chi.URLParam(req, "id")
 
-  if err != nil {
-    response.BadRequest(w, "Bad id")
-    return
-  }
-
-  if id == 0 {
+  if id == "" {
     response.BadRequest(w, "No id")
     return
   }
@@ -67,14 +61,9 @@ func (c *controller) GetLabels(w http.ResponseWriter, req *http.Request) {
 }
 
 func (c *controller) GetProperties(w http.ResponseWriter, req *http.Request) {
-  id, err := strconv.ParseInt(chi.URLParam(req, "id"), 10, 64)
+  id := chi.URLParam(req, "id")
 
-  if err != nil {
-    response.BadRequest(w, "Bad id")
-    return
-  }
-
-  if id == 0 {
+  if id == "" {
     response.BadRequest(w, "No id")
     return
   }
@@ -90,14 +79,9 @@ func (c *controller) GetProperties(w http.ResponseWriter, req *http.Request) {
 }
 
 func (c *controller) GetLandmarks(w http.ResponseWriter, req *http.Request) {
-  id, err := strconv.ParseInt(chi.URLParam(req, "id"), 10, 64)
+  id := chi.URLParam(req, "id")
 
-  if err != nil {
-    response.BadRequest(w, "Bad id")
-    return
-  }
-
-  if id == 0 {
+  if id == "" {
     response.BadRequest(w, "No id")
     return
   }
@@ -113,14 +97,9 @@ func (c *controller) GetLandmarks(w http.ResponseWriter, req *http.Request) {
 }
 
 func (c *controller) GetFaces(w http.ResponseWriter, req *http.Request) {
-  id, err := strconv.ParseInt(chi.URLParam(req, "id"), 10, 64)
+  id := chi.URLParam(req, "id")
 
-  if err != nil {
-    response.BadRequest(w, "Bad id")
-    return
-  }
-
-  if id == 0 {
+  if id == "" {
     response.BadRequest(w, "No id")
     return
   }
@@ -136,14 +115,9 @@ func (c *controller) GetFaces(w http.ResponseWriter, req *http.Request) {
 }
 
 func (c *controller) GetImage(w http.ResponseWriter, req *http.Request) {
-  id, err := strconv.ParseInt(chi.URLParam(req, "id"), 10, 64)
+  id := chi.URLParam(req, "id")
 
-  if err != nil {
-    response.BadRequest(w, "Bad id")
-    return
-  }
-
-  if id == 0 {
+  if id == "" {
     response.BadRequest(w, "No id")
     return
   }
@@ -159,14 +133,9 @@ func (c *controller) GetImage(w http.ResponseWriter, req *http.Request) {
 }
 
 func (c *controller) GetLogos(w http.ResponseWriter, req *http.Request) {
-  id, err := strconv.ParseInt(chi.URLParam(req, "id"), 10, 64)
+  id := chi.URLParam(req, "id")
 
-  if err != nil {
-    response.BadRequest(w, "Bad id")
-    return
-  }
-
-  if id == 0 {
+  if id == "" {
     response.BadRequest(w, "No id")
     return
   }

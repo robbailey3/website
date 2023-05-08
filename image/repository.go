@@ -3,12 +3,13 @@ package image
 import (
   "context"
   sq "github.com/Masterminds/squirrel"
+  "github.com/google/uuid"
   "github.com/robbailey3/website-api/database"
 )
 
 type Repository interface {
-  Insert(ctx context.Context, image *AiImage) (*int64, error)
-  GetById(ctx context.Context, id int64) (*AiImage, error)
+  Insert(ctx context.Context, image *AiImage) (*uuid.UUID, error)
+  GetById(ctx context.Context, guid uuid.UUID) (*AiImage, error)
 }
 
 type repository struct {
@@ -21,9 +22,9 @@ func NewRepository() Repository {
   }
 }
 
-func (r *repository) GetById(ctx context.Context, id int64) (*AiImage, error) {
+func (r *repository) GetById(ctx context.Context, guid uuid.UUID) (*AiImage, error) {
   var image AiImage
-  query, args, _ := r.psql.Select("*").From("AiImages").Where(sq.Eq{"id": id}).ToSql()
+  query, args, _ := r.psql.Select("*").From("AiImages").Where(sq.Eq{"Guid": guid}).ToSql()
   row := database.Instance.QueryRow(ctx, query, args...)
 
   if err := row.StructScan(&image); err != nil {
@@ -33,18 +34,13 @@ func (r *repository) GetById(ctx context.Context, id int64) (*AiImage, error) {
   return &image, nil
 }
 
-func (r *repository) Insert(ctx context.Context, image *AiImage) (*int64, error) {
-  query, args, _ := r.psql.Insert("AiImages").Columns("Path", "DateAdded", "ExpiryTime").Values(image.Path, image.DateAdded, image.ExpiryTime).ToSql()
-  result, err := database.Instance.Exec(ctx, query, args...)
+func (r *repository) Insert(ctx context.Context, image *AiImage) (*uuid.UUID, error) {
+  query, args, _ := r.psql.Insert("AiImages").Columns("Path", "DateAdded", "ExpiryTime", "Guid").Values(image.Path, image.DateAdded, image.ExpiryTime, image.Guid).ToSql()
+  _, err := database.Instance.Exec(ctx, query, args...)
 
   if err != nil {
     return nil, err
   }
 
-  id, err := result.LastInsertId()
-
-  if err != nil {
-    return nil, err
-  }
-  return &id, nil
+  return &image.Guid, nil
 }
