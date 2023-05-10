@@ -1,4 +1,5 @@
 import FileField from '@components/common/Form/FileField/FileField';
+import { ToastType, useToasts } from '@components/common/Toasts/useToasts';
 
 export interface ImageUploaderProps {
 	onFileChange: (file: File) => void;
@@ -6,6 +7,8 @@ export interface ImageUploaderProps {
 
 const ImageUploader = (props: ImageUploaderProps) => {
 	const { onFileChange } = props;
+
+	const { addToast } = useToasts();
 
 	const isValidFile = (file: File) => {
 		if (file.size > 1024 * 1024 * 2) {
@@ -23,6 +26,12 @@ const ImageUploader = (props: ImageUploaderProps) => {
 		}
 		const file = $evt.target.files[0];
 		if (!isValidFile(file)) {
+			addToast({
+				type: ToastType.ERROR,
+				title: 'Error',
+				message: 'Invalid file type'
+			});
+
 			return;
 		}
 		onFileChange(file);

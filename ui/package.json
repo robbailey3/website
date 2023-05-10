@@ -25,6 +25,7 @@
 		"react-helmet": "^6.1.0",
 		"react-router-dom": "^6.4.4",
 		"rxjs": "^7.6.0",
+		"uuidv4": "^6.2.13",
 		"yup": "^1.0.2"
 	},
 	"devDependencies": {
