@@ -2,6 +2,8 @@
 import React from 'react';
 import Toast from './Toast/Toast';
 import { Subscription, takeWhile, timer } from 'rxjs';
+import Flex from '@components/layout/Flex/Flex';
+import FlexItem from '@components/layout/FlexItem/FlexItem';
 
 export enum ToastType {
 	INFO,
@@ -26,7 +28,7 @@ export class ToastModel {
 		this.type = type;
 		this.title = title;
 		this.message = message;
-		this.canDismiss = canDismiss == undefined ? true : canDismiss;
+		this.canDismiss = canDismiss == undefined ? false : canDismiss;
 
 		setTimeout(() => {
 			this.dismiss();
@@ -55,50 +57,46 @@ export const ToastContextProvider = ({
 }) => {
 	const [toasts, setToasts] = React.useState<ToastModel[]>([]);
 
-	const [subscription, setSubscription] = React.useState<Subscription>();
+	const [timeoutRef, setTimeoutRef] =
+		React.useState<NodeJS.Timeout | null>(null);
+
+	const addToast = (
+		toast: Omit<ToastModel, 'active' | 'dismiss'> & { duration?: number }
+	) => {
+		setToasts((toasts) => [
+			...toasts,
+			new ToastModel(
+				toast.type,
+				toast.title,
+				toast.message,
+				toast.canDismiss,
+				toast.duration
+			)
+		]);
+	};
 
 	React.useEffect(() => {
-		if (subscription) {
-			return;
+		if (timeoutRef) {
+			clearTimeout(timeoutRef);
 		}
-		setSubscription(
-			timer(0, 1000)
-				.pipe(takeWhile(() => toasts.length > 0))
-				.subscribe(() => {
-					setToasts(toasts.filter((toast) => toast.active));
-				})
+
+		setTimeoutRef(
+			setTimeout(() => {
+				setToasts((toasts) => toasts.filter((toast) => toast.active));
+			}, 1000)
 		);
-
-		return () => {
-			(subscription as any)?.unsubscribe();
-		};
-	}, [toasts]);
-
-	const addToast = React.useCallback(
-		(toast: Omit<ToastModel, 'active' | 'dismiss'> & { duration?: number }) => {
-			setToasts([
-				...toasts,
-				new ToastModel(
-					toast.type,
-					toast.title,
-					toast.message,
-					toast.canDismiss,
-					toast.duration
-				)
-			]);
-		},
-		[setToasts]
-	);
+	}, [toasts, setToasts]);
 
 	return (
 		<ToastContext.Provider value={{ toasts, addToast }}>
 			{children}
-			<pre>{JSON.stringify(toasts, null, 2)}</pre>
-			<div>
+			<Flex className="fixed bottom-8 right-8 space-y-4" column>
 				{toasts.map((toast, index) => (
-					<Toast key={index} toast={toast} />
+					<FlexItem key={index}>
+						<Toast toast={toast} />
+					</FlexItem>
 				))}
-			</div>
+			</Flex>
 		</ToastContext.Provider>
 	);
 };

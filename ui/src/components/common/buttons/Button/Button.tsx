@@ -26,6 +26,8 @@ const Button = (props: ButtonProps) => {
 				return 'bg-accent text-white border-transparent hover:bg-accent-700';
 			case 'outline':
 				return 'border-primary text-primary hover:bg-primary hover:bg-opacity-10';
+			case 'ghost':
+				return 'bg-transparent text-primary hover:bg-primary hover:bg-opacity-10 border-none';
 		}
 	};
 

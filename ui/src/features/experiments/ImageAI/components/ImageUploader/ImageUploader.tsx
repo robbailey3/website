@@ -29,7 +29,9 @@ const ImageUploader = (props: ImageUploaderProps) => {
 			addToast({
 				type: ToastType.ERROR,
 				title: 'Error',
-				message: 'Invalid file type'
+				message: 'Invalid file type',
+				duration: 10_000,
+				canDismiss: true
 			});
 
 			return;
