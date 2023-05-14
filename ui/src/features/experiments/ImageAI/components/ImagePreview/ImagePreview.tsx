@@ -1,3 +1,5 @@
+import Flex from '@components/layout/Flex/Flex';
+import FlexItem from '@components/layout/FlexItem/FlexItem';
 import React from 'react';
 
 export interface ImagePreviewProps {
@@ -29,7 +31,13 @@ const ImagePreview = (props: ImagePreviewProps) => {
 
 	if (!imgSrc) return <div>No image</div>;
 
-	return <img src={imgSrc} alt="" />;
+	return (
+		<Flex align="center" justify="center">
+			<FlexItem className="max-w-3xl p-8">
+				<img src={imgSrc} alt="" className="rounded shadow overflow-hidden" />
+			</FlexItem>
+		</Flex>
+	);
 };
 
 export default ImagePreview;

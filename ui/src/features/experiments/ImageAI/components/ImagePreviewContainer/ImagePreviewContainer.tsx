@@ -1,4 +1,3 @@
-import React, { Suspense } from 'react';
 import ImagePreview from '../ImagePreview/ImagePreview';
 
 export interface ImagePreviewContainerProps {
