@@ -18,32 +18,20 @@ type Repository interface {
 }
 
 type repository struct {
-  psql sq.StatementBuilderType
+  database.BaseRepository[Post]
 }
 
 func NewRepository() Repository {
   return &repository{
-    psql: sq.StatementBuilder.PlaceholderFormat(sq.Dollar),
+    BaseRepository: database.NewBaseRepository[Post]("posts"),
   }
 }
 
 func (r *repository) GetMany(ctx context.Context, limit, offset int) ([]Post, error) {
   var posts []Post
 
-  query, _, _ := r.psql.Select("*").From("blog").Limit(uint64(limit)).Offset(uint64(offset)).ToSql()
-  rows, err := database.Instance.Query(ctx, query)
-
-  if err != nil {
+  if err := r.BaseRepository.FindAll(ctx, limit, offset, posts); err != nil {
     return nil, err
-  }
-
-  for rows.Next() {
-    var post Post
-
-    if err := rows.StructScan(&post); err != nil {
-      return nil, err
-    }
-    posts = append(posts, post)
   }
 
   return posts, nil
