@@ -2,80 +2,58 @@ package tasks
 
 import (
   "context"
-  sq "github.com/Masterminds/squirrel"
   "github.com/robbailey3/website-api/database"
-  "time"
+  "go.mongodb.org/mongo-driver/bson"
+  "go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 type Repository interface {
-  Get(ctx context.Context) ([]*Task, error)
-  Create(ctx context.Context, task *Task) error
-  Update(ctx context.Context, id int64, title string, completed bool) error
-  Delete(ctx context.Context, id int64) error
+  FindAll(ctx context.Context) ([]Task, error)
+  Insert(ctx context.Context, task *Task) error
+  UpdateById(ctx context.Context, id primitive.ObjectID, title string, completed bool) error
+  Delete(ctx context.Context, id primitive.ObjectID) error
 }
 
 type repository struct {
-  psql sq.StatementBuilderType
+  client database.Client
 }
 
-func NewRepository() Repository {
-  return &repository{
-    psql: sq.StatementBuilder.PlaceholderFormat(sq.Dollar),
-  }
-}
-
-func (r *repository) Get(ctx context.Context) ([]*Task, error) {
-  var tasks []*Task
-  query, _, _ := r.psql.Select("*").From("tasks").ToSql()
-  rows, err := database.Instance.Query(ctx, query)
+func (r repository) FindAll(ctx context.Context) ([]Task, error) {
+  cursor, err := r.client.Find(ctx, bson.M{})
 
   if err != nil {
     return nil, err
   }
 
-  for rows.Next() {
-    var task Task
+  var tasks []Task
 
-    if err := rows.StructScan(&task); err != nil {
-      return nil, err
-    }
-
-    tasks = append(tasks, &task)
+  if err := cursor.All(ctx, &tasks); err != nil {
+    return nil, err
   }
 
   return tasks, nil
 }
 
-func (r *repository) Create(ctx context.Context, task *Task) error {
-  task.DateModified = time.Now()
-  task.DateAdded = time.Now()
+func (r repository) Insert(ctx context.Context, task *Task) error {
+  _, err := r.client.Insert(ctx, task)
 
-  query, args, _ := r.psql.Insert("tasks").Columns("title", "completed", "dateadded", "datemodified").Values(task.Title, task.Completed, task.DateAdded, task.DateModified).ToSql()
-  if _, err := database.Instance.Exec(
-    ctx,
-    query,
-    args...,
-  ); err != nil {
-    return err
+  return err
+}
+
+func (r repository) UpdateById(ctx context.Context, id primitive.ObjectID, title string, completed bool) error {
+  _, err := r.client.UpdateById(ctx, id, bson.M{"set": bson.M{"title": title, "completed": completed}})
+
+  return err
+}
+
+func (r repository) Delete(ctx context.Context, id primitive.ObjectID) error {
+  _, err := r.client.DeleteById(ctx, id)
+
+  return err
+}
+
+func NewRepository() Repository {
+  return &repository{
+    client: database.NewClient("tasks"),
   }
-  return nil
-}
-
-func (r *repository) Update(ctx context.Context, id int64, title string, completed bool) error {
-  query, args, _ := r.psql.Update("tasks").Set("title", title).Set("completed", completed).Set("datemodified", time.Now()).Where("id", id).ToSql()
-
-  _, err := database.Instance.Exec(
-    ctx,
-    query,
-    args...)
-
-  return err
-}
-
-func (r *repository) Delete(ctx context.Context, id int64) error {
-  query, args, _ := r.psql.Delete("tasks").Where("id", id).ToSql()
-
-  _, err := database.Instance.Exec(ctx, query, args...)
-
-  return err
 }

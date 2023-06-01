@@ -4,9 +4,9 @@ import (
   "encoding/json"
   "github.com/go-chi/chi/v5"
   "github.com/robbailey3/website-api/response"
+  "go.mongodb.org/mongo-driver/bson/primitive"
   "io"
   "net/http"
-  "strconv"
 )
 
 type Controller interface {
@@ -57,15 +57,12 @@ func (c *controller) CreateTask(w http.ResponseWriter, req *http.Request) {
 }
 
 func (c *controller) UpdateTask(w http.ResponseWriter, req *http.Request) {
-  id, err := strconv.ParseInt(chi.URLParam(req, "id"), 10, 64)
+  id := chi.URLParam(req, "id")
+
+  objId, err := primitive.ObjectIDFromHex(id)
 
   if err != nil {
-    response.BadRequest(w, "Bad id")
-    return
-  }
-
-  if id == 0 {
-    response.BadRequest(w, "No id")
+    response.BadRequest(w, "Invalid id")
     return
   }
 
@@ -84,7 +81,7 @@ func (c *controller) UpdateTask(w http.ResponseWriter, req *http.Request) {
   }
 
   // TODO: Validation
-  if err := c.service.UpdateTask(req.Context(), id, &updateTaskRequest); err != nil {
+  if err := c.service.UpdateTask(req.Context(), objId, &updateTaskRequest); err != nil {
     response.ServerError(w, err)
     return
   }
@@ -93,19 +90,16 @@ func (c *controller) UpdateTask(w http.ResponseWriter, req *http.Request) {
 }
 
 func (c *controller) DeleteTask(w http.ResponseWriter, req *http.Request) {
-  id, err := strconv.ParseInt(chi.URLParam(req, "id"), 10, 64)
+  id := chi.URLParam(req, "id")
+
+  objId, err := primitive.ObjectIDFromHex(id)
 
   if err != nil {
-    response.BadRequest(w, "Bad id")
+    response.BadRequest(w, "Invalid id")
     return
   }
 
-  if id == 0 {
-    response.BadRequest(w, "No id")
-    return
-  }
-
-  if err := c.service.DeleteTask(req.Context(), id); err != nil {
+  if err := c.service.DeleteTask(req.Context(), objId); err != nil {
     response.ServerError(w, err)
     return
   }

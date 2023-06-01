@@ -2,6 +2,7 @@ package database
 
 import (
   "context"
+  "fmt"
   "github.com/gookit/slog"
   "go.mongodb.org/mongo-driver/mongo"
   "go.mongodb.org/mongo-driver/mongo/options"
@@ -15,7 +16,7 @@ var connection *mongo.Database
 var once sync.Once
 
 func getConnectionString() string {
-  return ""
+  return fmt.Sprintf("mongodb+srv://%s:%s@%s/?retryWrites=true&w=majority", os.Getenv("DB_USERNAME"), os.Getenv("DB_PASSWORD"), os.Getenv("DB_HOST"))
 }
 
 func Connect() error {
