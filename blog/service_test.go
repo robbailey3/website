@@ -6,6 +6,7 @@ import (
   "github.com/robbailey3/website-api/blog"
   mock_blog "github.com/robbailey3/website-api/mocks/blog"
   "github.com/stretchr/testify/assert"
+  "go.mongodb.org/mongo-driver/bson/primitive"
   "testing"
   "time"
 )
@@ -38,7 +39,7 @@ func TestServiceImpl_GetPosts(t *testing.T) {
     limit := 50
     offset := 5
 
-    sut.Repository.EXPECT().GetMany(gomock.Any(), limit, offset).Times(1).Return([]blog.Post{}, nil)
+    sut.Repository.EXPECT().FindMany(gomock.Any(), limit, offset).Times(1).Return([]blog.Post{}, nil)
 
     _, _ = sut.Service.GetPosts(context.Background(), limit, offset)
   })
@@ -50,14 +51,14 @@ func TestServiceImpl_GetPosts(t *testing.T) {
     offset := 5
 
     posts := []blog.Post{{
-      Id:           123,
+      Id:           primitive.NewObjectID(),
       Title:        "title",
       Content:      "content",
       DateAdded:    time.Now(),
       DateModified: time.Now(),
     }}
 
-    sut.Repository.EXPECT().GetMany(gomock.Any(), limit, offset).Times(1).Return(posts, nil)
+    sut.Repository.EXPECT().FindMany(gomock.Any(), limit, offset).Times(1).Return(posts, nil)
 
     response, err := sut.Service.GetPosts(context.Background(), limit, offset)
 
@@ -73,29 +74,29 @@ func TestServiceImpl_GetPost(t *testing.T) {
   t.Run("should call the GetOne method of the repository", func(t *testing.T) {
     sut := setupTests(t)
 
-    id := int64(123)
+    id := primitive.NewObjectID()
 
-    sut.Repository.EXPECT().GetOne(gomock.Any(), id).Times(1).Return(&blog.Post{}, nil)
+    sut.Repository.EXPECT().FindOneById(gomock.Any(), id).Times(1).Return(&blog.Post{}, nil)
 
-    _, _ = sut.Service.GetPost(context.Background(), id)
+    _, _ = sut.Service.GetPost(context.Background(), id.Hex())
   })
 
   t.Run("should return the post from the repository", func(t *testing.T) {
     sut := setupTests(t)
 
-    id := int64(123)
+    id := primitive.NewObjectID()
 
     post := &blog.Post{
-      Id:           int64(123),
+      Id:           id,
       Title:        "title",
       Content:      "content",
       DateAdded:    time.Now(),
       DateModified: time.Now(),
     }
 
-    sut.Repository.EXPECT().GetOne(gomock.Any(), id).Times(1).Return(post, nil)
+    sut.Repository.EXPECT().FindOneById(gomock.Any(), id).Times(1).Return(post, nil)
 
-    response, err := sut.Service.GetPost(context.Background(), id)
+    response, err := sut.Service.GetPost(context.Background(), id.Hex())
 
     assert.Nil(t, err)
 
@@ -127,11 +128,11 @@ func TestServiceImpl_DeletePost(t *testing.T) {
   t.Run("should call the Delete method of the repository", func(t *testing.T) {
     sut := setupTests(t)
 
-    testId := int64(123)
+    testId := primitive.NewObjectID()
 
     sut.Repository.EXPECT().Delete(gomock.Any(), testId).Times(1).Return(nil)
 
-    _ = sut.Service.DeletePost(context.Background(), testId)
+    _ = sut.Service.DeletePost(context.Background(), testId.Hex())
   })
 }
 
@@ -139,15 +140,15 @@ func TestServiceImpl_UpdatePost(t *testing.T) {
   t.Run("should call the Update method of the repository with the post", func(t *testing.T) {
     sut := setupTests(t)
 
-    testId := int64(123)
+    testId := primitive.NewObjectID()
 
     postRequest := &blog.UpdatePostRequest{
       Title:   "TestTitle",
       Content: "TestContent",
     }
 
-    sut.Repository.EXPECT().UpdateOne(gomock.Any(), testId, postRequest).Times(1).Return(nil)
+    sut.Repository.EXPECT().UpdateById(gomock.Any(), testId, postRequest).Times(1).Return(nil)
 
-    _ = sut.Service.UpdatePost(context.Background(), testId, postRequest)
+    _ = sut.Service.UpdatePost(context.Background(), testId.Hex(), postRequest)
   })
 }

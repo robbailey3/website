@@ -50,7 +50,7 @@ func (mr *MockServiceMockRecorder) AddPost(ctx, req interface{}) *gomock.Call {
 }
 
 // DeletePost mocks base method.
-func (m *MockService) DeletePost(ctx context.Context, id int64) error {
+func (m *MockService) DeletePost(ctx context.Context, id string) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "DeletePost", ctx, id)
 	ret0, _ := ret[0].(error)
@@ -64,7 +64,7 @@ func (mr *MockServiceMockRecorder) DeletePost(ctx, id interface{}) *gomock.Call 
 }
 
 // GetPost mocks base method.
-func (m *MockService) GetPost(ctx context.Context, id int64) (*blog.Post, error) {
+func (m *MockService) GetPost(ctx context.Context, id string) (*blog.Post, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetPost", ctx, id)
 	ret0, _ := ret[0].(*blog.Post)
@@ -94,7 +94,7 @@ func (mr *MockServiceMockRecorder) GetPosts(ctx, limit, offset interface{}) *gom
 }
 
 // UpdatePost mocks base method.
-func (m *MockService) UpdatePost(ctx context.Context, id int64, request *blog.UpdatePostRequest) error {
+func (m *MockService) UpdatePost(ctx context.Context, id string, request *blog.UpdatePostRequest) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "UpdatePost", ctx, id, request)
 	ret0, _ := ret[0].(error)

@@ -10,6 +10,7 @@ import (
   "github.com/robbailey3/website-api/blog"
   "github.com/robbailey3/website-api/exception"
   mock_blog "github.com/robbailey3/website-api/mocks/blog"
+  "go.mongodb.org/mongo-driver/bson/primitive"
   "net/http"
   "net/http/httptest"
   "testing"
@@ -131,9 +132,9 @@ func TestController_GetPost(t *testing.T) {
   t.Run("should call the get post method of the ServiceImpl and pass in the Id", func(t *testing.T) {
     sut := createNewTestServer(t)
 
-    testId := int64(1234)
+    testId := primitive.NewObjectID().Hex()
 
-    request := httptest.NewRequest(http.MethodGet, fmt.Sprintf("/%d", testId), nil)
+    request := httptest.NewRequest(http.MethodGet, fmt.Sprintf("/%s", testId), nil)
 
     sut.Service.EXPECT().GetPost(gomock.Any(), gomock.Eq(testId)).AnyTimes().Return(nil, errors.New("kaboom"))
 
@@ -217,11 +218,11 @@ func TestController_UpdatePost(t *testing.T) {
 
     requestBytes, _ := json.Marshal(requestBody)
 
-    testId := int64(123)
+    testId := primitive.NewObjectID().Hex()
 
     sut := createNewTestServer(t)
 
-    request := httptest.NewRequest(http.MethodPatch, fmt.Sprintf("/%d", testId), bytes.NewReader(requestBytes))
+    request := httptest.NewRequest(http.MethodPatch, fmt.Sprintf("/%s", testId), bytes.NewReader(requestBytes))
 
     sut.Service.EXPECT().UpdatePost(gomock.Any(), testId, requestBody).Times(1).Return(nil)
 
@@ -231,11 +232,11 @@ func TestController_UpdatePost(t *testing.T) {
   })
 
   t.Run("should return BadRequest status when no body is passed", func(t *testing.T) {
-    testId := int64(123)
+    testId := primitive.NewObjectID().Hex()
 
     sut := createNewTestServer(t)
 
-    request := httptest.NewRequest(http.MethodPatch, fmt.Sprintf("/%d", testId), nil)
+    request := httptest.NewRequest(http.MethodPatch, fmt.Sprintf("/%s", testId), nil)
 
     response := executeRequest(request, sut)
 
@@ -250,11 +251,11 @@ func TestController_UpdatePost(t *testing.T) {
 
     requestBytes, _ := json.Marshal(requestBody)
 
-    testId := int64(123)
+    testId := primitive.NewObjectID().Hex()
 
     sut := createNewTestServer(t)
 
-    request := httptest.NewRequest(http.MethodPatch, fmt.Sprintf("/%d", testId), bytes.NewReader(requestBytes))
+    request := httptest.NewRequest(http.MethodPatch, fmt.Sprintf("/%s", testId), bytes.NewReader(requestBytes))
 
     response := executeRequest(request, sut)
 
@@ -269,11 +270,11 @@ func TestController_UpdatePost(t *testing.T) {
 
     requestBytes, _ := json.Marshal(requestBody)
 
-    testId := int64(123)
+    testId := primitive.NewObjectID().Hex()
 
     sut := createNewTestServer(t)
 
-    request := httptest.NewRequest(http.MethodPatch, fmt.Sprintf("/%d", testId), bytes.NewReader(requestBytes))
+    request := httptest.NewRequest(http.MethodPatch, fmt.Sprintf("/%s", testId), bytes.NewReader(requestBytes))
 
     sut.Service.EXPECT().UpdatePost(gomock.Any(), testId, requestBody).Times(1).Return(exception.NotFound())
 
@@ -285,11 +286,11 @@ func TestController_UpdatePost(t *testing.T) {
 
 func TestController_DeletePost(t *testing.T) {
   t.Run("should call the DeletePost method of the ServiceImpl with the provided Id", func(t *testing.T) {
-    testId := int64(123)
+    testId := primitive.NewObjectID().Hex()
 
     sut := createNewTestServer(t)
 
-    request := httptest.NewRequest(http.MethodDelete, fmt.Sprintf("/%d", testId), nil)
+    request := httptest.NewRequest(http.MethodDelete, fmt.Sprintf("/%s", testId), nil)
 
     sut.Service.EXPECT().DeletePost(gomock.Any(), testId).Times(1).Return(nil)
 
@@ -297,11 +298,11 @@ func TestController_DeletePost(t *testing.T) {
   })
 
   t.Run("should return an accepted response when the ServiceImpl does not return an error", func(t *testing.T) {
-    testId := int64(123)
+    testId := primitive.NewObjectID().Hex()
 
     sut := createNewTestServer(t)
 
-    request := httptest.NewRequest(http.MethodDelete, fmt.Sprintf("/%d", testId), nil)
+    request := httptest.NewRequest(http.MethodDelete, fmt.Sprintf("/%s", testId), nil)
 
     sut.Service.EXPECT().DeletePost(gomock.Any(), testId).Times(1).Return(nil)
 
@@ -311,11 +312,11 @@ func TestController_DeletePost(t *testing.T) {
   })
 
   t.Run("should return a server error response when the ServiceImpl returns an error", func(t *testing.T) {
-    testId := int64(123)
+    testId := primitive.NewObjectID().Hex()
 
     sut := createNewTestServer(t)
 
-    request := httptest.NewRequest(http.MethodDelete, fmt.Sprintf("/%d", testId), nil)
+    request := httptest.NewRequest(http.MethodDelete, fmt.Sprintf("/%s", testId), nil)
 
     sut.Service.EXPECT().DeletePost(gomock.Any(), testId).Times(1).Return(errors.New("something went wrong"))
 

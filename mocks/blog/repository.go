@@ -10,6 +10,7 @@ import (
 
 	gomock "github.com/golang/mock/gomock"
 	blog "github.com/robbailey3/website-api/blog"
+	primitive "go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 // MockRepository is a mock of Repository interface.
@@ -36,47 +37,47 @@ func (m *MockRepository) EXPECT() *MockRepositoryMockRecorder {
 }
 
 // Delete mocks base method.
-func (m *MockRepository) Delete(ctc context.Context, id int64) error {
+func (m *MockRepository) Delete(ctx context.Context, id primitive.ObjectID) error {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Delete", ctc, id)
+	ret := m.ctrl.Call(m, "Delete", ctx, id)
 	ret0, _ := ret[0].(error)
 	return ret0
 }
 
 // Delete indicates an expected call of Delete.
-func (mr *MockRepositoryMockRecorder) Delete(ctc, id interface{}) *gomock.Call {
+func (mr *MockRepositoryMockRecorder) Delete(ctx, id interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Delete", reflect.TypeOf((*MockRepository)(nil).Delete), ctc, id)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Delete", reflect.TypeOf((*MockRepository)(nil).Delete), ctx, id)
 }
 
-// GetMany mocks base method.
-func (m *MockRepository) GetMany(ctx context.Context, limit, offset int) ([]blog.Post, error) {
+// FindMany mocks base method.
+func (m *MockRepository) FindMany(ctx context.Context, limit, skip int) ([]blog.Post, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetMany", ctx, limit, offset)
+	ret := m.ctrl.Call(m, "FindMany", ctx, limit, skip)
 	ret0, _ := ret[0].([]blog.Post)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
-// GetMany indicates an expected call of GetMany.
-func (mr *MockRepositoryMockRecorder) GetMany(ctx, limit, offset interface{}) *gomock.Call {
+// FindMany indicates an expected call of FindMany.
+func (mr *MockRepositoryMockRecorder) FindMany(ctx, limit, skip interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetMany", reflect.TypeOf((*MockRepository)(nil).GetMany), ctx, limit, offset)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindMany", reflect.TypeOf((*MockRepository)(nil).FindMany), ctx, limit, skip)
 }
 
-// GetOne mocks base method.
-func (m *MockRepository) GetOne(ctx context.Context, id int64) (*blog.Post, error) {
+// FindOneById mocks base method.
+func (m *MockRepository) FindOneById(ctx context.Context, id primitive.ObjectID) (*blog.Post, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetOne", ctx, id)
+	ret := m.ctrl.Call(m, "FindOneById", ctx, id)
 	ret0, _ := ret[0].(*blog.Post)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
-// GetOne indicates an expected call of GetOne.
-func (mr *MockRepositoryMockRecorder) GetOne(ctx, id interface{}) *gomock.Call {
+// FindOneById indicates an expected call of FindOneById.
+func (mr *MockRepositoryMockRecorder) FindOneById(ctx, id interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetOne", reflect.TypeOf((*MockRepository)(nil).GetOne), ctx, id)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindOneById", reflect.TypeOf((*MockRepository)(nil).FindOneById), ctx, id)
 }
 
 // Insert mocks base method.
@@ -93,16 +94,16 @@ func (mr *MockRepositoryMockRecorder) Insert(ctx, post interface{}) *gomock.Call
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Insert", reflect.TypeOf((*MockRepository)(nil).Insert), ctx, post)
 }
 
-// UpdateOne mocks base method.
-func (m *MockRepository) UpdateOne(ctx context.Context, id int64, update *blog.UpdatePostRequest) error {
+// UpdateById mocks base method.
+func (m *MockRepository) UpdateById(ctx context.Context, id primitive.ObjectID, updatedDoc *blog.UpdatePostRequest) error {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "UpdateOne", ctx, id, update)
+	ret := m.ctrl.Call(m, "UpdateById", ctx, id, updatedDoc)
 	ret0, _ := ret[0].(error)
 	return ret0
 }
 
-// UpdateOne indicates an expected call of UpdateOne.
-func (mr *MockRepositoryMockRecorder) UpdateOne(ctx, id, update interface{}) *gomock.Call {
+// UpdateById indicates an expected call of UpdateById.
+func (mr *MockRepositoryMockRecorder) UpdateById(ctx, id, updatedDoc interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateOne", reflect.TypeOf((*MockRepository)(nil).UpdateOne), ctx, id, update)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateById", reflect.TypeOf((*MockRepository)(nil).UpdateById), ctx, id, updatedDoc)
 }
