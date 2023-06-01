@@ -2,49 +2,49 @@ package image
 
 import (
   "context"
-  sq "github.com/Masterminds/squirrel"
   "github.com/robbailey3/website-api/database"
+  "go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 type Repository interface {
-  Insert(ctx context.Context, image *AiImage) (*int64, error)
-  GetById(ctx context.Context, id int64) (*AiImage, error)
+  Insert(ctx context.Context, image *AiImage) (*primitive.ObjectID, error)
+  GetById(ctx context.Context, id primitive.ObjectID) (*AiImage, error)
 }
 
 type repository struct {
-  psql sq.StatementBuilderType
+  client database.Client
 }
 
 func NewRepository() Repository {
   return &repository{
-    psql: sq.StatementBuilder.PlaceholderFormat(sq.Dollar),
+    client: database.NewClient("images"),
   }
 }
 
-func (r *repository) GetById(ctx context.Context, id int64) (*AiImage, error) {
-  var image AiImage
-  query, args, _ := r.psql.Select("*").From("AiImages").Where(sq.Eq{"id": id}).ToSql()
-  row := database.Instance.QueryRow(ctx, query, args...)
+func (r repository) GetById(ctx context.Context, id primitive.ObjectID) (*AiImage, error) {
+  result := r.client.FindById(ctx, id)
 
-  if err := row.StructScan(&image); err != nil {
+  if result.Err() != nil {
+    return nil, result.Err()
+  }
+
+  var aiImage AiImage
+
+  if err := result.Decode(&aiImage); err != nil {
     return nil, err
   }
 
-  return &image, nil
+  return &aiImage, nil
 }
 
-func (r *repository) Insert(ctx context.Context, image *AiImage) (*int64, error) {
-  query, args, _ := r.psql.Insert("AiImages").Columns("Path", "DateAdded", "ExpiryTime").Values(image.Path, image.DateAdded, image.ExpiryTime).ToSql()
-  result, err := database.Instance.Exec(ctx, query, args...)
+func (r repository) Insert(ctx context.Context, image *AiImage) (*primitive.ObjectID, error) {
+  result, err := r.client.Insert(ctx, image)
 
   if err != nil {
     return nil, err
   }
 
-  id, err := result.LastInsertId()
+  id := result.InsertedID.(primitive.ObjectID)
 
-  if err != nil {
-    return nil, err
-  }
   return &id, nil
 }

@@ -6,6 +6,7 @@ import (
   "crypto/rand"
   "errors"
   "fmt"
+  "go.mongodb.org/mongo-driver/bson/primitive"
   "io"
   "log"
   "mime/multipart"
@@ -25,20 +26,20 @@ import (
 )
 
 type Service interface {
-  CreateImage(ctx context.Context, fileHeader *multipart.FileHeader) (*int64, error)
-  GetImage(xtx context.Context, id int64) (io.Reader, error)
-  GetImageLabels(ctx context.Context, id int64) ([]*Label, error)
-  GetImageProperties(ctx context.Context, id int64) (*vision.ImageProperties, error)
-  GetImageLandmarks(ctx context.Context, id int64) ([]*vision.EntityAnnotation, error)
-  GetImageFaces(ctx context.Context, id int64) ([]*vision.FaceAnnotation, error)
-  GetImageLogos(ctx context.Context, id int64) ([]*vision.EntityAnnotation, error)
+  CreateImage(ctx context.Context, fileHeader *multipart.FileHeader) (*primitive.ObjectID, error)
+  GetImage(xtx context.Context, id primitive.ObjectID) (io.Reader, error)
+  GetImageLabels(ctx context.Context, id primitive.ObjectID) ([]*Label, error)
+  GetImageProperties(ctx context.Context, id primitive.ObjectID) (*vision.ImageProperties, error)
+  GetImageLandmarks(ctx context.Context, id primitive.ObjectID) ([]*vision.EntityAnnotation, error)
+  GetImageFaces(ctx context.Context, id primitive.ObjectID) ([]*vision.FaceAnnotation, error)
+  GetImageLogos(ctx context.Context, id primitive.ObjectID) ([]*vision.EntityAnnotation, error)
 }
 
 type service struct {
   repo    Repository
   storage storage.Client
   vision  VisionAiClient
-  cache   *ttlcache.Cache[int64, []byte]
+  cache   *ttlcache.Cache[primitive.ObjectID, []byte]
 }
 
 func NewService() Service {
@@ -51,7 +52,7 @@ func NewService() Service {
     log.Fatal("Failed to initialise visionAi client")
   }
   cache := ttlcache.New(
-    ttlcache.WithTTL[int64, []byte](2 * time.Minute))
+    ttlcache.WithTTL[primitive.ObjectID, []byte](2 * time.Minute))
 
   go cache.Start()
   return &service{
@@ -62,11 +63,11 @@ func NewService() Service {
   }
 }
 
-func (s *service) GetImage(ctx context.Context, id int64) (io.Reader, error) {
+func (s *service) GetImage(ctx context.Context, id primitive.ObjectID) (io.Reader, error) {
   return s.getImageById(ctx, id)
 }
 
-func (s *service) GetImageLabels(ctx context.Context, id int64) ([]*Label, error) {
+func (s *service) GetImageLabels(ctx context.Context, id primitive.ObjectID) ([]*Label, error) {
   imageReader, err := s.getImageById(ctx, id)
 
   if err != nil {
@@ -76,7 +77,7 @@ func (s *service) GetImageLabels(ctx context.Context, id int64) ([]*Label, error
   return s.vision.DetectLabels(ctx, imageReader, 10)
 }
 
-func (s *service) GetImageProperties(ctx context.Context, id int64) (*vision.ImageProperties, error) {
+func (s *service) GetImageProperties(ctx context.Context, id primitive.ObjectID) (*vision.ImageProperties, error) {
   imageReader, err := s.getImageById(ctx, id)
 
   if err != nil {
@@ -86,7 +87,7 @@ func (s *service) GetImageProperties(ctx context.Context, id int64) (*vision.Ima
   return s.vision.DetectProperties(ctx, imageReader)
 }
 
-func (s *service) GetImageLandmarks(ctx context.Context, id int64) ([]*vision.EntityAnnotation, error) {
+func (s *service) GetImageLandmarks(ctx context.Context, id primitive.ObjectID) ([]*vision.EntityAnnotation, error) {
   imageReader, err := s.getImageById(ctx, id)
 
   if err != nil {
@@ -96,7 +97,7 @@ func (s *service) GetImageLandmarks(ctx context.Context, id int64) ([]*vision.En
   return s.vision.DetectLandmarks(ctx, imageReader, 10)
 }
 
-func (s *service) GetImageFaces(ctx context.Context, id int64) ([]*vision.FaceAnnotation, error) {
+func (s *service) GetImageFaces(ctx context.Context, id primitive.ObjectID) ([]*vision.FaceAnnotation, error) {
   imageReader, err := s.getImageById(ctx, id)
 
   if err != nil {
@@ -106,7 +107,7 @@ func (s *service) GetImageFaces(ctx context.Context, id int64) ([]*vision.FaceAn
   return s.vision.DetectFaces(ctx, imageReader, 10)
 }
 
-func (s *service) GetImageLogos(ctx context.Context, id int64) ([]*vision.EntityAnnotation, error) {
+func (s *service) GetImageLogos(ctx context.Context, id primitive.ObjectID) ([]*vision.EntityAnnotation, error) {
   imageReader, err := s.getImageById(ctx, id)
 
   if err != nil {
@@ -116,7 +117,7 @@ func (s *service) GetImageLogos(ctx context.Context, id int64) ([]*vision.Entity
   return s.vision.DetectLogos(ctx, imageReader, 10)
 }
 
-func (s *service) CreateImage(ctx context.Context, fileHeader *multipart.FileHeader) (*int64, error) {
+func (s *service) CreateImage(ctx context.Context, fileHeader *multipart.FileHeader) (*primitive.ObjectID, error) {
   fileExt := strings.Split(fileHeader.Filename, ".")[1] // TODO: make this more robust
 
   fileName := fmt.Sprintf("%s.%s", s.generateRandomFilename(), fileExt)
@@ -178,8 +179,8 @@ func (s *service) generateRandomFilename() string {
   return *(*string)(unsafe.Pointer(&b))
 }
 
-func (s *service) getImageById(ctx context.Context, id int64) (io.Reader, error) {
-  cachedImg := s.cache.Get(id, ttlcache.WithDisableTouchOnHit[int64, []byte]())
+func (s *service) getImageById(ctx context.Context, id primitive.ObjectID) (io.Reader, error) {
+  cachedImg := s.cache.Get(id, ttlcache.WithDisableTouchOnHit[primitive.ObjectID, []byte]())
   if cachedImg != nil {
     return bytes.NewReader(cachedImg.Value()), nil
   }

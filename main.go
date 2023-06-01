@@ -36,7 +36,7 @@ func main() {
     log.Fatal(err.Error())
   }
 
-  err := database.Init()
+  err := database.Connect()
 
   if err != nil {
     panic(err)

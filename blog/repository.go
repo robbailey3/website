@@ -2,86 +2,81 @@ package blog
 
 import (
   "context"
-  "database/sql"
-  sq "github.com/Masterminds/squirrel"
   "github.com/robbailey3/website-api/database"
-  "github.com/robbailey3/website-api/exception"
+  "go.mongodb.org/mongo-driver/bson"
+  "go.mongodb.org/mongo-driver/bson/primitive"
+  "go.mongodb.org/mongo-driver/mongo/options"
   "time"
 )
 
 type Repository interface {
-  GetMany(ctx context.Context, limit, offset int) ([]Post, error)
-  GetOne(ctx context.Context, id int64) (*Post, error)
-  UpdateOne(ctx context.Context, id int64, update *UpdatePostRequest) error
+  FindMany(ctx context.Context, limit, skip int) ([]Post, error)
+  FindOneById(ctx context.Context, id primitive.ObjectID) (*Post, error)
   Insert(ctx context.Context, post *PostDto) error
-  Delete(ctc context.Context, id int64) error
+  UpdateById(ctx context.Context, id primitive.ObjectID, updatedDoc *UpdatePostRequest) error
+  Delete(ctx context.Context, id primitive.ObjectID) error
 }
 
-type repository struct {
-  psql sq.StatementBuilderType
+type repositoryImpl struct {
+  client database.Client
 }
 
-func NewRepository() Repository {
-  return &repository{
-    psql: sq.StatementBuilder.PlaceholderFormat(sq.Dollar),
-  }
-}
-
-func (r *repository) GetMany(ctx context.Context, limit, offset int) ([]Post, error) {
-  var posts []Post
-
-  query, _, _ := r.psql.Select("*").From("blog").Limit(uint64(limit)).Offset(uint64(offset)).ToSql()
-  rows, err := database.Instance.Query(ctx, query)
+func (r repositoryImpl) FindMany(ctx context.Context, limit, skip int) ([]Post, error) {
+  cursor, err := r.client.Find(ctx, bson.M{}, options.Find().SetSkip(int64(skip)).SetLimit(int64(limit)))
 
   if err != nil {
     return nil, err
   }
 
-  for rows.Next() {
-    var post Post
+  var posts []Post
 
-    if err := rows.StructScan(&post); err != nil {
-      return nil, err
-    }
-    posts = append(posts, post)
+  if err := cursor.All(ctx, &posts); err != nil {
+    return nil, err
   }
 
   return posts, nil
 }
 
-func (r *repository) GetOne(ctx context.Context, id int64) (*Post, error) {
-  query, args, _ := r.psql.Select("*").From("blog").Where(sq.Eq{"id": id}).ToSql()
-  row := database.Instance.QueryRow(ctx, query, args...)
+func (r repositoryImpl) FindOneById(ctx context.Context, id primitive.ObjectID) (*Post, error) {
+  result := r.client.FindById(ctx, id)
+
+  if result.Err() != nil {
+    return nil, result.Err()
+  }
 
   var post Post
 
-  if err := row.StructScan(&post); err != nil {
-    if err == sql.ErrNoRows {
-      return nil, exception.NotFound()
-    }
+  if err := result.Decode(&post); err != nil {
     return nil, err
   }
 
   return &post, nil
 }
 
-func (r *repository) UpdateOne(ctx context.Context, id int64, update *UpdatePostRequest) error {
-  query, args, _ := r.psql.Update("blog").Set("title", update.Title).Set("content", update.Content).Set("datemodified", time.Now()).Where("id", id).ToSql()
-  _, err := database.Instance.Exec(ctx, query, args...)
+func (r repositoryImpl) Insert(ctx context.Context, post *PostDto) error {
+  _, err := r.client.Insert(ctx, post)
+
+  if err != nil {
+    return err
+  }
+
+  return nil
+}
+
+func (r repositoryImpl) UpdateById(ctx context.Context, id primitive.ObjectID, updatedDoc *UpdatePostRequest) error {
+  _, err := r.client.UpdateById(ctx, id, bson.M{"set": bson.M{"title": updatedDoc.Title, "content": updatedDoc.Content, "dateModified": time.Now()}})
 
   return err
 }
 
-func (r *repository) Insert(ctx context.Context, post *PostDto) error {
-  query, args, _ := r.psql.Insert("blog").Columns("title", "content", "dateadded", "datemodified").Values(post.Title, post.Content, post.DateAdded, post.DateModified).ToSql()
-  _, err := database.Instance.Exec(ctx, query, args)
+func (r repositoryImpl) Delete(ctx context.Context, id primitive.ObjectID) error {
+  _, err := r.client.DeleteById(ctx, id)
 
   return err
 }
 
-func (r *repository) Delete(ctx context.Context, id int64) error {
-  query, args, _ := r.psql.Delete("blog").Where(sq.Eq{"id": id}).ToSql()
-  _, err := database.Instance.Exec(ctx, query, args)
-
-  return err
+func NewRepository() Repository {
+  return &repositoryImpl{
+    client: database.NewClient("posts"),
+  }
 }

@@ -1,13 +1,13 @@
 package tasks
 
 import (
-	"time"
+  "time"
 )
 
 type Task struct {
-	Id           string    `json:"id,omitempty" firestore:"-"`
-	Title        string    `json:"title"`
-	Completed    bool      `json:"completed"`
-	DateAdded    time.Time `json:"dateAdded"`
-	DateModified time.Time `json:"dateModified"`
+  Id           string    `json:"id,omitempty" bson:"_id"`
+  Title        string    `json:"title" bson:"title"`
+  Completed    bool      `json:"completed" bson:"completed"`
+  DateAdded    time.Time `json:"dateAdded" bson:"dateAdded"`
+  DateModified time.Time `json:"dateModified" bson:"dateModified"`
 }

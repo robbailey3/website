@@ -3,8 +3,8 @@ package image
 import (
   "github.com/go-chi/chi/v5"
   "github.com/robbailey3/website-api/response"
+  "go.mongodb.org/mongo-driver/bson/primitive"
   "net/http"
-  "strconv"
 )
 
 type Controller interface {
@@ -44,19 +44,16 @@ func (c *controller) Upload(w http.ResponseWriter, req *http.Request) {
 }
 
 func (c *controller) GetLabels(w http.ResponseWriter, req *http.Request) {
-  id, err := strconv.ParseInt(chi.URLParam(req, "id"), 10, 64)
+  id := chi.URLParam(req, "id")
+
+  objId, err := primitive.ObjectIDFromHex(id)
 
   if err != nil {
-    response.BadRequest(w, "Bad id")
+    response.BadRequest(w, "Invalid id")
     return
   }
 
-  if id == 0 {
-    response.BadRequest(w, "No id")
-    return
-  }
-
-  labels, err := c.service.GetImageLabels(req.Context(), id)
+  labels, err := c.service.GetImageLabels(req.Context(), objId)
 
   if err != nil {
     response.ServerError(w, err)
@@ -67,19 +64,16 @@ func (c *controller) GetLabels(w http.ResponseWriter, req *http.Request) {
 }
 
 func (c *controller) GetProperties(w http.ResponseWriter, req *http.Request) {
-  id, err := strconv.ParseInt(chi.URLParam(req, "id"), 10, 64)
+  id := chi.URLParam(req, "id")
+
+  objId, err := primitive.ObjectIDFromHex(id)
 
   if err != nil {
-    response.BadRequest(w, "Bad id")
+    response.BadRequest(w, "Invalid id")
     return
   }
 
-  if id == 0 {
-    response.BadRequest(w, "No id")
-    return
-  }
-
-  labels, err := c.service.GetImageProperties(req.Context(), id)
+  labels, err := c.service.GetImageProperties(req.Context(), objId)
 
   if err != nil {
     response.ServerError(w, err)
@@ -90,19 +84,16 @@ func (c *controller) GetProperties(w http.ResponseWriter, req *http.Request) {
 }
 
 func (c *controller) GetLandmarks(w http.ResponseWriter, req *http.Request) {
-  id, err := strconv.ParseInt(chi.URLParam(req, "id"), 10, 64)
+  id := chi.URLParam(req, "id")
+
+  objId, err := primitive.ObjectIDFromHex(id)
 
   if err != nil {
-    response.BadRequest(w, "Bad id")
+    response.BadRequest(w, "Invalid id")
     return
   }
 
-  if id == 0 {
-    response.BadRequest(w, "No id")
-    return
-  }
-
-  labels, err := c.service.GetImageLandmarks(req.Context(), id)
+  labels, err := c.service.GetImageLandmarks(req.Context(), objId)
 
   if err != nil {
     response.ServerError(w, err)
@@ -113,19 +104,16 @@ func (c *controller) GetLandmarks(w http.ResponseWriter, req *http.Request) {
 }
 
 func (c *controller) GetFaces(w http.ResponseWriter, req *http.Request) {
-  id, err := strconv.ParseInt(chi.URLParam(req, "id"), 10, 64)
+  id := chi.URLParam(req, "id")
+
+  objId, err := primitive.ObjectIDFromHex(id)
 
   if err != nil {
-    response.BadRequest(w, "Bad id")
+    response.BadRequest(w, "Invalid id")
     return
   }
 
-  if id == 0 {
-    response.BadRequest(w, "No id")
-    return
-  }
-
-  faces, err := c.service.GetImageFaces(req.Context(), id)
+  faces, err := c.service.GetImageFaces(req.Context(), objId)
 
   if err != nil {
     response.ServerError(w, err)
@@ -136,19 +124,16 @@ func (c *controller) GetFaces(w http.ResponseWriter, req *http.Request) {
 }
 
 func (c *controller) GetImage(w http.ResponseWriter, req *http.Request) {
-  id, err := strconv.ParseInt(chi.URLParam(req, "id"), 10, 64)
+  id := chi.URLParam(req, "id")
+
+  objId, err := primitive.ObjectIDFromHex(id)
 
   if err != nil {
-    response.BadRequest(w, "Bad id")
+    response.BadRequest(w, "Invalid id")
     return
   }
 
-  if id == 0 {
-    response.BadRequest(w, "No id")
-    return
-  }
-
-  img, err := c.service.GetImage(req.Context(), id)
+  img, err := c.service.GetImage(req.Context(), objId)
 
   if err != nil {
     response.ServerError(w, err)
@@ -159,19 +144,16 @@ func (c *controller) GetImage(w http.ResponseWriter, req *http.Request) {
 }
 
 func (c *controller) GetLogos(w http.ResponseWriter, req *http.Request) {
-  id, err := strconv.ParseInt(chi.URLParam(req, "id"), 10, 64)
+  id := chi.URLParam(req, "id")
+
+  objId, err := primitive.ObjectIDFromHex(id)
 
   if err != nil {
-    response.BadRequest(w, "Bad id")
+    response.BadRequest(w, "Invalid id")
     return
   }
 
-  if id == 0 {
-    response.BadRequest(w, "No id")
-    return
-  }
-
-  logos, err := c.service.GetImageLogos(req.Context(), id)
+  logos, err := c.service.GetImageLogos(req.Context(), objId)
 
   if err != nil {
     response.ServerError(w, err)

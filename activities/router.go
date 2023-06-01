@@ -5,12 +5,12 @@ import (
 )
 
 func SetupActivityRoutes(router chi.Router) {
-  c := NewController()
-
-  router.Route("/activities", func(r chi.Router) {
-    r.Get("/", c.HandleGet)
-    r.Get("/webhook", c.HandleWebhookGet)
-    r.Post("/webhook", c.HandleWebhookPost)
-  })
+  // c := NewController()
+  //
+  // router.Route("/activities", func(r chi.Router) {
+  //   r.Get("/", c.HandleGet)
+  //   r.Get("/webhook", c.HandleWebhookGet)
+  //   r.Post("/webhook", c.HandleWebhookPost)
+  // })
 
 }
