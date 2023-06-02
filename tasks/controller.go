@@ -35,7 +35,7 @@ func (c *controller) GetTasks(w http.ResponseWriter, req *http.Request) {
 }
 
 func (c *controller) CreateTask(w http.ResponseWriter, req *http.Request) {
-  var task Task
+  var task TaskDto
 
   bodyBytes, err := io.ReadAll(req.Body)
   if err != nil {

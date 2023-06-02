@@ -9,7 +9,7 @@ import (
 
 type Repository interface {
   FindAll(ctx context.Context) ([]Task, error)
-  Insert(ctx context.Context, task *Task) error
+  Insert(ctx context.Context, task *TaskDto) error
   UpdateById(ctx context.Context, id primitive.ObjectID, title string, completed bool) error
   Delete(ctx context.Context, id primitive.ObjectID) error
 }
@@ -34,7 +34,7 @@ func (r repository) FindAll(ctx context.Context) ([]Task, error) {
   return tasks, nil
 }
 
-func (r repository) Insert(ctx context.Context, task *Task) error {
+func (r repository) Insert(ctx context.Context, task *TaskDto) error {
   _, err := r.client.Insert(ctx, task)
 
   return err
