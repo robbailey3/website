@@ -7,7 +7,7 @@ import (
 
 type Service interface {
   GetTasks(ctx context.Context) ([]Task, error)
-  CreateTask(ctx context.Context, task *Task) error
+  CreateTask(ctx context.Context, task *TaskDto) error
   UpdateTask(ctx context.Context, id primitive.ObjectID, request *UpdateTaskRequest) error
   DeleteTask(ctx context.Context, id primitive.ObjectID) error
 }
@@ -24,7 +24,7 @@ func (s *service) GetTasks(ctx context.Context) ([]Task, error) {
   return s.repository.FindAll(ctx)
 }
 
-func (s *service) CreateTask(ctx context.Context, task *Task) error {
+func (s *service) CreateTask(ctx context.Context, task *TaskDto) error {
   return s.repository.Insert(ctx, task)
 }
 
