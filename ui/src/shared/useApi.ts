@@ -1,4 +1,5 @@
-import useSWR from 'swr';
+import useSWR, { SWRResponse } from 'swr';
+import { PublicConfiguration } from 'swr/_internal';
 
 const fetcher = async (url: string) => {
 	const BASE_URL = import.meta.env.DEV ? 'http://localhost:8080/api' : '/api';
@@ -13,10 +14,11 @@ const fetcher = async (url: string) => {
 	throw new Error('Something went wrong');
 };
 
-function useApi<T>(url: string) {
+function useApi<T>(url: string, opts: Record<string, any>) {
 	const { data, isLoading, error, isValidating, mutate } = useSWR<T>(
 		url,
-		fetcher
+		fetcher,
+		opts
 	);
 
 	return { data, isLoading, error, isValidating, mutate };

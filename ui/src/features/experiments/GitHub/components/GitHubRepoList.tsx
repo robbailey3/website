@@ -3,13 +3,26 @@ import Flex from '@components/layout/Flex/Flex';
 import FlexItem from '@components/layout/FlexItem/FlexItem';
 import { GitHubRepo } from '../types/repo';
 import GitHubRepoItem from './GitHubRepoItem';
+import { useGithubRepositories } from '../useGithubRepositories';
 
 export interface GitHubRepoListProps {
 	repos: GitHubRepo[];
 }
 
-const GitHubRepoList = (props: GitHubRepoListProps) => {
-	const { repos } = props;
+const GitHubRepoList = () => {
+	const { repos, error, isLoading } = useGithubRepositories('robbailey3');
+
+	if (isLoading) {
+		return <div>Loading...</div>;
+	}
+
+	if (error) {
+		return <div>Error: {error.message}</div>;
+	}
+
+	if (!repos) {
+		return <div>No data</div>;
+	}
 
 	return (
 		<Flex wrap align="stretch">

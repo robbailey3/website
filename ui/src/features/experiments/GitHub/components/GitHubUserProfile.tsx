@@ -12,7 +12,7 @@ export interface GitHubUserProfileProps {
 }
 
 const GitHubUserProfile = () => {
-	const { data, isLoading, error } = useGithubUser('robbailey3');
+	const { user, isLoading, error } = useGithubUser('robbailey3');
 
 	if (isLoading) {
 		return <div>Loading...</div>;
@@ -22,11 +22,9 @@ const GitHubUserProfile = () => {
 		return <div>Error: {error.message}</div>;
 	}
 
-	if (!data) {
+	if (!user) {
 		return <div>No data</div>;
 	}
-
-	const user = data;
 
 	return (
 		<section>
