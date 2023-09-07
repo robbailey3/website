@@ -1,66 +1,80 @@
 package github
 
 import (
-  "net/http"
-  "strconv"
+	"net/http"
+	"strconv"
 
-  "github.com/robbailey3/website-api/response"
+	"github.com/robbailey3/website-api/response"
 )
 
 type Controller interface {
-  GetRepos(w http.ResponseWriter, req *http.Request)
-  GetUser(w http.ResponseWriter, req *http.Request)
+	GetRepos(w http.ResponseWriter, req *http.Request)
+	GetUser(w http.ResponseWriter, req *http.Request)
 }
 
 type controllerImpl struct {
-  service Service
+	service Service
 }
 
 func NewController() Controller {
-  return &controllerImpl{service: NewService()}
+	return &controllerImpl{service: NewService()}
 }
 
 func (c *controllerImpl) GetRepos(w http.ResponseWriter, req *http.Request) {
-  query := req.URL.Query()
+	query := req.URL.Query()
 
-  page, err := strconv.Atoi(query.Get("page"))
-  if err != nil {
-    page = 1
-  }
-  perPage, err := strconv.Atoi(query.Get("per_page"))
-  if err != nil {
-    perPage = 30
-  }
+	username := query.Get("username")
 
-  request := GetReposRequest{
-    Username:  "robbailey3", // Hard code this one for now
-    Sort:      query.Get("sort"),
-    Direction: query.Get("direction"),
-    PerPage:   perPage,
-    Page:      page,
-  }
+	if username == "" {
+		username = "robbailey3" // Default to me
+	}
 
-  repos, err := c.service.GetRepos(request)
+	page, err := strconv.Atoi(query.Get("page"))
+	if err != nil {
+		page = 1
+	}
+	perPage, err := strconv.Atoi(query.Get("per_page"))
+	if err != nil {
+		perPage = 30
+	}
 
-  if err != nil {
-    response.ServerError(w, err)
-    return
-  }
+	request := GetReposRequest{
+		Username:  username,
+		Sort:      query.Get("sort"),
+		Direction: query.Get("direction"),
+		PerPage:   perPage,
+		Page:      page,
+	}
 
-  response.Ok(w, repos)
+	repos, err := c.service.GetRepos(request)
+
+	if err != nil {
+		response.ServerError(w, err)
+		return
+	}
+
+	response.Ok(w, repos)
 }
 
 func (c *controllerImpl) GetUser(w http.ResponseWriter, req *http.Request) {
-  request := GetUserRequest{
-    Username: "robbailey3", // Hard code this one for now
-  }
+	query := req.URL.Query()
 
-  user, err := c.service.GetUser(request)
+	username := query.Get("username")
 
-  if err != nil {
-    response.ServerError(w, err)
-    return
-  }
+	if username == "" {
+		username = "robbailey3" // Default to me
+	}
 
-  response.Ok(w, user)
+	request := GetUserRequest{
+		Username: username,
+	}
+
+	user, err := c.service.GetUser(request)
+
+	if err != nil {
+		response.ServerError(w, err)
+		return
+	}
+
+	response.Ok(w, user)
 }

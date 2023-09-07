@@ -35,8 +35,8 @@ export function useGithub() {
 	const load = async () => {
 		setIsLoading(true);
 		try {
-			fetchRepos();
-			fetchUser();
+			await fetchRepos();
+			await fetchUser();
 		} catch (e: any) {
 			console.error(e);
 			setError(true);

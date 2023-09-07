@@ -5,13 +5,28 @@ import { faBriefcase, faMapMarker } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { GitHubUser } from '../types/user';
 import GitHubAvatar from './GitHubAvatar';
+import { useGithubUser } from '../useGithubUser';
 
 export interface GitHubUserProfileProps {
 	user: GitHubUser;
 }
 
-const GitHubUserProfile = (props: GitHubUserProfileProps) => {
-	const { user } = props;
+const GitHubUserProfile = () => {
+	const { data, isLoading, error } = useGithubUser('robbailey3');
+
+	if (isLoading) {
+		return <div>Loading...</div>;
+	}
+
+	if (error) {
+		return <div>Error: {error.message}</div>;
+	}
+
+	if (!data) {
+		return <div>No data</div>;
+	}
+
+	const user = data;
 
 	return (
 		<section>
