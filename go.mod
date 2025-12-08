@@ -1,6 +1,6 @@
 module github.com/robbailey3/website-api
 
-go 1.24.0
+go 1.25
 
 require (
 	cloud.google.com/go/firestore v1.20.0
